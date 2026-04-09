@@ -34,8 +34,25 @@ import org.bson.codecs.EncoderContext;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Represents a codec that serves to provide custom serialization and deserialization for BSON-objects, extending capacities of
+ * {@link Codec} by providing additional functions for arrays and lists/collections reading and writing.
+ *
+ * @param <T> a generic object.
+ * @since 1.0.0
+ */
 @NullMarked
 public interface MongoCodec<T> extends Codec<T> {
+  /**
+   * Reads a custom-type array from the given reader with an expected-capacity.
+   *
+   * @param reader the {@link BsonReader} from which read the array.
+   * @param expectedCapacity the expected capacity the array will have.
+   * @param context the context for decoding.
+   * @param dedicatedDecoder the decoder to use for array's elements decoding.
+   * @return the read array, or {@code null} if there's none array.
+   * @since 1.0.0
+   */
   @SuppressWarnings("unchecked")
   default <R> R @Nullable [] readArray(
       final BsonReader reader,
@@ -54,6 +71,14 @@ public interface MongoCodec<T> extends Codec<T> {
     return array;
   }
 
+  /**
+   * Reads a string-array from the given reader with an expected-capacity.
+   *
+   * @param reader the {@link BsonReader} from which read the array.
+   * @param expectedCapacity the expected capacity the array will have.
+   * @return the read array, or {@code null} if there's none array.
+   * @since 1.0.0
+   */
   default String @Nullable [] readStringArray(final BsonReader reader, final int expectedCapacity) {
     if (reader.readBsonType() != BsonType.ARRAY) return null;
 
@@ -151,6 +176,16 @@ public interface MongoCodec<T> extends Codec<T> {
     return values == null ? new ObjectArrayList<>() : values;
   }
 
+  /**
+   * Writes the given collection's context to a document as an array, using the provided {@link BsonWriter} parameter.
+   *
+   * @param writer the {@link BsonWriter} to use for the writing.
+   * @param name the path where write this list's contents to in the document.
+   * @param values the collection to read.
+   * @param context the context of the encoding.
+   * @param dedicatedEncoder the encoder to use for the collection's values encoding.
+   * @since 1.0.0
+   */
   default <R> void writeCollectionAsArray(
       final BsonWriter writer,
       final String name,
