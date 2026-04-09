@@ -1,0 +1,24 @@
+[versions]
+indra = "4.0.0"
+spotless = "8.2.1"
+
+jspecify = "1.0.0"
+
+paper = "1.21.11-R0.1-SNAPSHOT"
+
+configurate = "4.2.0"
+
+mongodb = "5.6.2"
+cache = "3.2.3"
+
+[libraries]
+jspecify = { group = "org.jspecify", name = "jspecify", version.ref = "jspecify" }
+
+paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+configurate = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
+
+mongodb-driver = { group = "org.mongodb", name = "mongodb-driver-sync", version.ref = "mongodb" }
+expirable-cache = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "cache" }
+
+build-indra = { module = "net.kyori:indra-common", version.ref = "indra" }
+build-spotless = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
