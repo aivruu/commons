@@ -34,7 +34,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a codec that serves to provide custom JSON serialization and deserialization for objects, extending capacities of
- * {@link JsonSerializer} & {@link JsonDeserializer} by providing additional functions for arrays and lists/collections reading
+ * {@link JsonSerializer} and {@link JsonDeserializer} by providing additional functions for arrays and lists/collections reading
  * and writing.
  *
  * @param <T> a generic object.
@@ -176,6 +176,17 @@ public interface JsonCodec<T> extends JsonSerializer<T>, JsonDeserializer<T> {
     return values == null ? new ObjectArrayList<>() : values;
   }
 
+  /**
+   * Writes the given values-collection to a {@link JsonArray} object.
+   *
+   * @param jsonData the {@link JsonObject} to
+   * @param values the values to write.
+   * @param context the context used for the collection's values serialization.
+   * @param path the path to where write the array.
+   * @param <R> the expected component-type for the array.
+   * @see #writeArray(JsonObject, Object[], JsonSerializationContext, String) JSON-array writing operation
+   * @since 1.0.0
+   */
   default <R> void writeMapValuesAsArray(
       final JsonObject jsonData,
       final Collection<R> values,
@@ -193,8 +204,10 @@ public interface JsonCodec<T> extends JsonSerializer<T>, JsonDeserializer<T> {
    * If the {@code source} parameter is null the function will return a {@link JsonNull}.
    *
    * @param <R> the expected component-type for the array.
+   * @param jsonData the {@link JsonObject} to write the array.
    * @param source the array to read for the writing.
    * @param context the context for the array's elements serialization.
+   * @param path the path to where write the array.
    * @since 1.0.0
    */
   @SuppressWarnings("unchecked")
@@ -216,23 +229,73 @@ public interface JsonCodec<T> extends JsonSerializer<T>, JsonDeserializer<T> {
     jsonData.add(path, jsonArray);
   }
 
+  /**
+   * Writes the given string-array's contents to the {@link JsonObject} object.
+   *
+   * @param jsonData the {@link JsonObject} to write the array.
+   * @param source the array to write.
+   * @param path the path to where write the array.
+   * @see #writeObjectArray(JsonObject, Object[], Class, JsonSerializationContext, String) Custom-type array writing
+   * @since 1.0.0
+   */
   default void writeStringArray(final JsonObject jsonData, final String @Nullable [] source, final String path) {
     this.writeObjectArray(jsonData, source, String.class, null, path);
   }
 
+  /**
+   * Writes the given integers-array's contents to the {@link JsonObject} object.
+   *
+   * @param jsonData the {@link JsonObject} to write the array.
+   * @param source the array to write.
+   * @param path the path to where write the array.
+   * @see #writeObjectArray(JsonObject, Object[], Class, JsonSerializationContext, String) Custom-type array writing
+   * @since 1.0.0
+   */
   default void writeIntegerArray(final JsonObject jsonData, final Integer @Nullable [] source, final String path) {
     this.writeObjectArray(jsonData, source, Integer.class, null, path);
   }
 
+  /**
+   * Writes the given string-list's contents to the {@link JsonObject} object.
+   *
+   * @param jsonData the {@link JsonObject} to write the list.
+   * @param source the list to write.
+   * @param path the path to where write the list.
+   * @see #writeObjectArray(JsonObject, Object[], Class, JsonSerializationContext, String) Custom-type array writing
+   * @since 1.0.0
+   */
   default void writeStringList(final JsonObject jsonData, final @Nullable List<String> source, final String path) {
     this.writeObjectArray(jsonData, source == null ? null : source.toArray(String[]::new), String.class, null, path);
   }
 
+  /**
+   * Writes the given integer-list's contents to the {@link JsonObject} object.
+   *
+   * @param jsonData the {@link JsonObject} to write the list.
+   * @param source the list to write.
+   * @param path the path to where write the list.
+   * @see #writeObjectArray(JsonObject, Object[], Class, JsonSerializationContext, String) Custom-type array writing
+   * @since 1.0.0
+   */
   default void writeIntegerList(final JsonObject jsonData, final @Nullable IntList source, final String path) {
-    this.writeObjectArray(jsonData, source == null ? null : source.toArray(Integer[]::new), Integer.class,
-        null, path);
+    this.writeObjectArray(jsonData, source == null ? null : source.toArray(Integer[]::new), Integer.class, null, path);
   }
 
+  /**
+   * Writes the given array of objects to a {@link JsonObject} object.
+   * <p>
+   * If the {@code source} is not provided then the function will write a {@code null} value on the given path for
+   * the JSON, as well, if the array is of a custom-type and no {@code context} is provided, the function will write
+   * {@code null} on the given path too.
+   *
+   * @param jsonData the {@link JsonObject} to write the array.
+   * @param source the array to write.
+   * @param type the component-type of the array.
+   * @param context the context used for the array's values serialization.
+   * @param path the path to where write the array.
+   * @param <R> the expected component-type of the array.
+   * @since 1.0.0
+   */
   default <R> void writeObjectArray(
       final JsonObject jsonData,
       final R @Nullable [] source,
