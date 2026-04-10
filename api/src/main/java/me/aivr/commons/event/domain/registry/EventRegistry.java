@@ -18,6 +18,8 @@ package me.aivr.commons.event.domain.registry;
 
 import java.util.List;
 import java.util.function.Predicate;
+
+import me.aivr.commons.event.domain.subscribe.Subscriber;
 import me.aivr.commons.event.domain.subscribe.Subscription;
 
 /**
@@ -56,6 +58,30 @@ public interface EventRegistry<E> {
   @SuppressWarnings("unchecked")
   default <T extends E> boolean subscribed(final Subscription<? super T> subscription) {
     return !this.subscriptions((Class<? extends E>) subscription.subscribedEventType()).isEmpty();
+  }
+
+  /**
+   * Registers a subscription with the given parameters for the specified event-type and returns the subscription created.
+   *
+   * @param event the event-type to subscribe to.
+   * @param acceptCancelledEvents whether the subscription should receive events that were cancelled by other subscriptions.
+   * @param customHandler the handler to use when listening to the event.
+   * @return the created {@link Subscription} for the event.
+   * @see #subscribe(Class, Subscription) Subscription registration operation
+   * @since 1.0.0
+   */
+  @SuppressWarnings("unchecked")
+  default <T extends E> Subscription<? super T> subscribe(
+      final Class<T> event,
+      final boolean acceptCancelledEvents,
+      final Subscriber<? super E> customHandler) {
+    // anonymous-class use here
+    return this.subscribe(event, new Subscription<>(event, (EventRegistry<T>) this, acceptCancelledEvents) {
+      @Override
+      public void initHandler() {
+        super.handler = customHandler;
+      }
+    });
   }
 
   /**
