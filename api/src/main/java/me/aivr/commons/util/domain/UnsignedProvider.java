@@ -14,7 +14,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
-package me.aivr.commons.util.application;
+package me.aivr.commons.util.domain;
 
 /**
  * Utility-class that provides functionality to "represent" and use "unsigned" {@code byte} values.

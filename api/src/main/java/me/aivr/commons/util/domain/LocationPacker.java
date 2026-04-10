@@ -14,7 +14,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
-package me.aivr.commons.util.application;
+package me.aivr.commons.util.domain;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
