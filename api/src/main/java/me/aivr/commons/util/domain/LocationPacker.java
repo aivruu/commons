@@ -24,8 +24,10 @@ import org.jspecify.annotations.Nullable;
  * Utility-class to provide functions to perform bit-shifting over {@link Location} values to store compressed-coordinates
  * for home-points.
  *
+ * @deprecated use {@link CoordinatePackingProvider} instead.
  * @since 1.0.0
  */
+@Deprecated
 public final class LocationPacker {
   /**
    * The maximum-value allowed to be packed for both {@code x} and {@code z} coordinates.
@@ -92,7 +94,7 @@ public final class LocationPacker {
    * <p>
    * After that process, the three shifted values are packed into a single {@code long} value, this value contains all the
    * information related (but the world, obviously) and needed to re-build the location again.
-   *
+   *)} instead.
    * @param x the location's X coordinate.
    * @param y the location's Y coordinate.
    * @param z the location's Z coordinate.
