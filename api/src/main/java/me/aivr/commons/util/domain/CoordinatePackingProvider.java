@@ -143,7 +143,7 @@ public final class CoordinatePackingProvider {
     return value < min || value > max;
   }
 
-  private static int restoreSignExtension(int value, final long bits) {
+  private static int restoreSignExtension(final int value, final long bits) {
     // https://stackoverflow.com/questions/54675321/what-is-the-most-efficient-way-in-java-to-sign-extend-an-arbitrary-length-patter
     return ((value << (Integer.SIZE - bits)) >> (Integer.SIZE - bits));
   }
