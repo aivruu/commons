@@ -1,3 +1,19 @@
+// This file is part of "commons", licensed under the GNU License.
+//
+// Copyright (c) 2026 aivruu
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.util.domain;
 
 import org.bukkit.Bukkit;
@@ -57,23 +73,17 @@ public final class CoordinatePackingProvider {
   // Min and max range-related constants.
 
   /**
-   * The max-range that can support {@code x}.
-   *
-   * @since 2.1.0
-   */
-  private static final int X_MAX = (1 << (X_BITS - 1)) - 1;
-  /**
    * The min-range that can support {@code x}.
    *
    * @since 2.1.0
    */
   private static final int X_MIN = -(1 << (X_BITS - 1));
   /**
-   * The max-range that can support {@code y}.
+   * The max-range that can support {@code x}.
    *
    * @since 2.1.0
    */
-  private static final int Y_MAX = (1 << (Y_BITS - 1)) - 1;
+  private static final int X_MAX = (X_MIN * -1) - 1;
   /**
    * The min-range that can support {@code y}.
    *
@@ -81,17 +91,23 @@ public final class CoordinatePackingProvider {
    */
   private static final int Y_MIN = -(1 << (Y_BITS - 1));
   /**
-   * The max-range that can support {@code z}.
+   * The max-range that can support {@code y}.
    *
    * @since 2.1.0
    */
-  private static final int Z_MAX = (1 << (Z_BITS - 1)) - 1;
+  private static final int Y_MAX = (Y_MIN * -1) - 1;
   /**
    * The min-range that can support {@code z}.
    *
    * @since 2.1.0
    */
   private static final int Z_MIN = -(1 << (Z_BITS - 1));
+  /**
+   * The max-range that can support {@code z}.
+   *
+   * @since 2.1.0
+   */
+  private static final int Z_MAX = (Z_MIN * -1) - 1;
 
   /**
    * Calls to the {@link #pack(int, int, int)} function providing the given location's values.
@@ -128,12 +144,12 @@ public final class CoordinatePackingProvider {
    * @since 2.1.0
    */
   public static long pack(int x, int y, int z) {
-    if (!CoordinatePackingProvider.outOfBounds(x, X_MIN, X_MAX)) return -1;
+    if (CoordinatePackingProvider.outOfBounds(x, X_MIN, X_MAX)) return -1;
 
-    if (!CoordinatePackingProvider.outOfBounds(z, Z_MIN, Z_MAX)) {
+    if (CoordinatePackingProvider.outOfBounds(z, Z_MIN, Z_MAX)) {
       return -1;
     }
-    if (!CoordinatePackingProvider.outOfBounds(y, Y_MIN, Y_MAX)) {
+    if (CoordinatePackingProvider.outOfBounds(y, Y_MIN, Y_MAX)) {
       return -1;
     }
     return (((x & X_BIT_MASK)) << (Y_BITS + Z_BITS)) | (((z & Z_BIT_MASK)) << Y_BITS) | ((y & Y_BIT_MASK));
