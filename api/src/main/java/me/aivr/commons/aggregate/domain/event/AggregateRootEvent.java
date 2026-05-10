@@ -20,7 +20,7 @@ package me.aivr.commons.aggregate.domain.event;
  * A contract that represents domain-events specifically for {@link me.aivr.commons.aggregate.domain.AggregateRoot}s.
  * <p>
  * These event-types are "notifications" that're posted after an action was done over an aggregate-root that had changed
- * its state, by that, this events cannot be cancelled as difference from application-related events which can do so.
+ * its state, by that, these events cannot be cancelled as difference from application-related events which can do so.
  *
  * @since 1.0.0
  */
