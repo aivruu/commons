@@ -33,10 +33,17 @@ import org.jspecify.annotations.NullMarked;
  * @since 1.0.0
  */
 @NullMarked
+@SuppressWarnings("ConstantConditions")
 public final class LocalEventRegistry<E> implements EventRegistry<E> {
   private final Object2ObjectMap<Class<? extends E>, ObjectList<Subscription<? super E>>> subscriptions = new Object2ObjectOpenHashMap<>();
   private final Class<E> eventType;
 
+  /**
+   * Creates a new {@link LocalEventRegistry} with the provided parameter.
+   *
+   * @param eventType the class-type of the event this registry will handle.
+   * @since 1.0.0
+   */
   public LocalEventRegistry(final Class<E> eventType) {
     this.eventType = eventType;
   }
