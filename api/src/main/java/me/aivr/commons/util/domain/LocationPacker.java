@@ -18,6 +18,7 @@ package me.aivr.commons.util.domain;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -28,6 +29,7 @@ import org.jspecify.annotations.Nullable;
  * @since 1.0.0
  */
 @Deprecated
+@ApiStatus.ScheduledForRemoval(inVersion = "3.0.0")
 public final class LocationPacker {
   /**
    * The maximum-value allowed to be packed for both {@code x} and {@code z} coordinates.
