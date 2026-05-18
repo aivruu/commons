@@ -22,4 +22,4 @@ jobs:
       - name: compile
         run: |
           chmod +x gradlew
-          ./gradlew clean shadowJar
+          ./gradlew clean build
