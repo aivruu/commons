@@ -16,9 +16,11 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.LocalRegistry;
@@ -49,6 +51,25 @@ public abstract class AbstractInMemoryLocalRegistry<K, V, M extends Map<K, V>> i
   /**
    * {@inheritDoc}
    * <p>
+   * This function will create a new modifiable-set for all this registry's keys with a size resolvable as this registry's
+   * count of stored-entries as of now, also known as -> {@code this.cache.keySet().size()}.
+   * <p>
+   * Modifications performed over the returned collection won't reflect any changes on the original collection.
+   *
+   * @since 2.3.0
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public final <C extends Set<K>> C findAllKeys(final Consumer<K> postFetchAction) {
+    final C registryKeys = (C) this.cache.keySet();
+    final C keys = (C) new ObjectOpenHashSet<>(registryKeys.size());
+    keys.addAll(registryKeys);
+    return keys;
+  }
+
+  /**
+   * {@inheritDoc}
+   * <p>
    * This function will create a new modifiable-collection for all this registry's values with a size resolvable as this registry's
    * count of stored-entries as of now, also known as -> {@code this.cache.values().size()}.
    * <p>
@@ -58,11 +79,11 @@ public abstract class AbstractInMemoryLocalRegistry<K, V, M extends Map<K, V>> i
    */
   @Override
   @SuppressWarnings("unchecked")
-  public final <C extends Collection<V>> C findAll(final Consumer<V> postFetchAction) {
-    final Collection<V> registryValues = this.cache.values();
-    final Collection<V> values = new ArrayList<>(registryValues.size());
+  public final <C extends Collection<V>> C findAllValues(final Consumer<V> postFetchAction) {
+    final C registryValues = (C) this.cache.values();
+    final C values = (C) new ArrayList<>(registryValues.size());
     values.addAll(registryValues);
-    return (C) values;
+    return values;
   }
 
   /**
@@ -82,14 +103,14 @@ public abstract class AbstractInMemoryLocalRegistry<K, V, M extends Map<K, V>> i
   @Override
   @SuppressWarnings("unchecked")
   public final <C extends Collection<V>> C filter(final Predicate<V> condition) {
-    final Collection<V> registryValues = this.cache.values();
-    final Collection<V> values = new ArrayList<>(registryValues.size());
+    final C registryValues = (C) this.cache.values();
+    final C values = (C) new ArrayList<>(registryValues.size());
     for (final V value : registryValues) {
       if (condition.test(value)) {
         values.add(value);
       }
     }
-    return (C) values;
+    return values;
   }
 
   /**
