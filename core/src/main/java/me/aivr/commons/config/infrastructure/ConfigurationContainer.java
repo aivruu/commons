@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.infrastructure.serializer.ComponentTypeSerializer;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
@@ -30,6 +31,8 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 /**
  * Represents a container for internal configuration-related data.
  *
+ * @deprecated use {@link me.aivr.commons.config.infrastructure.container.YamlConfigurationContainer} or
+ * {@link me.aivr.commons.config.infrastructure.container.JsonConfigurationContainer} instead.
  * @param model the model used for configuration-access.
  * @param loader the loader for the model.
  * @param modelClass the class-type of the model.
@@ -37,6 +40,8 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
  * @since 1.0.0
  */
 @NullMarked
+@Deprecated(since = "2.3.0")
+@ApiStatus.ScheduledForRemoval(inVersion = "3.0.0")
 record ConfigurationContainer<Config extends Configuration>(Config model, HoconConfigurationLoader loader, Class<Config> modelClass) {
   /**
    * The header to apply for the file this container's model represents.
