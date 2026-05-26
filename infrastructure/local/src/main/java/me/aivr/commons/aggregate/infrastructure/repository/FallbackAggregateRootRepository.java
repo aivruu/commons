@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import me.aivr.commons.aggregate.domain.repository.AggregateRootRepository;
 import org.jspecify.annotations.NullMarked;
@@ -37,6 +40,35 @@ import org.jspecify.annotations.Nullable;
 public class FallbackAggregateRootRepository<AggregateType extends AggregateRoot> implements AggregateRootRepository<AggregateType> {
   protected final Object2ObjectMap<String, AggregateType> cache;
 
+  /**
+   * Creates a new {@link FallbackAggregateRootRepository} with the provided information.
+   * <p>
+   * This repository will have a pre-defined expected initial-size established by {@link Object2ObjectOpenHashMap#DEFAULT_INITIAL_SIZE}.
+   *
+   * @param threadSafe whether the repository must be safe for use between multiple threads.
+   * @since 2.3.0
+   */
+  public FallbackAggregateRootRepository(final boolean threadSafe) {
+    this(threadSafe, Object2ObjectOpenHashMap.DEFAULT_INITIAL_SIZE);
+  }
+
+  /**
+   * Creates a new {@link FallbackAggregateRootRepository} with the provided information.
+   *
+   * @param threadSafe whether the repository must be safe for use between multiple threads.
+   * @param expectedSize the initial-size that the registry is expected to have.
+   * @since 2.3.0
+   */
+  public FallbackAggregateRootRepository(final boolean threadSafe, final int expectedSize) {
+    this(threadSafe ? new Object2ObjectOpenHashMap<>(expectedSize) : Object2ObjectMaps.synchronize(new Object2ObjectOpenHashMap<>(expectedSize)));
+  }
+
+  /**
+   * Creates a new {@link FallbackAggregateRootRepository} with the provided parameter.
+   *
+   * @param cache the {@link Object2ObjectMap} instance to use for cache-handling.
+   * @since 1.0.0
+   */
   public FallbackAggregateRootRepository(final Object2ObjectMap<String, AggregateType> cache) {
     this.cache = cache;
   }
