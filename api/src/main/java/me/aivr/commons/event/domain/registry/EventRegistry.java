@@ -18,7 +18,6 @@ package me.aivr.commons.event.domain.registry;
 
 import java.util.List;
 import java.util.function.Predicate;
-
 import me.aivr.commons.event.domain.subscribe.Subscriber;
 import me.aivr.commons.event.domain.subscribe.Subscription;
 

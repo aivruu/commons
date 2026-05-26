@@ -20,7 +20,6 @@ import com.github.benmanes.caffeine.cache.Cache;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Predicate;
-
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;

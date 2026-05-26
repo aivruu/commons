@@ -16,12 +16,10 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-
 import java.util.function.Predicate;
-
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
