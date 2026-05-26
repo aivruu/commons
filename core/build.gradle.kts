@@ -1,6 +1,6 @@
 plugins {
   id("commons.publish-conventions")
-//  id("commons.test-conventions")
+  id("commons.test-conventions")
 }
 
 dependencies {
@@ -8,9 +8,9 @@ dependencies {
 
   compileOnlyApi(libs.paper.api)
   compileOnlyApi(libs.configurate)
-//  compileOnlyApi(libs.configurate.yaml)
-//  compileOnlyApi(libs.configurate.json)
+  compileOnlyApi(libs.configurate.yaml)
+  compileOnlyApi(libs.configurate.json)
 
-//  testRuntimeOnly(libs.configurate.yaml)
-//  testRuntimeOnly(libs.configurate.json)
+  testRuntimeOnly(libs.configurate.yaml)
+  testRuntimeOnly(libs.configurate.json)
 }
