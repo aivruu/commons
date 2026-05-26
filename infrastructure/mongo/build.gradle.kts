@@ -5,5 +5,5 @@ plugins {
 dependencies {
   api(project(":${rootProject.name}-api"))
 
-  compileOnly(libs.mongodb.driver)
+  compileOnlyApi(libs.mongodb.driver)
 }
