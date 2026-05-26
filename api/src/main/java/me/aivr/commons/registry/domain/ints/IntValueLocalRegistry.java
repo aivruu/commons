@@ -16,7 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain.ints;
 
-import it.unimi.dsi.fastutil.ints.IntPredicate;
+import it.unimi.dsi.fastutil.ints.IntCollection;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.LocalRegistry;
 
@@ -27,6 +32,13 @@ import me.aivr.commons.registry.domain.LocalRegistry;
  * @since 2.3.0
  */
 public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer> {
+  /**
+   * Reusable {@link List} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
+   *
+   * @since 2.3.0
+   */
+  List<Integer> CACHED_LIST_FOR_DEPRECATED_FUNCTIONS = List.of(1);
+
   /**
    * {@inheritDoc}
    *
@@ -94,6 +106,74 @@ public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer> {
    * @since 2.3.0
    */
   int registerInt(final K id, final int value);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllInts()} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Integer>> C findAllValues() {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllInts(IntConsumer)} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Integer>> C findAllValues(final Consumer<Integer> postFetchAction) {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with this registry's all int values, this function will not perform an action when a value is retrieved.
+   *
+   * @return the collection of int values.
+   * @see #findAllInts(IntConsumer) Actual values-collection retrieving
+   * @since 2.3.0
+   */
+  default IntCollection findAllInts() {
+    return this.findAllInts(v -> {});
+  }
+
+  /**
+   * Returns a collection with this registry's all int values, and triggers an action by each retrieved value.
+   *
+   * @param postFetchAction the action to execute for each value.
+   * @return the collection of int values.
+   * @since 2.3.0
+   */
+  IntCollection findAllInts(final IntConsumer postFetchAction);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #filterInts(IntPredicate)} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Integer>> C filter(final Predicate<Integer> condition) {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with int values from this registry that meets the condition given.
+   *
+   * @param condition the condition used to filter by the registry's values.
+   * @return the collection of int values.
+   * @since 2.3.0
+   */
+  IntCollection filterInts(final IntPredicate condition);
 
   /**
    * {@inheritDoc}

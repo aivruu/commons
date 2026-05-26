@@ -16,10 +16,13 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure.ints;
 
-import it.unimi.dsi.fastutil.ints.IntPredicate;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntCollection;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import java.util.function.IntConsumer;
+import java.util.function.IntPredicate;
 import me.aivr.commons.registry.domain.ints.IntValueLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 import org.jspecify.annotations.NullMarked;
@@ -76,6 +79,26 @@ public final class IntValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoca
   public int registerInt(final K id, final int value) {
     final int stored = super.cache.put(id, value);
     return stored == super.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public IntCollection findAllInts(final IntConsumer postFetchAction) {
+    final IntCollection registryValues = this.cache.values();
+    final IntCollection values = new IntArrayList(registryValues.size());
+    values.addAll(registryValues);
+    return values;
+  }
+
+  @Override
+  public IntCollection filterInts(final java.util.function.IntPredicate condition) {
+    final IntCollection registryValues = this.cache.values();
+    final IntCollection values = new IntArrayList(registryValues.size());
+    for (final int value : registryValues) {
+      if (condition.test(value)) {
+        values.add(value);
+      }
+    }
+    return values;
   }
 
   @Override

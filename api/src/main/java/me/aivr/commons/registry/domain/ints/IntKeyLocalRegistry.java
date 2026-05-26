@@ -16,6 +16,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain.ints;
 
+import it.unimi.dsi.fastutil.ints.IntSet;
+import java.util.Set;
+import java.util.function.IntConsumer;
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
@@ -26,6 +29,13 @@ import org.jspecify.annotations.Nullable;
  * @since 2.3.0
  */
 public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V> {
+  /**
+   * Reusable {@link Set} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
+   *
+   * @since 2.3.0
+   */
+  Set<Integer> CACHED_SET_FOR_DEPRECATED_FUNCTIONS = Set.of();
+
   /**
    * {@inheritDoc}
    *
@@ -93,6 +103,36 @@ public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V> {
    * @since 2.3.0
    */
   V registerInt(final int id, final V value);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllIntKeys()} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  default <C extends Set<Integer>> C findAllKeys() {
+    return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with this registry's all int keys, this function will not perform an action when a value is retrieved.
+   *
+   * @return the collection of int keys.
+   * @since 2.3.0
+   */
+  default IntSet findAllIntKeys() {
+    return this.findAllIntKeys(k -> {});
+  }
+
+  /**
+   * Returns a collection with this registry's all int keys, and triggers an action by each retrieved value.
+   *
+   * @return the collection of int keys.
+   * @since 2.3.0
+   */
+  IntSet findAllIntKeys(final IntConsumer postFetchAction);
 
   /**
    * {@inheritDoc}

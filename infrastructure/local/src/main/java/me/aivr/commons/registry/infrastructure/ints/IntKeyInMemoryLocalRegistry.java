@@ -17,10 +17,12 @@
 package me.aivr.commons.registry.infrastructure.ints;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import java.util.function.Predicate;
-
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
+import java.util.function.IntConsumer;
+import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.ints.IntKeyLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 import org.jspecify.annotations.NullMarked;
@@ -79,6 +81,14 @@ public final class IntKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocalR
   public V registerInt(final int id, final V value) {
     final V stored = super.cache.put(id, value);
     return stored == super.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public IntSet findAllIntKeys(final IntConsumer postFetchAction) {
+    final IntSet registryKeys = super.cache.keySet();
+    final IntSet keys = new IntOpenHashSet(registryKeys.size());
+    keys.addAll(registryKeys);
+    return keys;
   }
 
   @Override
