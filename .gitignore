@@ -7,6 +7,9 @@ build
 .gitattributes
 *.iml
 *.sh
+# Exclude configuration-testing related files
+*.yml
+*.json
 
 .idea/
 .kotlin/
