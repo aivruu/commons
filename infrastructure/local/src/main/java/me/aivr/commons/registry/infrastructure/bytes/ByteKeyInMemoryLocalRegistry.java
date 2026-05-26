@@ -17,10 +17,12 @@
 package me.aivr.commons.registry.infrastructure.bytes;
 
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
-import java.util.function.Predicate;
-
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectMaps;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.bytes.ByteConsumer;
+import it.unimi.dsi.fastutil.bytes.ByteOpenHashSet;
+import it.unimi.dsi.fastutil.bytes.ByteSet;
+import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.bytes.ByteKeyLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 import org.jspecify.annotations.NullMarked;
@@ -79,6 +81,14 @@ public final class ByteKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocal
   public V registerByte(final byte id, final V value) {
     final V stored = super.cache.put(id, value);
     return stored == super.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public ByteSet findAllByteKeys(final ByteConsumer postFetchAction) {
+    final ByteSet registryKeys = super.cache.keySet();
+    final ByteSet keys = new ByteOpenHashSet(registryKeys.size());
+    keys.addAll(registryKeys);
+    return keys;
   }
 
   @Override

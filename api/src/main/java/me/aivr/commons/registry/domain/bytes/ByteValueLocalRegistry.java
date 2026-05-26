@@ -16,7 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain.bytes;
 
+import it.unimi.dsi.fastutil.bytes.ByteCollection;
+import it.unimi.dsi.fastutil.bytes.ByteConsumer;
 import it.unimi.dsi.fastutil.bytes.BytePredicate;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.LocalRegistry;
 
@@ -27,6 +32,13 @@ import me.aivr.commons.registry.domain.LocalRegistry;
  * @since 2.3.0
  */
 public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte> {
+  /**
+   * Reusable {@link List} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
+   *
+   * @since 2.3.0
+   */
+  List<Byte> CACHED_LIST_FOR_DEPRECATED_FUNCTIONS = List.of();
+
   /**
    * {@inheritDoc}
    *
@@ -94,6 +106,74 @@ public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte> {
    * @since 2.3.0
    */
   byte registerByte(final K id, final byte value);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllBytes()} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Byte>> C findAllValues() {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllBytes(ByteConsumer)} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Byte>> C findAllValues(final Consumer<Byte> postFetchAction) {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with this registry's all byte values, this function will not perform an action when a value is retrieved.
+   *
+   * @return the collection of byte values.
+   * @see #findAllBytes(ByteConsumer) Actual values-collection retrieving
+   * @since 2.3.0
+   */
+  default ByteCollection findAllBytes() {
+    return this.findAllBytes(v -> {});
+  }
+
+  /**
+   * Returns a collection with this registry's all byte values, and triggers an action by each retrieved value.
+   *
+   * @param postFetchAction the action to execute for each value.
+   * @return the collection of byte values.
+   * @since 2.3.0
+   */
+  ByteCollection findAllBytes(final ByteConsumer postFetchAction);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #filterBytes(BytePredicate)} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Byte>> C filter(final Predicate<Byte> condition) {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with byte values from this registry that meets the condition given.
+   *
+   * @param condition the condition used to filter by the registry's values.
+   * @return the collection of byte values.
+   * @since 2.3.0
+   */
+  ByteCollection filterBytes(final BytePredicate condition);
 
   /**
    * {@inheritDoc}

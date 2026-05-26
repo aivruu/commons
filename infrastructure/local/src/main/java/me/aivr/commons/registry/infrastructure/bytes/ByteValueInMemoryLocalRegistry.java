@@ -16,6 +16,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure.bytes;
 
+import it.unimi.dsi.fastutil.bytes.ByteArrayList;
+import it.unimi.dsi.fastutil.bytes.ByteCollection;
+import it.unimi.dsi.fastutil.bytes.ByteConsumer;
 import it.unimi.dsi.fastutil.bytes.BytePredicate;
 import it.unimi.dsi.fastutil.objects.Object2ByteMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteMaps;
@@ -76,6 +79,26 @@ public final class ByteValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
   public byte registerByte(final K id, final byte value) {
     final byte stored = super.cache.put(id, value);
     return stored == super.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public ByteCollection findAllBytes(final ByteConsumer postFetchAction) {
+    final ByteCollection registryValues = this.cache.values();
+    final ByteCollection values = new ByteArrayList(registryValues.size());
+    values.addAll(registryValues);
+    return values;
+  }
+
+  @Override
+  public ByteCollection filterBytes(final BytePredicate condition) {
+    final ByteCollection registryValues = this.cache.values();
+    final ByteCollection values = new ByteArrayList(registryValues.size());
+    for (final byte value : registryValues) {
+      if (condition.test(value)) {
+        values.add(value);
+      }
+    }
+    return values;
   }
 
   @Override

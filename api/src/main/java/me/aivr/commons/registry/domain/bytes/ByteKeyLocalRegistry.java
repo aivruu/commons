@@ -16,6 +16,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain.bytes;
 
+import it.unimi.dsi.fastutil.bytes.ByteConsumer;
+import it.unimi.dsi.fastutil.bytes.ByteSet;
+import java.util.Set;
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
@@ -26,6 +29,13 @@ import org.jspecify.annotations.Nullable;
  * @since 2.3.0
  */
 public interface ByteKeyLocalRegistry<V> extends LocalRegistry<Byte, V> {
+  /**
+   * Reusable {@link Set} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
+   *
+   * @since 2.3.0
+   */
+  Set<Byte> CACHED_SET_FOR_DEPRECATED_FUNCTIONS = Set.of();
+
   /**
    * {@inheritDoc}
    *
@@ -93,6 +103,36 @@ public interface ByteKeyLocalRegistry<V> extends LocalRegistry<Byte, V> {
    * @since 2.3.0
    */
   V registerByte(final byte id, final V value);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllByteKeys()} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  default <C extends Set<Byte>> C findAllKeys() {
+    return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with this registry's all byte keys, this function will not perform an action when a value is retrieved.
+   *
+   * @return the collection of byte keys.
+   * @since 2.3.0
+   */
+  default ByteSet findAllByteKeys() {
+    return this.findAllByteKeys(k -> {});
+  }
+
+  /**
+   * Returns a collection with this registry's all byte keys, and triggers an action by each retrieved value.
+   *
+   * @return the collection of byte keys.
+   * @since 2.3.0
+   */
+  ByteSet findAllByteKeys(final ByteConsumer postFetchAction);
 
   /**
    * {@inheritDoc}
