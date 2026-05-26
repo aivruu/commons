@@ -16,6 +16,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.application;
 
+import java.nio.file.Path;
+import org.jspecify.annotations.Nullable;
+
 /**
  * Represents a provider that allows to handle and access a configuration-model dynamically.
  *
@@ -32,12 +35,47 @@ public interface ConfigurationProvider<Config extends Configuration> {
   IllegalStateException NOT_LOADED_CONFIGURATION_EXCEPTION = new IllegalStateException("The configuration has not been loaded yet.");
 
   /**
+   * Returns the {@link Path} directory for this provider's configuration.
+   *
+   * @return the directory-path of the configuration-file.
+   * @since 2.3.0
+   */
+  Path configDirectory();
+
+  /**
+   * Returns the name of the configuration-file.
+   *
+   * @return the configuration-file's full name.
+   * @since 2.3.0
+   */
+  String configName();
+
+  /**
+   * Returns the {@link Container} for this provider's.
+   *
+   * @return the configuration-container for the file, or {@code null} if the configuration hasn't been loaded yet.
+   * @since 2.3.0
+   */
+  @Nullable Container<?> internalContainer();
+
+  /**
    * Loads the configuration-data for this provider's model.
    *
+   * @deprecated still uses and only supports YAML format, use {@link #load(String)} instead.
    * @return {@code true} if the model was loaded correctly, {@code false} otherwise.
    * @since 1.0.0
    */
+  @Deprecated(since = "2.3.0")
   boolean load();
+
+  /**
+   * Loads the configuration-data for this provider's model.
+   *
+   * @param header the header for the configuration-file, {@code null} if none.
+   * @return {@code true} if the model was loaded correctly, {@code false} otherwise.
+   * @since 2.3.0
+   */
+  boolean load(final @Nullable String header);
 
   /**
    * Reloads the configuration-data for this provider's model.
