@@ -17,6 +17,7 @@
 package me.aivr.commons.registry.domain;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
@@ -51,26 +52,47 @@ public interface LocalRegistry<K, V> {
   @Nullable V findById(final K id);
 
   /**
+   * Returns a collection with this registry's all keys, this function will not perform an action when a value is retrieved.
+   *
+   * @param <C> represents a collection, or similar, of {@link K} objects.
+   * @return the collection of keys.
+   * @since 2.3.0
+   */
+  default <C extends Set<K>> C findAllKeys() {
+    return this.findAllKeys(k -> {});
+  }
+
+  /**
+   * Returns a collection with this registry's all keys, and triggers an action by each retrieved value.
+   *
+   * @param postFetchAction the action to execute for each key.
+   * @param <C> represents a collection, or similar, of {@link K} objects.
+   * @return the collection of keys.
+   * @since 2.3.0
+   */
+  <C extends Set<K>> C findAllKeys(final Consumer<K> postFetchAction);
+
+  /**
    * Returns a collection with this registry's all values, this function will not perform an action when a value is retrieved.
    *
    * @param <C> represents a collection, or similar, of {@link V} objects.
    * @return the collection of values.
-   * @see #findAll(Consumer) Actual values-collection retrieving
+   * @see #findAllValues(Consumer) Actual values-collection retrieving
    * @since 2.3.0
    */
-  default <C extends Collection<V>> C findAll() {
-    return this.findAll(v -> {});
+  default <C extends Collection<V>> C findAllValues() {
+    return this.findAllValues(v -> {});
   }
 
   /**
-   * Returns a collection with this registry's all values, and triggers an action by each retrieved value./
+   * Returns a collection with this registry's all values, and triggers an action by each retrieved value.
    *
    * @param postFetchAction the action to execute for each value.
    * @param <C> represents a collection, or similar, of {@link V} objects.
    * @return the collection of values.
    * @since 2.3.0
    */
-  <C extends Collection<V>> C findAll(final Consumer<V> postFetchAction);
+  <C extends Collection<V>> C findAllValues(final Consumer<V> postFetchAction);
 
   /**
    * Returns a collection with values from this registry that meets the condition given.
