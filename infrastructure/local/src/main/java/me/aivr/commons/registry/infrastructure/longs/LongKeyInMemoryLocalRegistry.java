@@ -17,10 +17,12 @@
 package me.aivr.commons.registry.infrastructure.longs;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import java.util.function.Predicate;
-
 import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
+import java.util.function.LongConsumer;
+import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.longs.LongKeyLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 import org.jspecify.annotations.NullMarked;
@@ -79,6 +81,14 @@ public final class LongKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocal
   public V registerLong(final long id, final V value) {
     final V stored = super.cache.put(id, value);
     return stored == super.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public LongSet findAllLongKeys(final LongConsumer postFetchAction) {
+    final LongSet registryKeys = super.cache.keySet();
+    final LongSet keys = new LongOpenHashSet(registryKeys.size());
+    keys.addAll(registryKeys);
+    return keys;
   }
 
   @Override

@@ -16,10 +16,13 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure.longs;
 
-import it.unimi.dsi.fastutil.longs.LongPredicate;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongCollection;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
+import java.util.function.LongConsumer;
+import java.util.function.LongPredicate;
 import me.aivr.commons.registry.domain.longs.LongValueLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 import org.jspecify.annotations.NullMarked;
@@ -76,6 +79,26 @@ public final class LongValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
   public long registerLong(final K id, final long value) {
     final long stored = super.cache.put(id, value);
     return stored == super.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public LongCollection findAllLongs(final LongConsumer postFetchAction) {
+    final LongCollection registryValues = this.cache.values();
+    final LongCollection values = new LongArrayList(registryValues.size());
+    values.addAll(registryValues);
+    return values;
+  }
+
+  @Override
+  public LongCollection filterLongs(final LongPredicate condition) {
+    final LongCollection registryValues = this.cache.values();
+    final LongCollection values = new LongArrayList(registryValues.size());
+    for (final long value : registryValues) {
+      if (condition.test(value)) {
+        values.add(value);
+      }
+    }
+    return values;
   }
 
   @Override

@@ -16,7 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain.longs;
 
-import it.unimi.dsi.fastutil.longs.LongPredicate;
+import it.unimi.dsi.fastutil.longs.LongCollection;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.LongConsumer;
+import java.util.function.LongPredicate;
 import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.LocalRegistry;
 
@@ -27,6 +32,13 @@ import me.aivr.commons.registry.domain.LocalRegistry;
  * @since 2.3.0
  */
 public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long> {
+  /**
+   * Reusable {@link List} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
+   *
+   * @since 2.3.0
+   */
+  List<Long> CACHED_LIST_FOR_DEPRECATED_FUNCTIONS = List.of(1L);
+
   /**
    * {@inheritDoc}
    *
@@ -94,6 +106,73 @@ public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long> {
    * @since 2.3.0
    */
   long registerLong(final K id, final long value);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllLongs()} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Long>> C findAllValues() {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllLongs(LongConsumer)} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Long>> C findAllValues(final Consumer<Long> postFetchAction) {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with this registry's all long values, this function will not perform an action when a value is retrieved.
+   *
+   * @return the collection of long values.
+   * @see #findAllLongs(LongConsumer) Actual values-collection retrieving
+   * @since 2.3.0
+   */
+  default LongCollection findAllLongs() {
+    return this.findAllLongs(v -> {});
+  }
+
+  /**
+   * Returns a collection with this registry's all long values, and triggers an action by each retrieved value.
+   *
+   * @param postFetchAction the action to execute for each value.
+   * @return the collection of long values.
+   * @since 2.3.0
+   */
+  LongCollection findAllLongs(final LongConsumer postFetchAction);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #filterLongs(LongPredicate)} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<Long>> C filter(final Predicate<Long> condition) {
+    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with long values from this registry that meets the condition given.
+   *
+   * @param condition the condition used to filter by the registry's values.
+   * @return the collection of long values.
+   * @since 2.3.0
+   */
+  LongCollection filterLongs(final LongPredicate condition);
 
   /**
    * {@inheritDoc}

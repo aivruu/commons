@@ -16,6 +16,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain.longs;
 
+import it.unimi.dsi.fastutil.longs.LongSet;
+import java.util.Set;
+import java.util.function.LongConsumer;
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
@@ -26,6 +29,19 @@ import org.jspecify.annotations.Nullable;
  * @since 2.3.0
  */
 public interface LongKeyLocalRegistry<V> extends LocalRegistry<Long, V> {
+  /**
+   * Reusable {@link Set} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
+   *
+   * @since 2.3.0
+   */
+  Set<Long> CACHED_SET_FOR_DEPRECATED_FUNCTIONS = Set.of();
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #existsByLongId(long)} instead.
+   * @since 2.3.0
+   */
   @Override
   @Deprecated
   default boolean existsById(final Long id) {
@@ -78,7 +94,7 @@ public interface LongKeyLocalRegistry<V> extends LocalRegistry<Long, V> {
   }
 
   /**
-   * Stores the given value with the specified {@code long} ID into this registry, and returns whether the given value or the
+   * Stores the given value with the specified {@code long} ID longo this registry, and returns whether the given value or the
    * old-mapping already existed for that identifier.
    *
    * @param id the id to assign.
@@ -87,6 +103,36 @@ public interface LongKeyLocalRegistry<V> extends LocalRegistry<Long, V> {
    * @since 2.3.0
    */
   V registerLong(final long id, final V value);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllLongKeys()} instead.
+   * @since 2.3.0
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  default <C extends Set<Long>> C findAllKeys() {
+    return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;
+  }
+
+  /**
+   * Returns a collection with this registry's all long keys, this function will not perform an action when a value is retrieved.
+   *
+   * @return the collection of long keys.
+   * @since 2.3.0
+   */
+  default LongSet findAllLongKeys() {
+    return this.findAllLongKeys(k -> {});
+  }
+
+  /**
+   * Returns a collection with this registry's all long keys, and triggers an action by each retrieved value.
+   *
+   * @return the collection of long keys.
+   * @since 2.3.0
+   */
+  LongSet findAllLongKeys(final LongConsumer postFetchAction);
 
   /**
    * {@inheritDoc}
