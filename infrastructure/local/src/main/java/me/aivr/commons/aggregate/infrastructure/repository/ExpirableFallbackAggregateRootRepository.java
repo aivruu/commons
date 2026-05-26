@@ -38,6 +38,12 @@ public class ExpirableFallbackAggregateRootRepository<AggregateType extends Aggr
     implements AggregateRootRepository<AggregateType> {
   protected final Cache<String, AggregateType> cache;
 
+  /**
+   * Creates a new {@link ExpirableFallbackAggregateRootRepository} with the provided parameter.
+   *
+   * @param cache the {@link Cache} instance to use for cache-handling.
+   * @since 1.0.0
+   */
   public ExpirableFallbackAggregateRootRepository(final Cache<String, AggregateType> cache) {
     this.cache = cache;
   }
