@@ -20,6 +20,9 @@ import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.ConfigurationProvider;
+import me.aivr.commons.config.application.Container;
+import me.aivr.commons.config.infrastructure.container.JsonConfigurationContainer;
+import me.aivr.commons.config.infrastructure.container.YamlConfigurationContainer;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -32,11 +35,15 @@ import org.jspecify.annotations.Nullable;
  */
 @NullMarked
 public class ConfigurationProviderImpl<Config extends Configuration> implements ConfigurationProvider<Config> {
-  private final Path directory;
-  private final String fileName;
-  private final Class<Config> type;
-  private final ComponentLogger logger;
-  private @Nullable ConfigurationContainer<Config> container;
+  protected final Path directory;
+  protected final String fileName;
+  protected final ConfigType fileType;
+  protected final Class<Config> type;
+  protected final ComponentLogger logger;
+  protected @Nullable Container<Config> configContainer;
+
+  @Deprecated(since = "2.3.0", forRemoval = true)
+  private @Nullable ConfigurationProvider<Config> container;
 
   /**
    * Creates a new {@link ConfigurationProviderImpl} with the provided parameters.
@@ -47,17 +54,54 @@ public class ConfigurationProviderImpl<Config extends Configuration> implements 
    * @param logger the logger used for provider-related operations.
    * @since 1.0.0
    */
-  public ConfigurationProviderImpl(final Path directory, final String fileName, final Class<Config> type, final ComponentLogger logger) {
+  public ConfigurationProviderImpl(
+      final Path directory,
+      final String fileName,
+      final ConfigType fileType,
+      final Class<Config> type,
+      final ComponentLogger logger) {
     this.directory = directory;
     this.fileName = fileName;
+    this.fileType = fileType;
     this.type = type;
     this.logger = logger;
   }
 
   @Override
+  public Path configDirectory() {
+    return this.directory;
+  }
+
+  @Override
+  public String configName() {
+    return this.fileName + this.fileType.fileExtension();
+  }
+
+  @Override
+  public @Nullable Container<?> internalContainer() {
+    return this.configContainer;
+  }
+
+  @Override
+  @Deprecated
   public boolean load() {
     try {
-      this.container = ConfigurationContainer.of(this.directory, this.fileName, this.type);
+//      this.configContainer = ConfigurationContainer.of(this.directory, this.fileName, this.type);
+      return true;
+    } catch (final RuntimeException exception) {
+      this.logger.error("Failed to load {}'s configuration-data from model {}.", this.fileName, this.type.getSimpleName(), exception);
+      return false;
+    }
+  }
+
+  @Override
+  public boolean load(final @Nullable String header) {
+    try {
+      this.configContainer = switch (this.fileType) {
+        // TOML-support isn't implemented yet so assume it's YAML instead
+        case YAML, TOML -> YamlConfigurationContainer.of(this.directory, this.fileName, this.type, header);
+        case JSON -> JsonConfigurationContainer.of(this.directory, this.fileName, this.type);
+      };
       return true;
     } catch (final RuntimeException exception) {
       this.logger.error("Failed to load {}'s configuration-data from model {}.", this.fileName, this.type.getSimpleName(), exception);
@@ -67,32 +111,32 @@ public class ConfigurationProviderImpl<Config extends Configuration> implements 
 
   @Override
   public boolean reload() {
-    if (this.container == null) return false;
+    if (this.configContainer == null) return false;
 
-    final AtomicReference<@Nullable ConfigurationContainer<Config>> newContainer = new AtomicReference<>();
-    this.container.reloadAsync()
+    final AtomicReference<@Nullable Container<Config>> newContainer = new AtomicReference<>();
+    this.configContainer.reload()
+        .exceptionally(exception -> {
+          // As the function re-throws the caught exception, we need to handle it here.
+          this.logger.error("Unexpected error when handling async-reload for file '{}'.", this.fileName, exception);
+          return null;
+        })
         .thenAccept(container -> {
           // Though function itself doesn't return null, the exception-handling [exceptionally()] for this async-computation yes it does.
           if (container != null) {
             newContainer.set(container);
           }
-        })
-        .exceptionally(exception -> {
-          // As the function re-throws the caught exception, we need to handle it here.
-          this.logger.error("Unexpected error when handling async-reload for file '{}'.", this.fileName, exception);
-          return null;
         });
-    final ConfigurationContainer<Config> updatedContainer = newContainer.get();
+    final Container<Config> updatedContainer = newContainer.get();
     if (updatedContainer == null) {
       return false;
     }
-    this.container = updatedContainer;
+    this.configContainer = updatedContainer;
     return true;
   }
 
   @Override
-  public Config get() {
-    if (this.container == null) throw ConfigurationProvider.NOT_LOADED_CONFIGURATION_EXCEPTION;
-    return this.container.model();
+  public final Config get() {
+    if (this.configContainer == null) throw ConfigurationProvider.NOT_LOADED_CONFIGURATION_EXCEPTION;
+    return this.configContainer.model();
   }
 }
