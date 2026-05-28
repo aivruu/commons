@@ -19,7 +19,6 @@ package me.aivr.commons.aggregate.domain.repository;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import org.jspecify.annotations.Nullable;
