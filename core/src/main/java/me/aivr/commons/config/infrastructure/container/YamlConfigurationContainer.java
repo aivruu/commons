@@ -39,7 +39,7 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
  * @param loader the loader for the model.
  * @param modelClass the class-type of the model.
  * @param <Config> a generic that indicates the model or class-type must extend from the {@link Configuration} contract.
- * @since 1.0.0
+ * @since 2.3.0
  */
 @NullMarked
 public record YamlConfigurationContainer<Config extends Configuration>(
@@ -53,9 +53,9 @@ public record YamlConfigurationContainer<Config extends Configuration>(
    * @deprecated use {@link #reload()} instead.
    * @throws RuntimeException if an exception occurred during the process.
    * @return a {@link CompletableFuture} that contains the {@link YamlConfigurationContainer} returned by the operation.
-   * @since 1.0.0
+   * @since 2.3.0
    */
-  @Deprecated(since = "2.2.0")
+  @Deprecated(since = "2.3.0")
   @ApiStatus.ScheduledForRemoval(inVersion = "3.0.0")
   public CompletableFuture<YamlConfigurationContainer<Config>> reloadAsync() {
     return CompletableFuture.supplyAsync(this::reload0);
@@ -75,7 +75,7 @@ public record YamlConfigurationContainer<Config extends Configuration>(
    *
    * @throws RuntimeException if an exception occurred during the process.
    * @return a {@link CompletableFuture} that contains the {@link YamlConfigurationContainer} returned by the operation.
-   * @since 2.2.0
+   * @since 2.3.0
    */
   @Override
   public CompletableFuture<Container<Config>> reload() {
@@ -95,8 +95,9 @@ public record YamlConfigurationContainer<Config extends Configuration>(
    * @param header the header to write in the file's header, {@code null} if none.
    * @param <C> a generic that indicates the class-type must extend from the {@link Configuration} contract.
    * @return the new {@link YamlConfigurationContainer}.
-   * @since 1.0.0
+   * @since 2.3.0
    */
+  @ApiStatus.Experimental
   public static <C extends Configuration> YamlConfigurationContainer<C> of(
       final Path directory,
       final String fileName,

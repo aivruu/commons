@@ -23,6 +23,7 @@ import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.Container;
 import me.aivr.commons.config.infrastructure.ConfigType;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.BasicConfigurationNode;
@@ -72,8 +73,9 @@ public record JsonConfigurationContainer<Config extends Configuration>(
    * @param modelClass the model this file is represented by.
    * @param <C> a generic that indicates the class-type must extend from the {@link Configuration} contract.
    * @return the new {@link JsonConfigurationContainer}.
-   * @since 1.0.0
+   * @since 2.3.0
    */
+  @ApiStatus.Experimental
   public static <C extends Configuration> JsonConfigurationContainer<C> of(
       final Path directory,
       final String fileName,
