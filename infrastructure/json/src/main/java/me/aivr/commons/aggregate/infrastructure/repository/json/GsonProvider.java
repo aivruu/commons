@@ -22,6 +22,11 @@ import me.aivr.commons.aggregate.infrastructure.repository.json.codec.JsonCodec;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * A provider of configurable {@link Gson} instances that can be used for a {@link JsonAsyncAggregateRootRepository}.
+ *
+ * @since 1.0.0
+ */
 @NullMarked
 public final class GsonProvider {
   private static @Nullable Gson gson;
@@ -30,11 +35,24 @@ public final class GsonProvider {
     throw new UnsupportedOperationException("This class is for utility.");
   }
 
+  /**
+   * Returns the gson-instance if available.
+   *
+   * @throws IllegalStateException if no instance has been configured for the provider.
+   * @return the {@link Gson} instance.
+   * @since 1.0.0
+   */
   public static Gson get() {
     if (gson == null) throw new IllegalStateException("JSON-provider has not been initialized yet.");
     return gson;
   }
 
+  /**
+   * Configures a {@link Gson} instance with the custom {@code codecs} provided for the method.
+   *
+   * @param codecs the {@link JsonCodec}s to include within the {@link Gson} instance.
+   * @since 1.0.0
+   */
   public static void build(final JsonCodec<?>... codecs) {
     if (gson != null) return;
 

@@ -33,9 +33,20 @@ import me.aivr.commons.aggregate.domain.repository.AsyncAggregateRootRepositoryI
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * A JSON-type repository implementation for {@link AggregateRoot}s.
+ *
+ * @param <AggregateType> an inheritor of {@link AggregateRoot}.
+ * @since 1.0.0
+ */
 @NullMarked
 public class JsonAsyncAggregateRootRepository<AggregateType extends AggregateRoot>
     extends AsyncAggregateRootRepositoryImpl<AggregateType> {
+  /**
+   * The extension-type used for the data-files handled by this repository.
+   *
+   * @since 1.0.0
+   */
   protected static final String FILE_EXTENSION = ".json";
   protected final Gson provider;
   protected final Path directoryPath;
@@ -54,6 +65,12 @@ public class JsonAsyncAggregateRootRepository<AggregateType extends AggregateRoo
     this.gsonRequiredType = TypeToken.get(type);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws RuntimeException if the {@link #directoryPath} for this repository couldn't be created.
+   * @since 1.0.0
+   */
   @Override
   public void start() {
     if (Files.exists(this.directoryPath)) return;
@@ -67,6 +84,12 @@ public class JsonAsyncAggregateRootRepository<AggregateType extends AggregateRoo
     }
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws RuntimeException if an I/O error happened when reading json-data from the specified file.
+   * @since 1.0.0
+   */
   @Override
   public @Nullable AggregateType findSync(final String id) {
     final Path file = this.directoryPath.resolve(id + FILE_EXTENSION);
@@ -81,6 +104,12 @@ public class JsonAsyncAggregateRootRepository<AggregateType extends AggregateRoo
     }
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws RuntimeException if an I/O error happened when reading data from this repository's directory.
+   * @since 1.0.0
+   */
   @Override
   public <Identifiers extends Collection<String>> Identifiers findAllIdsSync(final IntFunction<Identifiers> limit) {
     try {
@@ -98,6 +127,12 @@ public class JsonAsyncAggregateRootRepository<AggregateType extends AggregateRoo
     }
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws RuntimeException if an I/O error happened when writing data into the json-file for the aggregate-root.
+   * @since 1.0.0
+   */
   @Override
   public boolean writeSync(final AggregateType aggregate) {
     final String id = aggregate.id();
@@ -113,6 +148,12 @@ public class JsonAsyncAggregateRootRepository<AggregateType extends AggregateRoo
     }
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws RuntimeException if an I/O error happened when deleting the json-file specified.
+   * @since 1.0.0
+   */
   @Override
   public boolean deleteSync(final String id) {
     final Path file = this.directoryPath.resolve(id + FILE_EXTENSION);
@@ -123,6 +164,12 @@ public class JsonAsyncAggregateRootRepository<AggregateType extends AggregateRoo
     }
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws RuntimeException if an I/O error happened when deleting data from this repository's directory.
+   * @since 1.0.0
+   */
   @Override
   public void deleteAllSync() {
     try {

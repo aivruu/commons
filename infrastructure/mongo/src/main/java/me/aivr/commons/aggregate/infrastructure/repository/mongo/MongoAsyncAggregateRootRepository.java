@@ -30,9 +30,20 @@ import org.bson.Document;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * A MongoDB-type repository implementation for {@link AggregateRoot}s.
+ *
+ * @param <AggregateType> an inheritor of {@link AggregateRoot}.
+ * @since 1.0.0
+ */
 @NullMarked
-public abstract class MongoAsyncAggregateRootRepository<AggregateType extends AggregateRoot>
+public class MongoAsyncAggregateRootRepository<AggregateType extends AggregateRoot>
     extends AsyncAggregateRootRepositoryImpl<AggregateType> {
+  /**
+   * An empty {@link Document} instance used for all collection's values deletion.
+   *
+   * @since 1.0.0
+   */
   protected static final Document EMPTY_DOCUMENT = new Document();
   protected final MongoClient client;
   protected final String databaseName;
@@ -53,6 +64,12 @@ public abstract class MongoAsyncAggregateRootRepository<AggregateType extends Ag
     this.type = type;
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @throws RuntimeException if the {@link #databaseName} was invalid.
+   * @since 1.0.0
+   */
   @Override
   public void start() {
     final MongoDatabase database;
