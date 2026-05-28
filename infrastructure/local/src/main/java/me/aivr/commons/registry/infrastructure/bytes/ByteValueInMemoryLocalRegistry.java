@@ -83,7 +83,7 @@ public final class ByteValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
 
   @Override
   public ByteCollection findAllBytes(final ByteConsumer postFetchAction) {
-    final ByteCollection registryValues = this.cache.values();
+    final ByteCollection registryValues = super.cache.values();
     final ByteCollection values = new ByteArrayList(registryValues.size());
     values.addAll(registryValues);
     return values;
@@ -91,7 +91,7 @@ public final class ByteValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
 
   @Override
   public ByteCollection filterBytes(final BytePredicate condition) {
-    final ByteCollection registryValues = this.cache.values();
+    final ByteCollection registryValues = super.cache.values();
     final ByteCollection values = new ByteArrayList(registryValues.size());
     for (final byte value : registryValues) {
       if (condition.test(value)) {

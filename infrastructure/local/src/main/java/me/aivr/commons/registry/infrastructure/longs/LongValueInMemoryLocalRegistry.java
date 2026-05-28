@@ -83,7 +83,7 @@ public final class LongValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
 
   @Override
   public LongCollection findAllLongs(final LongConsumer postFetchAction) {
-    final LongCollection registryValues = this.cache.values();
+    final LongCollection registryValues = super.cache.values();
     final LongCollection values = new LongArrayList(registryValues.size());
     values.addAll(registryValues);
     return values;
@@ -91,7 +91,7 @@ public final class LongValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
 
   @Override
   public LongCollection filterLongs(final LongPredicate condition) {
-    final LongCollection registryValues = this.cache.values();
+    final LongCollection registryValues = super.cache.values();
     final LongCollection values = new LongArrayList(registryValues.size());
     for (final long value : registryValues) {
       if (condition.test(value)) {

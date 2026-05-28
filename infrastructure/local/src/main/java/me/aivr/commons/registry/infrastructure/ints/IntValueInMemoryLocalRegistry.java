@@ -83,7 +83,7 @@ public final class IntValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoca
 
   @Override
   public IntCollection findAllInts(final IntConsumer postFetchAction) {
-    final IntCollection registryValues = this.cache.values();
+    final IntCollection registryValues = super.cache.values();
     final IntCollection values = new IntArrayList(registryValues.size());
     values.addAll(registryValues);
     return values;
@@ -91,7 +91,7 @@ public final class IntValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoca
 
   @Override
   public IntCollection filterInts(final java.util.function.IntPredicate condition) {
-    final IntCollection registryValues = this.cache.values();
+    final IntCollection registryValues = super.cache.values();
     final IntCollection values = new IntArrayList(registryValues.size());
     for (final int value : registryValues) {
       if (condition.test(value)) {
