@@ -26,6 +26,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @since 1.0.0
  */
+@SuppressWarnings("UnstableApiUsage")
 public final class CommandRegistry {
   private @Nullable Commands registrar;
 

@@ -40,5 +40,6 @@ public interface RegistrableCommand {
    * @return the {@link LiteralCommandNode} for this command.
    * @since 1.0.0
    */
+  @SuppressWarnings("UnstableApiUsage")
   LiteralCommandNode<CommandSourceStack> build();
 }

@@ -34,5 +34,6 @@ public interface ResolvableArgument {
    * @return a status-code that indicates operation success, mostly is used with {@link Command#SINGLE_SUCCESS}.
    * @since 1.0.0
    */
+  @SuppressWarnings("UnstableApiUsage")
   int consumeContext(final CommandContext<CommandSourceStack> context);
 }
