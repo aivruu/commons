@@ -4,7 +4,7 @@ spotless = "8.2.1"
 
 jspecify = "1.0.0"
 
-paper = "1.21.11-R0.1-SNAPSHOT"
+paper = "1.21.1-R0.1-SNAPSHOT"
 configurate = "4.2.0"
 
 mongodb = "5.6.2"
@@ -17,6 +17,7 @@ mockito = "5.23.0"
 jspecify = { group = "org.jspecify", name = "jspecify", version.ref = "jspecify" }
 
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+configurate = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
 configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
 configurate-json = { module = "org.spongepowered:configurate-gson", version.ref = "configurate" }
 
