@@ -19,6 +19,7 @@ package me.aivr.commons.aggregate.domain.repository;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import org.jspecify.annotations.Nullable;
@@ -86,6 +87,32 @@ public interface AsyncAggregateRootRepository<AggregateType extends AggregateRoo
    * @since 1.0.0
    */
   <Identifiers extends Collection<String>> CompletableFuture<Identifiers> findAllIdsAsync(final IntFunction<Identifiers> limit);
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated unsupported repository operation.
+   * @since 1.0.0
+   */
+  @Override
+  @Deprecated(since = "2.3.1") // Though it throws an exception, it wasn't marked as deprecated until now.
+  default <Aggregates extends Collection<AggregateType>> Aggregates findAllSync(
+      final @Nullable Consumer<AggregateType> postFetchAction,
+      final IntFunction<Aggregates> limit) {
+    throw new UnsupportedOperationException("This operation is not supported by this repository.");
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated unsupported repository operation.
+   * @since 1.0.0
+   */
+  @Override
+  @Deprecated(since = "2.3.1") // Same as above
+  default @Nullable AggregateType deleteAndRetrieveSync(final String id) {
+    throw new UnsupportedOperationException("This operation is not supported by this repository.");
+  }
 
   /**
    * Deletes the specified aggregate-root asynchronously and returns a boolean-result for the operation.

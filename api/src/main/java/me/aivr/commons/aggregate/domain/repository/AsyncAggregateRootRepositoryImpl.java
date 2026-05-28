@@ -69,18 +69,6 @@ public abstract class AsyncAggregateRootRepositoryImpl<AggregateType extends Agg
   }
 
   @Override
-  public <Aggregates extends Collection<AggregateType>> Aggregates findAllSync(
-      final @Nullable Consumer<AggregateType> postFetchAction,
-      final IntFunction<Aggregates> limit) {
-    throw new UnsupportedOperationException("Unsupported operation #findAllSync() for AsyncAggregateRootRepository.");
-  }
-
-  @Override
-  public @Nullable AggregateType deleteAndRetrieveSync(final String id) {
-    throw new UnsupportedOperationException("Unsupported operation #deleteAndRetrieveSync() for AsyncAggregateRootRepository.");
-  }
-
-  @Override
   public final CompletableFuture<Boolean> deleteAsync(final String id) {
     return CompletableFuture.supplyAsync(() -> this.deleteSync(id), this.executor);
   }
