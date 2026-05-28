@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-  compileOnlyApi(libs.jspecify)
+  compileOnly(libs.jspecify)
 }
 
 tasks {

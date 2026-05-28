@@ -6,8 +6,7 @@ plugins {
 dependencies {
   api(project(":${rootProject.name}-api"))
 
-  compileOnlyApi(libs.paper.api)
-  compileOnlyApi(libs.configurate)
+  compileOnly(libs.paper.api)
   compileOnlyApi(libs.configurate.yaml)
   compileOnlyApi(libs.configurate.json)
 

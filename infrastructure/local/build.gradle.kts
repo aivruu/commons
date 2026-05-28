@@ -6,7 +6,7 @@ plugins {
 dependencies {
   api(project(":${rootProject.name}-api"))
 
-  compileOnlyApi(libs.paper.api) // use paper's shaded fastutil version
+  compileOnly(libs.paper.api) // use paper's shaded fastutil version
   compileOnlyApi(libs.expirable.cache) // aka Caffeine, if required
 
   testRuntimeOnly(libs.paper.api)
