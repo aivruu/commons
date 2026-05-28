@@ -9,6 +9,6 @@ dependencies {
   compileOnly(libs.paper.api) // use paper's shaded fastutil version
   compileOnlyApi(libs.expirable.cache) // aka Caffeine, if required
 
-  testRuntimeOnly(libs.paper.api)
+  testImplementation(libs.paper.api)
   testRuntimeOnly(libs.expirable.cache)
 }

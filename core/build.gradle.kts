@@ -11,6 +11,7 @@ dependencies {
   compileOnlyApi(libs.configurate.yaml)
   compileOnlyApi(libs.configurate.json)
 
+  testImplementation(libs.paper.api)
   testRuntimeOnly(libs.configurate.yaml)
   testRuntimeOnly(libs.configurate.json)
 }
