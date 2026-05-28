@@ -45,14 +45,14 @@ public abstract class PluginApiAccessor {
    *
    * @since 1.0.0
    */
-  abstract void load();
+  protected abstract void load();
 
   /**
    * Shutdowns the API-components that're still available and may need to be triggered for own shutdown process.
    *
    * @since 1.0.0
    */
-  abstract void shutdown();
+  protected abstract void shutdown();
 
   /**
    * Returns the instance for the {@link EventRegistry}.
