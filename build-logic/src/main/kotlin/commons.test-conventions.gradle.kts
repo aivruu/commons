@@ -13,8 +13,8 @@ dependencies {
 
   testRuntimeOnly(libs.junit.engine)
   testRuntimeOnly(libs.junit.launcher)
-
-  testRuntimeOnly(libs.paper.api)
+  testImplementation(libs.paper.api)
+  testImplementation(libs.test.slf4j) // paper-api only exposes the slf4j-api
 }
 
 tasks {

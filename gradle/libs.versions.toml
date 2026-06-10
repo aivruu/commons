@@ -12,6 +12,7 @@ cache = "3.2.3"
 
 junit = "5.10.0"
 mockito = "5.23.0"
+slf4j = "2.0.18"
 
 [libraries]
 jspecify = { group = "org.jspecify", name = "jspecify", version.ref = "jspecify" }
@@ -32,3 +33,4 @@ junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", ver
 junit-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version = "1.10.0" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 mockito-junit-jupiter = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
+test-slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j"}
