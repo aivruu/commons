@@ -18,14 +18,16 @@ package me.aivr.commons.config.infrastructure;
 
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.UnaryOperator;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.ConfigurationProvider;
 import me.aivr.commons.config.application.Container;
-import me.aivr.commons.config.infrastructure.container.JsonConfigurationContainer;
-import me.aivr.commons.config.infrastructure.container.YamlConfigurationContainer;
+import me.aivr.commons.config.infrastructure.container.ContainerBuilder;
+import me.aivr.commons.config.infrastructure.container.type.JsonContainerBuilder;
+import me.aivr.commons.config.infrastructure.container.type.YamlContainerBuilder;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
+import org.spongepowered.configurate.ConfigurationOptions;
 
 /**
  * Implementation that provides common-logic across providers, as well, implement common functions' logic.
@@ -33,13 +35,13 @@ import org.jspecify.annotations.Nullable;
  * @param <Config> a generic that indicates the model this provider handles must extend from the {@link Configuration} contract.
  * @since 1.0.0
  */
-@NullMarked
 public class ConfigurationProviderImpl<Config extends Configuration> implements ConfigurationProvider<Config> {
   protected final Path directory;
   protected final String fileName;
   protected final ConfigType fileType;
   protected final Class<Config> type;
   protected final ComponentLogger logger;
+  protected @Nullable UnaryOperator<ConfigurationOptions> optionsResolver;
   protected @Nullable Container<Config> configContainer;
 
   @Deprecated(since = "2.3.0", forRemoval = true)
@@ -50,6 +52,7 @@ public class ConfigurationProviderImpl<Config extends Configuration> implements 
    *
    * @param directory the file's directory.
    * @param fileName the file's name.
+   * @param fileType the config-type to generate for this provider.
    * @param type the model's type.
    * @param logger the logger used for provider-related operations.
    * @since 1.0.0
@@ -65,6 +68,28 @@ public class ConfigurationProviderImpl<Config extends Configuration> implements 
     this.fileType = fileType;
     this.type = type;
     this.logger = logger;
+  }
+
+  /**
+   * Creates a new {@link ConfigurationProviderImpl} with the provided parameters.
+   *
+   * @param directory the file's directory.
+   * @param fileName the file's name.
+   * @param fileType the config-type to generate for this provider.
+   * @param type the model's type.
+   * @param logger the logger used for provider-related operations.
+   * @param optionsResolver the custom-options to use to generate the config-file.
+   * @since 2.4.0
+   */
+  public ConfigurationProviderImpl(
+      final Path directory,
+      final String fileName,
+      final ConfigType fileType,
+      final Class<Config> type,
+      final ComponentLogger logger,
+      final UnaryOperator<ConfigurationOptions> optionsResolver) {
+    this(directory, fileName, fileType, type, logger);
+    this.optionsResolver = optionsResolver;
   }
 
   @Override
@@ -95,13 +120,25 @@ public class ConfigurationProviderImpl<Config extends Configuration> implements 
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public boolean load(final @Nullable String header) {
+    final ContainerBuilder<Config> builder = (ContainerBuilder<Config>) switch (this.fileType) {
+      // TOML-support isn't implemented yet so assume it's YAML instead
+      case YAML, TOML -> YamlContainerBuilder.create(this.directory)
+          .header(header)
+          .fileName(this.fileName)
+          .clazz((Class<Configuration>) this.type)
+          .type(ConfigType.YAML);
+      case JSON -> JsonContainerBuilder.create(this.directory)
+          .fileName(this.fileName)
+          .clazz((Class<Configuration>) this.type)
+          .type(ConfigType.JSON);
+    };
+    if (this.optionsResolver != null) {
+      builder.options(this.optionsResolver);
+    }
     try {
-      this.configContainer = switch (this.fileType) {
-        // TOML-support isn't implemented yet so assume it's YAML instead
-        case YAML, TOML -> YamlConfigurationContainer.of(this.directory, this.fileName, this.type, header);
-        case JSON -> JsonConfigurationContainer.of(this.directory, this.fileName, this.type);
-      };
+      this.configContainer = builder.build();
       return true;
     } catch (final RuntimeException exception) {
       this.logger.error("Failed to load {}'s configuration-data from model {}.", this.fileName, this.type.getSimpleName(), exception);
