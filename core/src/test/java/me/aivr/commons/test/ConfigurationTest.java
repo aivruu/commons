@@ -30,23 +30,23 @@ public final class ConfigurationTest {
 
   @Test
   void yamlConfigLoad() {
-    final TestConfigurationProvider testConfigurationProvider = this.buildTestConfigurationProvider(ConfigType.YAML);
+    final TestConfigurationProvider testConfigurationProvider = buildTestConfigurationProvider(ConfigType.YAML);
     Assertions.assertTrue(testConfigurationProvider.load(YAML_TEST_HEADER));
   }
 
   @Test
   void jsonConfigLoad() {
-    final TestConfigurationProvider testConfigurationProvider = this.buildTestConfigurationProvider(ConfigType.JSON);
+    final TestConfigurationProvider testConfigurationProvider = buildTestConfigurationProvider(ConfigType.JSON);
     Assertions.assertTrue(testConfigurationProvider.load(null));
   }
 
-  private TestConfigurationProvider buildTestConfigurationProvider(final ConfigType type) {
+  public static TestConfigurationProvider buildTestConfigurationProvider(final ConfigType type) {
     return new TestConfigurationProvider(Path.of(System.getProperty("user.dir")), type);
   }
 
   @Test
   void configAccessException() {
-    final TestConfigurationProvider testConfigurationProvider = this.buildTestConfigurationProvider(ConfigType.YAML);
+    final TestConfigurationProvider testConfigurationProvider = buildTestConfigurationProvider(ConfigType.YAML);
     Assertions.assertThrows(IllegalStateException.class, testConfigurationProvider::get);
   }
 }
