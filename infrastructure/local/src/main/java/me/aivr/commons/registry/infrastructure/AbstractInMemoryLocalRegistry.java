@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.LocalRegistry;
-import org.jspecify.annotations.NullMarked;
 
 /**
  * A class that abstracts common-logic related to registries and serves for registry-implementations that handle expirable and
@@ -35,7 +34,6 @@ import org.jspecify.annotations.NullMarked;
  * @param <M> the map-implementation this registry uses.
  * @since 2.3.0
  */
-@NullMarked
 public abstract class AbstractInMemoryLocalRegistry<K, V, M extends Map<K, V>> implements LocalRegistry<K, V> {
   /**
    * The {@link Map} type to use as cache-handler for this registry.

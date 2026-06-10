@@ -25,7 +25,6 @@ import java.util.function.LongConsumer;
 import java.util.function.LongPredicate;
 import me.aivr.commons.registry.domain.longs.LongValueLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
-import org.jspecify.annotations.NullMarked;
 
 /**
  * A registry-type that allows to use {@code long} primitives as values for registry's entries to avoid unboxing/autoboxing
@@ -34,7 +33,6 @@ import org.jspecify.annotations.NullMarked;
  * @param <K> the type of id this registry uses.
  * @since 2.3.0
  */
-@NullMarked
 public final class LongValueInMemoryLocalRegistry<K> extends AbstractInMemoryLocalRegistry<K, Long, Object2LongMap<K>>
     implements LongValueLocalRegistry<K> {
   /**

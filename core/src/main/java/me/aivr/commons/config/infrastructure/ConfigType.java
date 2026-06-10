@@ -16,15 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.infrastructure;
 
-import org.jspecify.annotations.NullMarked;
-
 /**
  * Contains the configuration-types that can be used, config-types may or not as well be handled by the same provider
  * (e.g. Configurate).
  *
  * @since 2.3.0
  */
-@NullMarked
 public enum ConfigType {
   YAML(".yml"),
   JSON(".json"),

@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.LocalRegistry;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -31,7 +30,6 @@ import org.jspecify.annotations.Nullable;
  * @param <V> the type of value this registry handles.
  * @since 2.3.0
  */
-@NullMarked
 public final class ExpirableInMemoryLocalRegistry<K, V> extends AbstractInMemoryLocalRegistry<K, V, ConcurrentMap<K, V>> {
   /**
    * The object to use for cache-handling within this specific registry-type.

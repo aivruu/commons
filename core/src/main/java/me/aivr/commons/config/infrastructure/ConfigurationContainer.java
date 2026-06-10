@@ -23,7 +23,6 @@ import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.infrastructure.serializer.ComponentTypeSerializer;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.ApiStatus;
-import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
@@ -39,7 +38,6 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
  * @param <Config> a generic that indicates the model or class-type must extend from the {@link Configuration} contract.
  * @since 1.0.0
  */
-@NullMarked
 @Deprecated(since = "2.3.0")
 @ApiStatus.ScheduledForRemoval(inVersion = "3.0.0")
 record ConfigurationContainer<Config extends Configuration>(Config model, HoconConfigurationLoader loader, Class<Config> modelClass) {

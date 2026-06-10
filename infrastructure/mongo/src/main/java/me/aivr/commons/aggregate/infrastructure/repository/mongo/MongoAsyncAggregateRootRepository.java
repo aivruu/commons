@@ -27,7 +27,6 @@ import java.util.function.IntFunction;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import me.aivr.commons.aggregate.domain.repository.AsyncAggregateRootRepositoryImpl;
 import org.bson.Document;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -36,7 +35,6 @@ import org.jspecify.annotations.Nullable;
  * @param <AggregateType> an inheritor of {@link AggregateRoot}.
  * @since 1.0.0
  */
-@NullMarked
 public class MongoAsyncAggregateRootRepository<AggregateType extends AggregateRoot>
     extends AsyncAggregateRootRepositoryImpl<AggregateType> {
   /**

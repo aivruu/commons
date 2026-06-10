@@ -19,7 +19,6 @@ package me.aivr.commons.aggregate.infrastructure.repository.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.aivr.commons.aggregate.infrastructure.repository.json.codec.JsonCodec;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -27,7 +26,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @since 1.0.0
  */
-@NullMarked
 public final class GsonProvider {
   private static @Nullable Gson gson;
 

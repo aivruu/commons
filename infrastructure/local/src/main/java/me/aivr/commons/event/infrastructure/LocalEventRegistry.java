@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import me.aivr.commons.event.domain.registry.EventRegistry;
 import me.aivr.commons.event.domain.subscribe.Subscription;
-import org.jspecify.annotations.NullMarked;
 
 /**
  * Default built-in implementation for local-registry to store {@link Subscription}s for events.
@@ -32,7 +31,6 @@ import org.jspecify.annotations.NullMarked;
  * @param <E> the event-type this registry handles.
  * @since 1.0.0
  */
-@NullMarked
 @SuppressWarnings("ConstantConditions")
 public final class LocalEventRegistry<E> implements EventRegistry<E> {
   private final Object2ObjectMap<Class<? extends E>, ObjectList<Subscription<? super E>>> subscriptions = new Object2ObjectOpenHashMap<>();

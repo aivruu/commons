@@ -23,7 +23,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import me.aivr.commons.aggregate.infrastructure.repository.mongo.codec.MongoCodec;
 import org.bson.codecs.configuration.CodecRegistries;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -31,7 +30,6 @@ import org.jspecify.annotations.Nullable;
  *
  * @since 1.0.0
  */
-@NullMarked
 public class MongoProvider {
   private static @Nullable MongoClient client;
 

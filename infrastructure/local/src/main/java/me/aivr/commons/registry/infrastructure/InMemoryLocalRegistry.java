@@ -20,7 +20,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.function.Predicate;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -30,7 +29,6 @@ import org.jspecify.annotations.Nullable;
  * @param <V> the type of value this registry handles.
  * @since 2.3.0
  */
-@NullMarked
 @SuppressWarnings("DataFlowIssue")
 public final class InMemoryLocalRegistry<K, V> extends AbstractInMemoryLocalRegistry<K, V, Object2ObjectMap<K, V>> {
   /**

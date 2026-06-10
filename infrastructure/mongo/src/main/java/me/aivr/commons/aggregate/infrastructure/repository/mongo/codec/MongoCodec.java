@@ -31,7 +31,6 @@ import org.bson.codecs.Decoder;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.Encoder;
 import org.bson.codecs.EncoderContext;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -41,7 +40,6 @@ import org.jspecify.annotations.Nullable;
  * @param <T> a generic object.
  * @since 1.0.0
  */
-@NullMarked
 public interface MongoCodec<T> extends Codec<T> {
   /**
    * Reads a custom-type array from the given reader with an expected-capacity.

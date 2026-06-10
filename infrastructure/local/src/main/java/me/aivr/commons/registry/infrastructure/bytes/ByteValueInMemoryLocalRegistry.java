@@ -25,7 +25,6 @@ import it.unimi.dsi.fastutil.objects.Object2ByteMaps;
 import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
 import me.aivr.commons.registry.domain.bytes.ByteValueLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
-import org.jspecify.annotations.NullMarked;
 
 /**
  * A registry-type that allows to use {@code byte} primitives as values for registry's entries to avoid unboxing/autoboxing
@@ -34,7 +33,6 @@ import org.jspecify.annotations.NullMarked;
  * @param <K> the type of id this registry uses.
  * @since 2.3.0
  */
-@NullMarked
 public final class ByteValueInMemoryLocalRegistry<K> extends AbstractInMemoryLocalRegistry<K, Byte, Object2ByteMap<K>>
     implements ByteValueLocalRegistry<K> {
   /**

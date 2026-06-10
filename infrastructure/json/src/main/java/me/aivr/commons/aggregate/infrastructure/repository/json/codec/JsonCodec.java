@@ -29,7 +29,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -40,7 +39,6 @@ import org.jspecify.annotations.Nullable;
  * @param <T> a generic object.
  * @since 1.0.0
  */
-@NullMarked
 public interface JsonCodec<T> extends JsonSerializer<T>, JsonDeserializer<T> {
   /**
    * Returns the type of object this codec handles.

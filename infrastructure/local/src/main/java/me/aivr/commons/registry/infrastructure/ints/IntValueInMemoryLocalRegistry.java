@@ -25,7 +25,6 @@ import java.util.function.IntConsumer;
 import java.util.function.IntPredicate;
 import me.aivr.commons.registry.domain.ints.IntValueLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
-import org.jspecify.annotations.NullMarked;
 
 /**
  * A registry-type that allows to use {@code int} primitives as values for registry's entries to avoid unboxing/autoboxing
@@ -34,7 +33,6 @@ import org.jspecify.annotations.NullMarked;
  * @param <K> the type of id this registry uses.
  * @since 2.3.0
  */
-@NullMarked
 public final class IntValueInMemoryLocalRegistry<K> extends AbstractInMemoryLocalRegistry<K, Integer, Object2IntMap<K>>
     implements IntValueLocalRegistry<K> {
   /**

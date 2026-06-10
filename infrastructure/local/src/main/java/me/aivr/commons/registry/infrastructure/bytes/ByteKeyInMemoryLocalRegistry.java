@@ -25,7 +25,6 @@ import it.unimi.dsi.fastutil.bytes.ByteSet;
 import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.bytes.ByteKeyLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -35,7 +34,6 @@ import org.jspecify.annotations.Nullable;
  * @param <V> the type of value this registry handles.
  * @since 2.3.0
  */
-@NullMarked
 @SuppressWarnings("DataFlowIssue")
 public final class ByteKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocalRegistry<Byte, V, Byte2ObjectMap<V>>
     implements ByteKeyLocalRegistry<V> {

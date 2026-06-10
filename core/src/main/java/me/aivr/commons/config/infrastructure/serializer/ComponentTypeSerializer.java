@@ -19,7 +19,6 @@ package me.aivr.commons.config.infrastructure.serializer;
 import java.lang.reflect.Type;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -31,7 +30,6 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
  *
  * @since 1.0.0
  */
-@NullMarked
 public enum ComponentTypeSerializer implements TypeSerializer<Component> {
   // lazy-singleton instance
   INSTANCE;
