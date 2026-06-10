@@ -1,0 +1,28 @@
+// This file is part of "commons", licensed under the GNU License.
+//
+// Copyright (c) 2026 aivruu
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+package me.aivr.commons.component.domain.resolver.context;
+
+import java.util.function.Function;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+
+/**
+ * Represents a placeholder that can be resolved by a {@link T} context.
+ *
+ * @param <T> the context required for this placeholder.
+ * @since 2.4.0
+ */
+public interface ContextualPlaceholder<T> extends Function<T, TagResolver> {}
