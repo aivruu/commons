@@ -24,7 +24,6 @@ import me.aivr.commons.config.application.Container;
 import me.aivr.commons.config.infrastructure.ConfigType;
 import me.aivr.commons.config.infrastructure.serializer.ComponentTypeSerializer;
 import org.jetbrains.annotations.ApiStatus;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
@@ -41,7 +40,6 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
  * @param <Config> a generic that indicates the model or class-type must extend from the {@link Configuration} contract.
  * @since 2.3.0
  */
-@NullMarked
 public record YamlConfigurationContainer<Config extends Configuration>(
     Config model,
     @Nullable String header,
@@ -97,7 +95,7 @@ public record YamlConfigurationContainer<Config extends Configuration>(
    * @return the new {@link YamlConfigurationContainer}.
    * @since 2.3.0
    */
-  @ApiStatus.Experimental
+  @Deprecated(since = "2.4.0")
   public static <C extends Configuration> YamlConfigurationContainer<C> of(
       final Path directory,
       final String fileName,

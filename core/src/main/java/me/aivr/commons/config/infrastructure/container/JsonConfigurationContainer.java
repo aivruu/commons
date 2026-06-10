@@ -23,8 +23,6 @@ import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.Container;
 import me.aivr.commons.config.infrastructure.ConfigType;
 import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.ApiStatus;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
@@ -39,7 +37,6 @@ import org.spongepowered.configurate.gson.GsonConfigurationLoader;
  * @param <Config> a generic that indicates the model or class-type must extend from the {@link Configuration} contract.
  * @since 2.3.0
  */
-@NullMarked
 public record JsonConfigurationContainer<Config extends Configuration>(
     Config model,
     GsonConfigurationLoader loader,
@@ -75,7 +72,7 @@ public record JsonConfigurationContainer<Config extends Configuration>(
    * @return the new {@link JsonConfigurationContainer}.
    * @since 2.3.0
    */
-  @ApiStatus.Experimental
+  @Deprecated(since = "2.4.0")
   public static <C extends Configuration> JsonConfigurationContainer<C> of(
       final Path directory,
       final String fileName,
