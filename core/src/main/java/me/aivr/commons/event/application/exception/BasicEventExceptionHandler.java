@@ -40,7 +40,7 @@ public final class BasicEventExceptionHandler implements EventBus.EventException
     try {
       this.logger.warn("Failed when trying to post event {} to subscriber {} using EventBus-impl {}.", event, subscriber, bus, throwable);
     } catch (final Throwable t) {
-      this.logger.warn("Failed when handling caught-exception for event-posting with {} to subscriber {} using EventBus-impl {}.", event,
+      this.logger.error("Failed when handling caught-exception for event-posting with {} to subscriber {} using EventBus-impl {}.", event,
           subscriber, bus, t);
     }
   }
