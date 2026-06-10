@@ -18,12 +18,10 @@ package me.aivr.commons.aggregate.infrastructure.repository;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import java.util.Collection;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import me.aivr.commons.aggregate.domain.repository.AggregateRootRepository;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -33,7 +31,6 @@ import org.jspecify.annotations.Nullable;
  * @param <AggregateType> an object that extends from AggregateRoot, which basically represents itself as an aggregate-root.
  * @since 1.0.0
  */
-@NullMarked
 public class ExpirableFallbackAggregateRootRepository<AggregateType extends AggregateRoot>
     implements AggregateRootRepository<AggregateType> {
   protected final Cache<String, AggregateType> cache;
@@ -60,20 +57,22 @@ public class ExpirableFallbackAggregateRootRepository<AggregateType extends Aggr
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <Identifiers extends Collection<String>> Identifiers findAllIdsSync(final IntFunction<Identifiers> limit) {
-    final Set<String> keySet = this.cache.asMap().keySet();
-    final Identifiers ids = limit.apply(keySet.size());
-    ids.addAll(keySet);
+    final Identifiers cachedIds = (Identifiers) this.cache.asMap().keySet();
+    final Identifiers ids = limit.apply(cachedIds.size());
+    ids.addAll(cachedIds);
     return ids;
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <Aggregates extends Collection<AggregateType>> Aggregates findAllSync(
       final @Nullable Consumer<AggregateType> postFetchAction,
       final IntFunction<Aggregates> limit) {
-    final Collection<AggregateType> values = this.cache.asMap().values();
-    final Aggregates aggregateRoots = limit.apply(values.size());
-    aggregateRoots.addAll(values);
+    final Aggregates cachedValues = (Aggregates) this.cache.asMap().values();
+    final Aggregates aggregateRoots = limit.apply(cachedValues.size());
+    aggregateRoots.addAll(cachedValues);
     return aggregateRoots;
   }
 

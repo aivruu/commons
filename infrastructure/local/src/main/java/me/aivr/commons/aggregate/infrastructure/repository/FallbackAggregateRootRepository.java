@@ -20,12 +20,10 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.Collection;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import me.aivr.commons.aggregate.domain.repository.AggregateRootRepository;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -35,7 +33,6 @@ import org.jspecify.annotations.Nullable;
  * @param <AggregateType> an object that extends from AggregateRoot, which basically represents itself as an aggregate-root.
  * @since 1.0.0
  */
-@NullMarked
 public class FallbackAggregateRootRepository<AggregateType extends AggregateRoot> implements AggregateRootRepository<AggregateType> {
   protected final Object2ObjectMap<String, AggregateType> cache;
 
@@ -84,20 +81,22 @@ public class FallbackAggregateRootRepository<AggregateType extends AggregateRoot
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <Identifiers extends Collection<String>> Identifiers findAllIdsSync(final IntFunction<Identifiers> limit) {
-    final Set<String> keySet = this.cache.keySet();
-    final Identifiers ids = limit.apply(keySet.size());
-    ids.addAll(keySet);
+    final Identifiers cachedIds = (Identifiers) this.cache.keySet();
+    final Identifiers ids = limit.apply(cachedIds.size());
+    ids.addAll(cachedIds);
     return ids;
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public <Aggregates extends Collection<AggregateType>> Aggregates findAllSync(
       final @Nullable Consumer<AggregateType> postFetchAction,
       final IntFunction<Aggregates> limit) {
-    final Collection<AggregateType> values = this.cache.values();
-    final Aggregates aggregateRoots = limit.apply(values.size());
-    aggregateRoots.addAll(values);
+    final Aggregates cachedValues = (Aggregates) this.cache.values();
+    final Aggregates aggregateRoots = limit.apply(cachedValues.size());
+    aggregateRoots.addAll(cachedValues);
     return aggregateRoots;
   }
 
