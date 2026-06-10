@@ -18,11 +18,23 @@ package me.aivr.commons.test.config;
 
 import me.aivr.commons.config.application.Configuration;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 
 @ConfigSerializable
 public final class TestConfig implements Configuration {
   public boolean debug = true;
-  public String str = "hello";
-  public Component component = Component.text("Component");
+  public String str = "<yellow>hello";
+  public String[] messages = {
+      "Hello!",
+      "This is a test message."
+  };
+  public Component component = Component.text("Component", NamedTextColor.RED);
+  public String[] contextBasedMessages = {
+      "Testing contextual messages parsing.",
+      "<version> on running",
+      "using <provider> provider for parsing.",
+      "",
+      "Expected coordinates: <location>"
+  };
 }
