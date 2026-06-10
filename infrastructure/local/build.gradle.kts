@@ -6,8 +6,6 @@ plugins {
 dependencies {
   api(project(":${rootProject.name}-api"))
 
-  compileOnlyApi(libs.expirable.cache) // aka Caffeine, if required
-
-  testImplementation(libs.paper.api)
+  compileOnlyApi(libs.expirable.cache) // aka Caffeine
   testRuntimeOnly(libs.expirable.cache)
 }
