@@ -16,8 +16,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.application;
 
-import java.nio.file.Path;
 import org.jspecify.annotations.Nullable;
+
+import java.nio.file.Path;
 
 /**
  * Represents a provider that allows to handle and access a configuration-model dynamically.
@@ -67,6 +68,16 @@ public interface ConfigurationProvider<Config extends Configuration> {
    */
   @Deprecated(since = "2.3.0")
   boolean load();
+
+  /**
+   * Loads the configuration-data for this provider's model, this function will apply no header to the file.
+   *
+   * @return {@code true} if the model was loaded correctly, {@code false} otherwise.
+   * @since 2.5.0
+   */
+  default boolean loadWithoutHeader() {
+    return this.load(null);
+  }
 
   /**
    * Loads the configuration-data for this provider's model.
