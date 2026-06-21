@@ -20,9 +20,6 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntListIterator;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import org.bson.BsonReader;
 import org.bson.BsonType;
 import org.bson.BsonWriter;
@@ -32,6 +29,10 @@ import org.bson.codecs.DecoderContext;
 import org.bson.codecs.Encoder;
 import org.bson.codecs.EncoderContext;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a codec that serves to provide custom serialization and deserialization for BSON-objects, extending capacities of

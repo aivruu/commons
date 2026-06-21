@@ -21,10 +21,11 @@ import it.unimi.dsi.fastutil.longs.LongCollection;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import java.util.function.LongConsumer;
-import java.util.function.LongPredicate;
 import me.aivr.commons.registry.domain.longs.LongValueLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
+
+import java.util.function.LongConsumer;
+import java.util.function.LongPredicate;
 
 /**
  * A registry-type that allows to use {@code long} primitives as values for registry's entries to avoid unboxing/autoboxing

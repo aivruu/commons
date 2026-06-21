@@ -18,6 +18,10 @@ package me.aivr.commons.aggregate.infrastructure.repository.json;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import me.aivr.commons.aggregate.domain.AggregateRoot;
+import me.aivr.commons.aggregate.domain.repository.AsyncAggregateRootRepositoryImpl;
+import org.jspecify.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -28,9 +32,6 @@ import java.util.concurrent.Executor;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import me.aivr.commons.aggregate.domain.AggregateRoot;
-import me.aivr.commons.aggregate.domain.repository.AsyncAggregateRootRepositoryImpl;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A JSON-type repository implementation for {@link AggregateRoot}s.

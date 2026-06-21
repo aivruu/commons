@@ -17,12 +17,13 @@
 package me.aivr.commons.aggregate.infrastructure.repository;
 
 import com.github.benmanes.caffeine.cache.Cache;
-import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.IntFunction;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import me.aivr.commons.aggregate.domain.repository.AggregateRootRepository;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.IntFunction;
 
 /**
  * Common-implementation for local-repositories that allows to store expirable-entries from configured Caffeine's {@link Cache}

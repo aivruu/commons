@@ -20,14 +20,15 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.UpdateResult;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.Executor;
-import java.util.function.IntFunction;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import me.aivr.commons.aggregate.domain.repository.AsyncAggregateRootRepositoryImpl;
 import org.bson.Document;
 import org.jspecify.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.Executor;
+import java.util.function.IntFunction;
 
 /**
  * A MongoDB-type repository implementation for {@link AggregateRoot}s.

@@ -19,8 +19,9 @@ package me.aivr.commons.registry.infrastructure;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import java.util.function.Predicate;
 import org.jspecify.annotations.Nullable;
+
+import java.util.function.Predicate;
 
 /**
  * A registry-implementation that handles data storing/accessing which does not use expirable-entries for the cache.

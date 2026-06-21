@@ -17,11 +17,12 @@
 package me.aivr.commons.registry.infrastructure;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import me.aivr.commons.registry.domain.LocalRegistry;
+import org.jspecify.annotations.Nullable;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Predicate;
-import me.aivr.commons.registry.domain.LocalRegistry;
-import org.jspecify.annotations.Nullable;
 
 /**
  * A {@link LocalRegistry} implementation that handles data storing/accessing which uses expirable-entries.

@@ -22,10 +22,11 @@ import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.bytes.ByteConsumer;
 import it.unimi.dsi.fastutil.bytes.ByteOpenHashSet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
-import java.util.function.Predicate;
 import me.aivr.commons.registry.domain.bytes.ByteKeyLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 import org.jspecify.annotations.Nullable;
+
+import java.util.function.Predicate;
 
 /**
  * A registry-type that allows to use {@code byte} primitives as keys for registry's entries to avoid unboxing/autoboxing

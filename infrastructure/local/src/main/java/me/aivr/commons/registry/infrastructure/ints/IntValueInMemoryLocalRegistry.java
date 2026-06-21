@@ -21,10 +21,11 @@ import it.unimi.dsi.fastutil.ints.IntCollection;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import java.util.function.IntConsumer;
-import java.util.function.IntPredicate;
 import me.aivr.commons.registry.domain.ints.IntValueLocalRegistry;
 import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
+
+import java.util.function.IntConsumer;
+import java.util.function.IntPredicate;
 
 /**
  * A registry-type that allows to use {@code int} primitives as values for registry's entries to avoid unboxing/autoboxing

@@ -17,13 +17,14 @@
 package me.aivr.commons.registry.infrastructure;
 
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import me.aivr.commons.registry.domain.LocalRegistry;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import me.aivr.commons.registry.domain.LocalRegistry;
 
 /**
  * A class that abstracts common-logic related to registries and serves for registry-implementations that handle expirable and

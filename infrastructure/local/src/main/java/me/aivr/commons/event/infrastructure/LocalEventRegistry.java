@@ -20,10 +20,11 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import java.util.List;
-import java.util.function.Predicate;
 import me.aivr.commons.event.domain.registry.EventRegistry;
 import me.aivr.commons.event.domain.subscribe.Subscription;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Default built-in implementation for local-registry to store {@link Subscription}s for events.

@@ -26,10 +26,11 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.jspecify.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a codec that serves to provide custom JSON serialization and deserialization for objects, extending capacities of

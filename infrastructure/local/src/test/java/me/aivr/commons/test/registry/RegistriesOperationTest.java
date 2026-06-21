@@ -16,6 +16,8 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.test.registry;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import it.unimi.dsi.fastutil.ints.IntCollection;
 import it.unimi.dsi.fastutil.longs.LongCollection;
 import me.aivr.commons.registry.domain.LocalRegistry;
@@ -25,8 +27,6 @@ import me.aivr.commons.registry.infrastructure.InMemoryLocalRegistry;
 import me.aivr.commons.registry.infrastructure.ints.IntValueInMemoryLocalRegistry;
 import me.aivr.commons.registry.infrastructure.longs.LongValueInMemoryLocalRegistry;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RegistriesOperationTest {
   @Test

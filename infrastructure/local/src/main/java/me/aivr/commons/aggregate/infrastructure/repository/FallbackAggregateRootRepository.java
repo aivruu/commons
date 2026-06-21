@@ -19,12 +19,13 @@ package me.aivr.commons.aggregate.infrastructure.repository;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.IntFunction;
 import me.aivr.commons.aggregate.domain.AggregateRoot;
 import me.aivr.commons.aggregate.domain.repository.AggregateRootRepository;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Collection;
+import java.util.function.Consumer;
+import java.util.function.IntFunction;
 
 /**
  * Common-implementation for local-repositories that allows to store entries "permanently" and delete them whenever it's
