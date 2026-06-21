@@ -20,16 +20,26 @@ import me.aivr.commons.config.application.Configuration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
+import org.spongepowered.configurate.objectmapping.meta.Comment;
 
 @ConfigSerializable
 public final class TestConfig implements Configuration {
+  @Comment("""
+      Enables the debug-mode which provides a more-verbose logging during the plugin's operation,
+      this provides more-detailed logging about plugin's operation in runtime, as well shows the stack-trace for
+      possible errors that may happen during operation.
+
+      Don't enable it unless it's required.""")
   public boolean debug = true;
+  @Comment(value = "A simple string to test configuration access.", afterLineBreak = true)
   public String str = "<yellow>hello";
   public String[] messages = {
       "Hello!",
       "This is a test message."
   };
+  @Comment("Component used to test components serialization/deserialization for the config's nodes.")
   public Component component = Component.text("Component", NamedTextColor.RED);
+  @Comment(value = "Messages that're used to test static and contextual placeholder-resolving for component-parsers.", afterLineBreak = true)
   public String[] contextBasedMessages = {
       "Testing contextual messages parsing.",
       "<version> on running",
