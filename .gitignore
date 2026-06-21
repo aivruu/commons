@@ -7,9 +7,10 @@ build
 .gitattributes
 *.iml
 *.sh
-# Exclude configuration-testing related files
-*.yml
-*.json
+# Exclude testing-related output
+*/src/test/test-output/
 
 .idea/
 .kotlin/
+jars/
+core/libs/
