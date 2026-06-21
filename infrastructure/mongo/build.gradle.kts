@@ -1,5 +1,5 @@
 plugins {
-  id("commons.publish-conventions")
+  id("commons.shadow-conventions")
 }
 
 dependencies {
