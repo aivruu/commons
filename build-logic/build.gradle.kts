@@ -5,6 +5,7 @@ plugins {
 dependencies {
   implementation(libs.build.indra)
   implementation(libs.build.spotless)
+  implementation(libs.build.shadow)
 
   compileOnly(files(libs::class.java.protectionDomain.codeSource.location))
 }
