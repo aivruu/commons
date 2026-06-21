@@ -16,9 +16,6 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.infrastructure;
 
-import java.nio.file.Path;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.UnaryOperator;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.ConfigurationProvider;
 import me.aivr.commons.config.application.Container;
@@ -26,8 +23,13 @@ import me.aivr.commons.config.infrastructure.container.ContainerBuilder;
 import me.aivr.commons.config.infrastructure.container.type.JsonContainerBuilder;
 import me.aivr.commons.config.infrastructure.container.type.YamlContainerBuilder;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
+
+import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.UnaryOperator;
 
 /**
  * Implementation that provides common-logic across providers, as well, implement common functions' logic.
@@ -44,6 +46,7 @@ public class ConfigurationProviderImpl<Config extends Configuration> implements 
   protected @Nullable UnaryOperator<ConfigurationOptions> optionsResolver;
   protected @Nullable Container<Config> configContainer;
 
+  @ApiStatus.ScheduledForRemoval(inVersion = "3.0.0")
   @Deprecated(since = "2.3.0", forRemoval = true)
   private @Nullable ConfigurationProvider<Config> container;
 
