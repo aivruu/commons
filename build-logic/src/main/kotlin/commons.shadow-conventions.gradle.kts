@@ -9,9 +9,7 @@ val buildsDir: File = file("$rootDir/jars")
 
 tasks {
   shadowJar {
-    archiveClassifier.set("")
-    archiveFileName.set(project.name + ".jar")
-
+    archiveFileName.set("${project.name}-${project.version}.jar")
     destinationDirectory.set(buildsDir)
 
     minimize()
