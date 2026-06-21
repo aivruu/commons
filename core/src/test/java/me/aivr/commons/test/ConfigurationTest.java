@@ -16,11 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.test;
 
-import java.nio.file.Path;
 import me.aivr.commons.config.infrastructure.ConfigType;
 import me.aivr.commons.test.config.TestConfigurationProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.nio.file.Paths;
 
 public final class ConfigurationTest {
   static final String YAML_TEST_HEADER = """
@@ -35,13 +36,19 @@ public final class ConfigurationTest {
   }
 
   @Test
+  void yamlConfigLoadWithoutHeader() {
+    final TestConfigurationProvider testConfigurationProvider = buildTestConfigurationProvider(ConfigType.YAML);
+    Assertions.assertTrue(testConfigurationProvider.loadWithoutHeader());
+  }
+
+  @Test
   void jsonConfigLoad() {
     final TestConfigurationProvider testConfigurationProvider = buildTestConfigurationProvider(ConfigType.JSON);
     Assertions.assertTrue(testConfigurationProvider.load(null));
   }
 
   public static TestConfigurationProvider buildTestConfigurationProvider(final ConfigType type) {
-    return new TestConfigurationProvider(Path.of(System.getProperty("user.dir")), type);
+    return new TestConfigurationProvider(Paths.get("src", "test", "test-output"), type);
   }
 
   @Test
