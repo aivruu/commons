@@ -35,7 +35,6 @@ spotless {
 val libs = extensions.getByType(LibrariesForLibs::class)
 
 repositories {
-  mavenLocal()
   mavenCentral()
   maven("https://repo.papermc.io/repository/maven-public/")
   maven("https://repo.helpch.at/releases/")
