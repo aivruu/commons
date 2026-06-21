@@ -17,8 +17,6 @@
 package me.aivr.commons.config.infrastructure.container.type;
 
 import com.google.common.base.Preconditions;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.Container;
 import me.aivr.commons.config.infrastructure.ConfigType;
@@ -29,6 +27,9 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Represents a {@link ContainerBuilder} type for {@link YamlConfigurationContainer}s.
@@ -81,8 +82,8 @@ public final class YamlContainerBuilder<Config extends Configuration> extends Co
 
     final Path path = super.directory.resolve(super.fileName + ConfigType.YAML.fileExtension());
     final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
-        .indent(2)
         .nodeStyle(NodeStyle.BLOCK)
+        .commentsEnabled(true) // finally
         .defaultOptions(super.configOptions == null ? opts -> Container.BUILT_IN_OPTIONS.apply(opts, this.header) : super.configOptions)
         .path(path)
         .build();
