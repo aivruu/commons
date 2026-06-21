@@ -16,13 +16,14 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.infrastructure.serializer;
 
-import java.lang.reflect.Type;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
+
+import java.lang.reflect.Type;
 
 /**
  * A {@link TypeSerializer} implementation that supports serialization/deserialization of {@link Component} types for

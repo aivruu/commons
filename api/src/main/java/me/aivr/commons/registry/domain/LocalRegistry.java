@@ -16,11 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a local-registry used to handle contained information that's required to be accessed quickly.

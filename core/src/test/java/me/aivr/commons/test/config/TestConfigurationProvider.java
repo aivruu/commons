@@ -16,10 +16,11 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.test.config;
 
-import java.nio.file.Path;
 import me.aivr.commons.config.infrastructure.ConfigType;
 import me.aivr.commons.config.infrastructure.ConfigurationProviderImpl;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+
+import java.nio.file.Path;
 
 public final class TestConfigurationProvider extends ConfigurationProviderImpl<TestConfig> {
   public TestConfigurationProvider(final Path directory, final ConfigType fileType) {

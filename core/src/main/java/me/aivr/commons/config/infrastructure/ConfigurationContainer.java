@@ -16,9 +16,6 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.infrastructure;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.concurrent.CompletableFuture;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.infrastructure.serializer.ComponentTypeSerializer;
 import net.kyori.adventure.text.Component;
@@ -26,6 +23,10 @@ import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Represents a container for internal configuration-related data.

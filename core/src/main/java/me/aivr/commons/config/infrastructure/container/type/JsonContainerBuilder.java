@@ -17,8 +17,6 @@
 package me.aivr.commons.config.infrastructure.container.type;
 
 import com.google.common.base.Preconditions;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.Container;
 import me.aivr.commons.config.infrastructure.ConfigType;
@@ -27,6 +25,9 @@ import me.aivr.commons.config.infrastructure.container.JsonConfigurationContaine
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Represents a {@link ContainerBuilder} type for {@link JsonConfigurationContainer}s.
@@ -65,7 +66,6 @@ public final class JsonContainerBuilder<Config extends Configuration> extends Co
 
     final Path filePath = super.directory.resolve(super.fileName + ConfigType.JSON.fileExtension());
     final GsonConfigurationLoader loader = GsonConfigurationLoader.builder()
-        .indent(2)
         .lenient(true)
         .defaultOptions(super.configOptions == null ? opts -> Container.BUILT_IN_OPTIONS.apply(opts, null) : super.configOptions)
         .path(filePath)

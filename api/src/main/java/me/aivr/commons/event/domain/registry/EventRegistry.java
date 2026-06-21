@@ -16,10 +16,11 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.event.domain.registry;
 
-import java.util.List;
-import java.util.function.Predicate;
 import me.aivr.commons.event.domain.subscribe.Subscriber;
 import me.aivr.commons.event.domain.subscribe.Subscription;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Represents a registry of {@link Subscription}s.

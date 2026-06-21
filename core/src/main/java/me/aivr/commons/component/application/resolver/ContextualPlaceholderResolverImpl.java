@@ -18,11 +18,12 @@ package me.aivr.commons.component.application.resolver;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import java.util.ArrayList;
-import java.util.List;
 import me.aivr.commons.component.domain.resolver.ContextualPlaceholderResolver;
 import me.aivr.commons.component.domain.resolver.context.ContextualPlaceholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a simple-implementation for {@link ContextualPlaceholderResolver}.

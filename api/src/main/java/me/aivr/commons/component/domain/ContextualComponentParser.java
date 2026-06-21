@@ -16,10 +16,11 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.component.domain;
 
-import java.util.ArrayList;
-import java.util.List;
 import me.aivr.commons.component.domain.resolver.ContextualPlaceholderResolver;
 import net.kyori.adventure.text.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a {@link ComponentParser} type that allows to use context-based resolvable-placeholders for each parsed text.

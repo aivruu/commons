@@ -16,9 +16,10 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.component.domain.resolver;
 
-import java.util.List;
 import me.aivr.commons.component.domain.resolver.context.ContextualPlaceholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+
+import java.util.List;
 
 /**
  * Represents a {@link PlaceholderResolver} for context-based ({@link ContextualPlaceholder}) placeholders.

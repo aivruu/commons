@@ -16,13 +16,14 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.infrastructure.container;
 
-import java.nio.file.Path;
-import java.util.function.UnaryOperator;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.Container;
 import me.aivr.commons.config.infrastructure.ConfigType;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
+
+import java.nio.file.Path;
+import java.util.function.UnaryOperator;
 
 /**
  * Represents a builder for {@link Container}s construction.

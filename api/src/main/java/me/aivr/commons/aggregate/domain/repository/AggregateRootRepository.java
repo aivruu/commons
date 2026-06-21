@@ -16,11 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.aggregate.domain.repository;
 
+import me.aivr.commons.aggregate.domain.AggregateRoot;
+import org.jspecify.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
-import me.aivr.commons.aggregate.domain.AggregateRoot;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a repository (commonly local) that allows to store, retrieve, and delete data related to aggregate-roots.

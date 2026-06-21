@@ -16,7 +16,6 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.test;
 
-import java.util.List;
 import me.aivr.commons.component.application.type.MiniMessageParserImpl;
 import me.aivr.commons.component.application.type.PlainComponentParserImpl;
 import me.aivr.commons.component.domain.type.MiniMessageParser;
@@ -30,6 +29,8 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Location;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public final class ComponentParsingTest {
   private final ComponentLogger logger = ComponentLogger.logger(ComponentParsingTest.class);

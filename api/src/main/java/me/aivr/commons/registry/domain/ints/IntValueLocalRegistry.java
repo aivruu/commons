@@ -17,13 +17,14 @@
 package me.aivr.commons.registry.domain.ints;
 
 import it.unimi.dsi.fastutil.ints.IntCollection;
+import me.aivr.commons.registry.domain.LocalRegistry;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
-import me.aivr.commons.registry.domain.LocalRegistry;
 
 /**
  * A type of {@link LocalRegistry} that uses {@code int} primitives as mapped-values for the registry's entries.

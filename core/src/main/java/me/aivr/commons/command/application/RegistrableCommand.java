@@ -18,6 +18,7 @@ package me.aivr.commons.command.application;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+
 import java.util.Collection;
 
 /**

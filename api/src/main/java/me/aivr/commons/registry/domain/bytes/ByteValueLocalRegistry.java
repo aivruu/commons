@@ -19,11 +19,12 @@ package me.aivr.commons.registry.domain.bytes;
 import it.unimi.dsi.fastutil.bytes.ByteCollection;
 import it.unimi.dsi.fastutil.bytes.ByteConsumer;
 import it.unimi.dsi.fastutil.bytes.BytePredicate;
+import me.aivr.commons.registry.domain.LocalRegistry;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import me.aivr.commons.registry.domain.LocalRegistry;
 
 /**
  * A type of {@link LocalRegistry} that uses {@code byte} primitives as mapped-values for the registry's entries.

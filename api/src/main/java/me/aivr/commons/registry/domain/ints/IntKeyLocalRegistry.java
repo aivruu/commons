@@ -17,10 +17,11 @@
 package me.aivr.commons.registry.domain.ints;
 
 import it.unimi.dsi.fastutil.ints.IntSet;
-import java.util.Set;
-import java.util.function.IntConsumer;
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Set;
+import java.util.function.IntConsumer;
 
 /**
  * A type of {@link LocalRegistry} that uses {@code int} primitives as keys for the registry's entries.
@@ -111,6 +112,7 @@ public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V> {
    * @since 2.3.0
    */
   @Override
+  @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Set<Integer>> C findAllKeys() {
     return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;

@@ -16,11 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.aggregate.domain;
 
+import me.aivr.commons.aggregate.domain.event.AggregateRootEvent;
+import me.aivr.commons.aggregate.domain.event.AggregateWritingRequiredStateChangeEvent;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import me.aivr.commons.aggregate.domain.event.AggregateRootEvent;
-import me.aivr.commons.aggregate.domain.event.AggregateWritingRequiredStateChangeEvent;
 
 /**
  * Represents an aggregate-root.

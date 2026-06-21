@@ -18,9 +18,10 @@ package me.aivr.commons.registry.domain.bytes;
 
 import it.unimi.dsi.fastutil.bytes.ByteConsumer;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
-import java.util.Set;
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Set;
 
 /**
  * A type of {@link LocalRegistry} that uses {@code byte} primitives as keys for the registry's entries.
@@ -111,6 +112,7 @@ public interface ByteKeyLocalRegistry<V> extends LocalRegistry<Byte, V> {
    * @since 2.3.0
    */
   @Override
+  @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Set<Byte>> C findAllKeys() {
     return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;

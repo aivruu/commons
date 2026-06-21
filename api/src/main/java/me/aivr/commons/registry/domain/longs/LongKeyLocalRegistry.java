@@ -17,10 +17,11 @@
 package me.aivr.commons.registry.domain.longs;
 
 import it.unimi.dsi.fastutil.longs.LongSet;
-import java.util.Set;
-import java.util.function.LongConsumer;
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Set;
+import java.util.function.LongConsumer;
 
 /**
  * A type of {@link LocalRegistry} that uses {@code long} primitives as keys for the registry's entries.
@@ -111,6 +112,7 @@ public interface LongKeyLocalRegistry<V> extends LocalRegistry<Long, V> {
    * @since 2.3.0
    */
   @Override
+  @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Set<Long>> C findAllKeys() {
     return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;

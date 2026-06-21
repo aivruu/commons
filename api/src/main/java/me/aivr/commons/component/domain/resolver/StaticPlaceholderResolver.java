@@ -16,8 +16,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.component.domain.resolver;
 
-import java.util.List;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+
+import java.util.List;
 
 /**
  * Represents a {@link PlaceholderResolver} subtype for static-placeholders.

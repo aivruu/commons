@@ -16,12 +16,13 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.application;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
 import me.aivr.commons.config.infrastructure.serializer.ComponentTypeSerializer;
 import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 
 /**
  * Represents a container for internal configuration-related information.

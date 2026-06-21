@@ -16,12 +16,13 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.component.application;
 
-import java.util.List;
 import me.aivr.commons.component.domain.ContextualComponentParser;
 import me.aivr.commons.component.domain.resolver.ContextualPlaceholderResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+
+import java.util.List;
 
 /**
  * Represents an implementation for {@link ContextualComponentParser} that also shares common-logic for contextual-parsers.

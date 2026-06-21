@@ -16,8 +16,9 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.event.application;
 
-import java.util.Iterator;
 import me.aivr.commons.event.application.exception.ExceptionContextValueObject;
+
+import java.util.Iterator;
 
 /**
  * Represents an event-bus.

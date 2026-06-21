@@ -16,12 +16,13 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.event.application;
 
-import java.util.List;
 import me.aivr.commons.event.application.exception.BasicEventExceptionHandler;
 import me.aivr.commons.event.application.exception.ExceptionContextValueObject;
 import me.aivr.commons.event.domain.Cancellable;
 import me.aivr.commons.event.domain.registry.EventRegistry;
 import me.aivr.commons.event.domain.subscribe.Subscription;
+
+import java.util.List;
 
 /**
  * Default built-in implementation for {@link EventBus}.

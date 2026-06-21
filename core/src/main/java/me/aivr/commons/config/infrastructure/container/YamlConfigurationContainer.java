@@ -16,9 +16,6 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.config.infrastructure.container;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.concurrent.CompletableFuture;
 import me.aivr.commons.config.application.Configuration;
 import me.aivr.commons.config.application.Container;
 import me.aivr.commons.config.infrastructure.ConfigType;
@@ -29,6 +26,10 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Represents a container for internal data related to the YAML configuration-file.

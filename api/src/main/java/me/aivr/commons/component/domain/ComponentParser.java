@@ -16,9 +16,10 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.component.domain;
 
+import net.kyori.adventure.text.Component;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.kyori.adventure.text.Component;
 
 /**
  * Represents a parser that allows to convert from raw-text (String) into modern Adventure's {@link Component}s and vice versa.

@@ -16,11 +16,11 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import me.aivr.commons.util.domain.CoordinatePackingProvider;
 import org.bukkit.Location;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class CoordinatePackingTest {
   @Test

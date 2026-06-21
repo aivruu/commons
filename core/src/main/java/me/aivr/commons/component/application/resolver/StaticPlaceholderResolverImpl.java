@@ -16,11 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.component.application.resolver;
 
-import java.util.ArrayList;
-import java.util.List;
 import me.aivr.commons.component.domain.resolver.StaticPlaceholderResolver;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jspecify.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a simple-implementation for {@link StaticPlaceholderResolver}.
@@ -48,7 +49,7 @@ public class StaticPlaceholderResolverImpl implements StaticPlaceholderResolver 
     return this;
   }
 
-  protected void updateCollection() {
+  protected void updateCollection() { // why did I call it that way?
     this.resolvedPlaceholders = TagResolver.resolver(this.staticPlaceholders);
   }
 

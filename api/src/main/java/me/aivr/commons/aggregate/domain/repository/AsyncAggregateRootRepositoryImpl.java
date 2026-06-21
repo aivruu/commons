@@ -16,12 +16,13 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.aggregate.domain.repository;
 
+import me.aivr.commons.aggregate.domain.AggregateRoot;
+import org.jspecify.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.IntFunction;
-import me.aivr.commons.aggregate.domain.AggregateRoot;
-import org.jspecify.annotations.Nullable;
 
 /**
  * The base-implementation of {@link AsyncAggregateRootRepository} that implement logic for async-functions declared in
