@@ -4,7 +4,7 @@ import org.gradle.api.Action
 import org.gradle.api.XmlProvider
 import groovy.util.Node
 
-class RemovaLocalDependenciesAction: Action<XmlProvider> {
+class RemoveLocalDependenciesAction: Action<XmlProvider> {
   override fun execute(provider: XmlProvider) {
     val root = provider.asNode()
     val deps = root.children()

@@ -1,4 +1,4 @@
-import publishing.RemovaLocalDependenciesAction
+import publishing.RemoveLocalDependenciesAction
 
 plugins {
   id("commons.common-conventions")
@@ -13,7 +13,7 @@ publishing {
 
       pom {
         // exclude custom-fork artifacts
-        withXml(RemovaLocalDependenciesAction())
+        withXml(RemoveLocalDependenciesAction())
       }
     }
   }
