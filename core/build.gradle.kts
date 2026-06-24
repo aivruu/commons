@@ -6,7 +6,7 @@ plugins {
 dependencies {
   api(project(":${rootProject.name}-api"))
 
-  // As we're using a fork as of now, we need to exclude the original core-module.
+  // As we're using a fork, we need to exclude the original core-module.
   compileOnlyApi(libs.configurate) {
     exclude(group = "org.spongepowered", module = "configurate-core")
   }
@@ -14,7 +14,7 @@ dependencies {
 }
 
 fun DependencyHandlerScope.includeLocalLibs() {
-  val forkVersion = "4.2.0-SNAPSHOT"
+  val forkVersion = "4.3.1-SNAPSHOT"
 
   listOf("configurate-core", "configurate-gson", "configurate-yaml").forEach {
     compileOnlyApi(":$it-$forkVersion")
