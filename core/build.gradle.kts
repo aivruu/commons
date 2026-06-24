@@ -10,20 +10,20 @@ dependencies {
   compileOnlyApi(libs.configurate) {
     exclude(group = "org.spongepowered", module = "configurate-core")
   }
+  includeLocalLibs()
+}
 
-  // Import local Configurate fork
+fun DependencyHandlerScope.includeLocalLibs() {
   val forkVersion = "4.2.0-SNAPSHOT"
-  api(":configurate-core-$forkVersion")
-  api(":configurate-gson-$forkVersion")
-  api(":configurate-yaml-$forkVersion")
+
+  listOf("configurate-core", "configurate-gson", "configurate-yaml").forEach {
+    compileOnlyApi(":$it-$forkVersion")
+    testRuntimeOnly(":$it-$forkVersion")
+  }
 
   // Required by configurate-core
   compileOnly(libs.geantyref)
   testRuntimeOnly(libs.geantyref)
-
-  testImplementation(":configurate-core-$forkVersion")
-  testImplementation(":configurate-gson-$forkVersion")
-  testImplementation(":configurate-yaml-$forkVersion")
 }
 
 repositories {
