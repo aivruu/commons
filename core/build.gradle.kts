@@ -18,7 +18,7 @@ fun DependencyHandlerScope.includeLocalLibs() {
 
   listOf("configurate-core", "configurate-gson", "configurate-yaml").forEach {
     compileOnly(":$it-$forkVersion")
-    testRuntimeOnly(":$it-$forkVersion")
+    testImplementation(":$it-$forkVersion")
   }
 
   // Required by configurate-core
