@@ -17,7 +17,7 @@ fun DependencyHandlerScope.includeLocalLibs() {
   val forkVersion = "4.3.1-SNAPSHOT"
 
   listOf("configurate-core", "configurate-gson", "configurate-yaml").forEach {
-    compileOnlyApi(":$it-$forkVersion")
+    compileOnly(":$it-$forkVersion")
     testRuntimeOnly(":$it-$forkVersion")
   }
 
