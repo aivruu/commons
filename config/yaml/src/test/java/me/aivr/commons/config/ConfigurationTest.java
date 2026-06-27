@@ -1,0 +1,97 @@
+// This file is part of "commons", licensed under the GNU License.
+//
+// Copyright (c) 2026 aivruu
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <https://www.gnu.org/licenses/>.
+package me.aivr.commons.config;
+
+import me.aivr.commons.config.application.ConfigurationProvider;
+import me.aivr.commons.config.infrastructure.ConfigType;
+import me.aivr.commons.config.infrastructure.ConfigurationProviderImpl;
+import me.aivr.commons.config.infrastructure.container.ContainerBuilder;
+import me.aivr.commons.config.infrastructure.container.yaml.YamlContainerBuilder;
+import me.aivr.commons.config.infrastructure.serializer.ComponentTypeSerializer;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.jspecify.annotations.Nullable;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+class ConfigurationTest {
+  static final String HEADER = """
+      - Test Configuration File
+      -
+      - Options described in this file are only for testing purposes, and have no real purpose or use on production environments.""";
+  static final Path DIRECTORY = Paths.get("src", "test", "test-output");
+
+  @Test
+  void loadConfigWithHeader() {
+    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    this.deletePreviousIfExists(provider);
+    final ContainerBuilder builder = this.createContainer(provider, HEADER);
+    Assertions.assertTrue(provider.load(builder));
+  }
+
+  private ContainerBuilder createContainer(final ConfigurationProvider<TestYamlConfig> provider, final @Nullable String header) {
+    final ContainerBuilder containerBuilder = YamlContainerBuilder.create(DIRECTORY)
+        .fileName(provider.configName())
+        .clazz(provider.modelClassType())
+        .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
+    if (header != null) {
+      ((YamlContainerBuilder) containerBuilder).header(header);
+    }
+    return containerBuilder;
+  }
+
+  private void deletePreviousIfExists(final ConfigurationProvider<TestYamlConfig> provider) {
+    try {
+      Files.deleteIfExists(provider.configDirectory().resolve(provider.configName() + ConfigType.YAML.fileExtension()));
+    } catch (final IOException ignored) {}
+  }
+
+  @Test
+  void builderMissingParameters() {
+    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    this.deletePreviousIfExists(provider);
+    final ContainerBuilder containerBuilder = YamlContainerBuilder.create(DIRECTORY)
+        .fileName("")
+        .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
+    Assertions.assertThrows(NullPointerException.class, () -> provider.load(containerBuilder));
+    // or
+    Assertions.assertThrows(IllegalArgumentException.class, () -> provider.load(containerBuilder));
+  }
+
+  @Test
+  void loadConfigWithoutHeader() {
+    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    this.deletePreviousIfExists(provider);
+    final ContainerBuilder builder = this.createContainer(provider, null);
+    Assertions.assertTrue(provider.load(builder));
+  }
+
+  @Test
+  void configAccessException() {
+    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    Assertions.assertThrows(IllegalStateException.class, provider::get);
+  }
+
+  static ConfigurationProviderImpl<TestYamlConfig> buildConfigurationProvider() {
+    return new ConfigurationProviderImpl<>(DIRECTORY, "test", TestYamlConfig.class, ComponentLogger.logger("ConfigurationTest"));
+  }
+}
