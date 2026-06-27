@@ -20,38 +20,34 @@ import me.aivr.commons.component.application.type.MiniMessageParserImpl;
 import me.aivr.commons.component.application.type.PlainComponentParserImpl;
 import me.aivr.commons.component.domain.type.MiniMessageParser;
 import me.aivr.commons.component.domain.type.PlainComponentParser;
-import me.aivr.commons.config.infrastructure.ConfigType;
-import me.aivr.commons.test.config.TestConfig;
-import me.aivr.commons.test.config.TestConfigurationProvider;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Location;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 public final class ComponentParsingTest {
+  private static final List<String> TESTING_MESSAGES = List.of(
+      "Testing contextual messages parsing.",
+      "<version> on running",
+      "using <provider> provider for parsing.",
+      "",
+      "Expected coordinates: <location>"
+  );
   private final ComponentLogger logger = ComponentLogger.logger(ComponentParsingTest.class);
 
   @Test
   void basicParsing() {
-    final TestConfigurationProvider configurationProvider = ConfigurationTest.buildTestConfigurationProvider(ConfigType.YAML);
-    Assertions.assertTrue(configurationProvider.load(null));
-
     final PlainComponentParser plainComponentParser = new PlainComponentParserImpl(); // use default-constructor provided
-    final TestConfig config = configurationProvider.get();
-    this.logger.info(plainComponentParser.parseSingle(config.str));
-    this.logger.info(plainComponentParser.unparseSingle(config.component));
+    this.logger.info(plainComponentParser.parseSingle("hello"));
+    this.logger.info(plainComponentParser.unparseSingle(Component.text("component")));
   }
 
   @Test
   void contextualParsing() {
-    final TestConfigurationProvider configurationProvider = ConfigurationTest.buildTestConfigurationProvider(ConfigType.YAML);
-    Assertions.assertTrue(configurationProvider.load(null));
-
-    final Location testLocation = new Location(null, 192.2303, 60, 432234.231);
+   final Location testLocation = new Location(null, 192.2303, 60, 432234.231);
     final MiniMessageParser miniMessageParser = new MiniMessageParserImpl();
     miniMessageParser.staticPlaceholderResolver()
         .registerSingle(Placeholder.parsed("version", "2.3.2"))
@@ -65,7 +61,7 @@ public final class ComponentParsingTest {
           .append(context.getBlockZ());
       return Placeholder.parsed("location", formattedLocationBuilder.toString());
     });
-    for (final Component line : miniMessageParser.parseBunchFromContexts(List.of(configurationProvider.get().contextBasedMessages), testLocation)) {
+    for (final Component line : miniMessageParser.parseBunchFromContexts(TESTING_MESSAGES, testLocation)) {
       this.logger.info(line);
     }
   }
