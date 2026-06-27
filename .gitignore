@@ -10,7 +10,7 @@ build
 # Exclude testing-related output
 */src/test/test-output/
 # e.g. config/yaml/...
- */*/src/test/test-output/
+*/*/src/test/test-output/
 
 .idea/
 .kotlin/
