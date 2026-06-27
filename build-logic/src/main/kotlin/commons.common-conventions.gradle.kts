@@ -1,11 +1,14 @@
 import com.diffplug.gradle.spotless.FormatExtension
 import org.gradle.accessors.dm.LibrariesForLibs
+import version.VersionFormatter
 import java.util.Date
 
 plugins {
   id("com.diffplug.spotless")
   id("net.kyori.indra")
 }
+
+version = VersionFormatter.includeVersionSpecifications(project)
 
 indra {
   javaVersions {
