@@ -22,12 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Default built-in implementation for {@link me.aivr.commons.event.application.EventBus.EventExceptionHandler}.
+ * Default built-in implementation for {@link EventBus.EventExceptionHandler}.
  *
- * @since 1.0.0
+ * @since 3.0.0
  */
-public final class BasicEventExceptionHandler implements EventBus.EventExceptionHandler {
-  private final Logger logger = LoggerFactory.getLogger(BasicEventExceptionHandler.class);
+public enum BasicEventExceptionHandler implements EventBus.EventExceptionHandler {
+  INSTANCE;
+
+  private static final Logger LOGGER = LoggerFactory.getLogger("BasicEventExceptionHandler");
 
   @Override
   @SuppressWarnings("unchecked")
@@ -38,10 +40,10 @@ public final class BasicEventExceptionHandler implements EventBus.EventException
     // subscription, its handler would have been already initialized.
     final Subscriber<? super E> subscriber = context.subscription().subscriber();
     try {
-      this.logger.warn("Failed when trying to post event {} to subscriber {} using EventBus-impl {}.", event, subscriber, bus, throwable);
+      LOGGER.warn("Failed when trying to publish event {} to subscriber {} using EventBus-impl {}.", event, subscriber, bus, throwable);
     } catch (final Throwable t) {
-      this.logger.error("Failed when handling caught-exception for event-posting with {} to subscriber {} using EventBus-impl {}.", event,
-          subscriber, bus, t);
+      LOGGER.error("Failed when handling caught-exception for event-publishing with {} to subscriber {} using EventBus implementation {}.",
+          event, subscriber, bus, t);
     }
   }
 }
