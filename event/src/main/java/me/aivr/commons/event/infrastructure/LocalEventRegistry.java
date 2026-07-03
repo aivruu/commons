@@ -38,6 +38,17 @@ public final class LocalEventRegistry<E> implements EventRegistry<E> {
   private final Class<E> eventType;
 
   /**
+   * Creates a new {@link LocalEventRegistry} that specifies {@code Class<Object>} as the {@link #eventType} for
+   * this registry.
+   *
+   * @since 3.0.0
+   */
+  @SuppressWarnings("unchecked")
+  public LocalEventRegistry() {
+    this((Class<E>) Object.class);
+  }
+
+  /**
    * Creates a new {@link LocalEventRegistry} with the provided parameter.
    *
    * @param eventType the class-type of the event this registry will handle.

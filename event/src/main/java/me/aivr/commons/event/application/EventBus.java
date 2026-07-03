@@ -16,9 +16,11 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.event.application;
 
+import me.aivr.commons.event.application.exception.BasicEventExceptionHandler;
 import me.aivr.commons.event.application.exception.ExceptionContextValueObject;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents an event-bus.
@@ -33,12 +35,15 @@ import java.util.Iterator;
  */
 public interface EventBus<E> {
   /**
-   * Posts the given event to the subscriptions for this event.
+   * Posts the given event-list to the subscriptions for each event-type.
    *
-   * @param event the event to post to the subscribers.
-   * @since 1.0.0
+   * @param events the events to post.
+   * @see #postBunch(Iterator) Event-iterator posting operator
+   * @since 3.0.0
    */
-  void postSingle(final E event);
+  default void postBunch(final List<? extends E> events) {
+    this.postBunch(events.iterator());
+  }
 
   /**
    * Posts the given events to the subscriptions for each event given.
@@ -52,6 +57,14 @@ public interface EventBus<E> {
       this.postSingle(events.next());
     }
   }
+
+  /**
+   * Posts the given event to the subscriptions for this event.
+   *
+   * @param event the event to post to the subscribers.
+   * @since 1.0.0
+   */
+  void postSingle(final E event);
 
   /**
    * Returns the current implementation that's being used to handle exceptions during posting-related operations.
@@ -68,6 +81,16 @@ public interface EventBus<E> {
    */
   @FunctionalInterface
   interface EventExceptionHandler {
+    /**
+     * Returns the singleton-instance for the default {@link EventExceptionHandler} implementation.
+     *
+     * @return the default event-exception handler.
+     * @since 3.0.0
+     */
+    static EventExceptionHandler basic() {
+      return BasicEventExceptionHandler.INSTANCE;
+    }
+
     /**
      * Executes the handling-logic for the caught-exception that was configured for this handler.
      *

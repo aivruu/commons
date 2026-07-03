@@ -25,7 +25,7 @@ import org.jspecify.annotations.Nullable;
  * Subscriptions are composed by the event-type to which it is subscribed, the {@link Subscriber} that handles any logic that
  * was set to execute when a posted-event is received, and whether this subscription will receive cancelled-events.
  * <p>
- * For domain-events (check {@link me.aivr.commons.aggregate.domain.event.AggregateRootEvent}) the
+ * For domain-events (check {@code me.aivr.commons.aggregate.domain.event.AggregateRootEvent}) the
  * {@link #receivesCancelledEvents()} state will always be ignored by the {@link me.aivr.commons.event.application.EventBus}
  * when posting these kind of events as they cannot be cancelled.
  *
@@ -35,10 +35,10 @@ import org.jspecify.annotations.Nullable;
 public abstract class Subscription<E> {
   protected final Class<E> eventType;
   protected final boolean receiveCancelledEvents;
-  private final EventRegistry<E> registry; // for subscription disposal operation.
+  private final @Nullable EventRegistry<E> registry; // for subscription disposal operation.
   protected @Nullable Subscriber<? super E> handler; // Sometimes it may not be initialized so we need to mark it.
 
-  protected Subscription(final Class<E> eventType, final EventRegistry<E> registry, final boolean receiveCancelledEvents) {
+  protected Subscription(final Class<E> eventType, final @Nullable EventRegistry<E> registry, final boolean receiveCancelledEvents) {
     this.eventType = eventType;
     this.registry = registry;
     // For non-cancellable events, this field is quite ignored.
@@ -61,9 +61,9 @@ public abstract class Subscription<E> {
    *
    * @param event the event posted by the event-bus.
    * @see #initHandler() Event-handler or Subscriber initialization
-   * @since 1.0.0
+   * @since 3.0.0
    */
-  public void listenAndHandle(final E event) {
+  public void listen(final E event) {
     if (this.handler == null) this.initHandler();
     this.handler.handle(event);
   }
@@ -99,11 +99,13 @@ public abstract class Subscription<E> {
    * Disposes this subscription from the registry, after this, no events will be posted for this subscription.
    * <p>
    * This is similar to make {@code EventRegistry.unsubscribe(subscription)}.
+   * <p>
+   * If no event-registry was provided for this subscription, then this method won't realize any action as result.
    *
    * @see EventRegistry#unsubscribe(Subscription) Subscription-disposal from registry
-   * @since 1.0.0
+   * @since 3.0.0
    */
   public final void dispose() {
-    this.registry.unsubscribe(this);
+    if (this.registry != null) this.registry.unsubscribe(this);
   }
 }

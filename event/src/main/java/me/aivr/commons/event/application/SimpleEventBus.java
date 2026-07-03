@@ -16,7 +16,6 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.event.application;
 
-import me.aivr.commons.event.application.exception.BasicEventExceptionHandler;
 import me.aivr.commons.event.application.exception.ExceptionContextValueObject;
 import me.aivr.commons.event.domain.Cancellable;
 import me.aivr.commons.event.domain.registry.EventRegistry;
@@ -36,13 +35,16 @@ public final class SimpleEventBus<E> implements EventBus<E> {
 
   /**
    * Creates a new {@link SimpleEventBus} with the provided registry instance.
+   * <p>
+   * This constructor will use the default {@link me.aivr.commons.event.application.EventBus.EventExceptionHandler}
+   * provided by the {@link EventExceptionHandler#basic()} function.
    *
    * @param eventRegistry the event-registry to use with this event-bus.
    * @since 1.0.0
    */
   public SimpleEventBus(final EventRegistry<E> eventRegistry) {
     this.eventRegistry = eventRegistry;
-    this.exceptionHandler = new BasicEventExceptionHandler();
+    this.exceptionHandler = EventBus.EventExceptionHandler.basic();
   }
 
   /**
@@ -69,7 +71,7 @@ public final class SimpleEventBus<E> implements EventBus<E> {
         continue;
       }
       try {
-        subscription.listenAndHandle(event);
+        subscription.listen(event);
       } catch (final Throwable throwable) {
         this.exceptionHandler.handleCaughtException(this, new ExceptionContextValueObject<>(event, subscription, throwable));
       }
