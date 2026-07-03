@@ -95,7 +95,7 @@ public interface ByteKeyLocalRegistry<V> extends LocalRegistry<Byte, V> {
   }
 
   /**
-   * Stores the given value with the specified {@code byte} ID into this registry, and returns whether the given value or the
+   * Stores the given value with the specified {@code byte} identifier into this registry, and returns whether the given value or the
    * old-mapping already existed for that identifier.
    *
    * @param id the id to assign.

@@ -95,7 +95,7 @@ public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V> {
   }
 
   /**
-   * Stores the given value with the specified {@code int} ID into this registry, and returns whether the given value or the
+   * Stores the given value with the specified {@code int} identifier into this registry, and returns whether the given value or the
    * old-mapping already existed for that identifier.
    *
    * @param id the id to assign.
