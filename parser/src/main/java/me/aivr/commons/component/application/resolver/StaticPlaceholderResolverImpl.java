@@ -17,6 +17,7 @@
 package me.aivr.commons.component.application.resolver;
 
 import me.aivr.commons.component.domain.resolver.StaticPlaceholderResolver;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jspecify.annotations.Nullable;
 
@@ -40,6 +41,11 @@ public class StaticPlaceholderResolverImpl implements StaticPlaceholderResolver 
   @Override
   public boolean any() {
     return !this.staticPlaceholders.isEmpty();
+  }
+
+  @Override
+  public Component apply(final Component component) {
+    return component.replaceText(builder -> {});
   }
 
   @Override

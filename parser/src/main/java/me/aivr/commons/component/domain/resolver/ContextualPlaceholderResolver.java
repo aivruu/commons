@@ -17,6 +17,8 @@
 package me.aivr.commons.component.domain.resolver;
 
 import me.aivr.commons.component.domain.resolver.context.ContextualPlaceholder;
+import me.aivr.commons.util.domain.exception.ExceptionConstants;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.List;
@@ -37,7 +39,7 @@ public interface ContextualPlaceholderResolver extends PlaceholderResolver {
   @Override
   @Deprecated
   default List<TagResolver> all() {
-    throw new UnsupportedOperationException("This operation is not supported by this resolver.");
+    throw ExceptionConstants.UNSUPPORTED_OPERATION_EXCEPTION;
   }
 
   /**
@@ -61,8 +63,14 @@ public interface ContextualPlaceholderResolver extends PlaceholderResolver {
 
   @Override
   @Deprecated
+  default Component apply(final Component component) {
+    throw ExceptionConstants.UNSUPPORTED_OPERATION_EXCEPTION;
+  }
+
+  @Override
+  @Deprecated
   default PlaceholderResolver registerSingle(final TagResolver placeholder) {
-    throw new UnsupportedOperationException("This operation is not supported by this resolver.");
+    throw ExceptionConstants.UNSUPPORTED_OPERATION_EXCEPTION;
   }
 
   /**
@@ -95,7 +103,7 @@ public interface ContextualPlaceholderResolver extends PlaceholderResolver {
   @Override
   @Deprecated
   default boolean unregisterSingle(final TagResolver placeholder) {
-    throw new UnsupportedOperationException("This operation is not supported by this resolver.");
+    throw ExceptionConstants.UNSUPPORTED_OPERATION_EXCEPTION;
   }
 
   /**

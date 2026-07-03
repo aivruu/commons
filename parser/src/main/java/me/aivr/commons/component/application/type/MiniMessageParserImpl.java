@@ -38,21 +38,37 @@ public final class MiniMessageParserImpl extends ContextualComponentParserImpl i
    *
    * @since 2.4.0
    */
-  private static final MiniMessage NO_ITALICS_INSTANCE = MiniMessage.builder()
+  public static final MiniMessage NO_ITALICS_INSTANCE = MiniMessage.builder()
       .postProcessor(component -> component.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE))
       .build();
   private final StaticPlaceholderResolver staticResolver;
+  private final boolean resolveContextualPlaceholders;
 
   /**
-   * Creates a new {@link MiniMessageParserImpl} instance, this object will use this parser's {@link #NO_ITALICS_INSTANCE}, as well
-   * the default {@link ContextualPlaceholderResolver} and {@link StaticPlaceholderResolver} implementations.
+   * Creates a new {@link MiniMessageParserImpl} instance, this object will use this parser's
+   * {@link #NO_ITALICS_INSTANCE} MiniMessage instance, as well the default {@link ContextualPlaceholderResolver}
+   * and {@link StaticPlaceholderResolver} implementations.
    *
-   * @see #MiniMessageParserImpl(MiniMessage, ContextualPlaceholderResolver, StaticPlaceholderResolver) Custom-implementations parser
-   * construction
+   * @see #MiniMessageParserImpl(MiniMessage, ContextualPlaceholderResolver, StaticPlaceholderResolver, boolean)
+   * Custom-implementations parser construction
    * @since 2.4.0
    */
   public MiniMessageParserImpl() {
-    this(NO_ITALICS_INSTANCE, new ContextualPlaceholderResolverImpl(), new StaticPlaceholderResolverImpl());
+    this(NO_ITALICS_INSTANCE, new ContextualPlaceholderResolverImpl(), new StaticPlaceholderResolverImpl(), false);
+  }
+
+  /**
+   * Creates a new {@link MiniMessageParserImpl} instance, this object will use this parser's
+   * {@link #NO_ITALICS_INSTANCE} MiniMessage instance, as well, the default {@link ContextualPlaceholderResolver}
+   * and {@link StaticPlaceholderResolver} implementations.
+   *
+   * @param resolveContextualPlaceholders whether context-based placeholders should be resolved too.
+   * @see #MiniMessageParserImpl(MiniMessage, ContextualPlaceholderResolver, StaticPlaceholderResolver, boolean)
+   * Custom-implementations parser construction
+   * @since 3.0.0
+   */
+  public MiniMessageParserImpl(final boolean resolveContextualPlaceholders) {
+    this(NO_ITALICS_INSTANCE, new ContextualPlaceholderResolverImpl(), new StaticPlaceholderResolverImpl(), resolveContextualPlaceholders);
   }
 
   /**
@@ -61,14 +77,17 @@ public final class MiniMessageParserImpl extends ContextualComponentParserImpl i
    * @param parsingProvider the {@link MiniMessage} instance to use.
    * @param contextualResolver the {@link ContextualPlaceholderResolver}.
    * @param staticResolver the {@link StaticPlaceholderResolver}.
+   * @param resolveContextualPlaceholders whether context-based placeholders should be resolved too.
    * @since 2.4.0
    */
   public MiniMessageParserImpl(
       final MiniMessage parsingProvider,
       final ContextualPlaceholderResolver contextualResolver,
-      final StaticPlaceholderResolver staticResolver) {
+      final StaticPlaceholderResolver staticResolver,
+      final boolean resolveContextualPlaceholders) {
     super(parsingProvider, contextualResolver);
     this.staticResolver = staticResolver;
+    this.resolveContextualPlaceholders = resolveContextualPlaceholders;
   }
 
   @Override
@@ -78,14 +97,22 @@ public final class MiniMessageParserImpl extends ContextualComponentParserImpl i
 
   @Override
   public Component parseSingle(final String value) {
-    final TagResolver staticPlaceholders = this.staticResolver.resolvedPlaceholders();
-    return staticPlaceholders == TagResolver.empty()
-        ? super.parseSingle(value) : super.parsingProvider.deserialize(value, TagResolver.resolver(staticPlaceholders));
+    final TagResolver placeholders = this.staticResolver.resolvedPlaceholders();
+    return placeholders == TagResolver.empty() ? super.parseSingle(value) : super.parsingProvider.deserialize(value, placeholders);
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   * @return the parsed component or {@link Component#empty()} if {@link #resolveContextualPlaceholders} is set to
+   * {@code false}.
+   * @since 3.0.0
+   */
   @Override
   @SuppressWarnings("unchecked")
   public <C> Component parseSingleFromContexts(final String input, final C... contexts) {
+    if (!this.resolveContextualPlaceholders) return Component.empty();
+
     final boolean hasStaticPlaceholders = this.staticResolver.any();
     final boolean hasContextualPlaceholders = contexts.length == 0 || super.contextualResolver.any();
     if (!hasStaticPlaceholders && !hasContextualPlaceholders) {

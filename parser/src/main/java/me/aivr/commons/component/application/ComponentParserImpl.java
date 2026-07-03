@@ -26,8 +26,7 @@ import net.kyori.adventure.text.serializer.ComponentSerializer;
  * @param <P> represents a component-serializer (e.g. {@link net.kyori.adventure.text.minimessage.MiniMessage}).
  * @since 2.4.0
  */
-public class ComponentParserImpl<P extends ComponentSerializer<Component, ? extends Component, String>>
-    implements ComponentParser<P> {
+public class ComponentParserImpl<P extends ComponentSerializer<Component, ? extends Component, String>> implements ComponentParser<P> {
   protected final P parsingProvider;
 
   /**

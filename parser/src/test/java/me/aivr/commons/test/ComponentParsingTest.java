@@ -48,7 +48,7 @@ public final class ComponentParsingTest {
   @Test
   void contextualParsing() {
    final Location testLocation = new Location(null, 192.2303, 60, 432234.231);
-    final MiniMessageParser miniMessageParser = new MiniMessageParserImpl();
+    final MiniMessageParser miniMessageParser = new MiniMessageParserImpl(true);
     miniMessageParser.staticPlaceholderResolver()
         .registerSingle(Placeholder.parsed("version", "2.3.2"))
         .registerSingle(Placeholder.parsed("provider", miniMessageParser.providerInstance().toString()));

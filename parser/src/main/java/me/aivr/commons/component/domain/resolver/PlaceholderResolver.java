@@ -16,6 +16,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.component.domain.resolver;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.List;
@@ -41,6 +42,8 @@ public interface PlaceholderResolver {
    * @since 2.4.0
    */
   boolean any();
+
+  Component apply(final Component component);
 
   /**
    * Registers a bunch (array) of placeholders and returns this resolver's instance.

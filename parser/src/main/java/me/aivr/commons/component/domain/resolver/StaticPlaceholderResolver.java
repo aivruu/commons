@@ -16,6 +16,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.component.domain.resolver;
 
+import me.aivr.commons.util.domain.exception.ExceptionConstants;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public interface StaticPlaceholderResolver extends PlaceholderResolver {
   @Override
   @Deprecated
   default List<TagResolver> all() {
-    throw new UnsupportedOperationException("This operation is not supported by this resolver.");
+    throw ExceptionConstants.UNSUPPORTED_OPERATION_EXCEPTION;
   }
 
   /**
