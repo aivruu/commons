@@ -7,12 +7,6 @@ plugins {
   id("commons.test-conventions")
 }
 
-repositories {
-  flatDir {
-    dirs("$projectDir/libs") // import local libs
-  }
-}
-
 val libs = extensions.getByType(LibrariesForLibs::class)
 
 dependencies {
