@@ -1,7 +1,7 @@
 /**
  * Provides access to infrastructure-layer JSON-support configuration-related components.
  *
- * @since 3.0.0
+ * @since 3.0.0-rc1
  */
 @NullMarked
 package me.aivr.commons.config.infrastructure.container.json;

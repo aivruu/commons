@@ -35,7 +35,7 @@ import java.util.function.UnaryOperator;
 /**
  * Represents a {@link ContainerBuilder} type for {@link YamlConfigurationContainer}s.
  *
- * @since 3.0.0
+ * @since 3.0.0-rc1
  */
 public final class YamlContainerBuilder extends ContainerBuilder {
   private @Nullable String header;
@@ -44,7 +44,7 @@ public final class YamlContainerBuilder extends ContainerBuilder {
    * Creates a new {@link YamlContainerBuilder} from the provided parameter.
    *
    * @param directory the directory to use to resolve the YAML-file.
-   * @since 3.0.0
+   * @since 3.0.0-rc1
    */
   public YamlContainerBuilder(final Path directory) {
     super(directory);
@@ -55,7 +55,7 @@ public final class YamlContainerBuilder extends ContainerBuilder {
    *
    * @param directory the directory where store the configuration-file.
    * @return a new {@link YamlContainerBuilder}.
-   * @since 3.0.0
+   * @since 3.0.0-rc1
    */
   public static YamlContainerBuilder create(final Path directory) {
     return new YamlContainerBuilder(directory);
@@ -66,7 +66,7 @@ public final class YamlContainerBuilder extends ContainerBuilder {
    *
    * @param header the header for the config-file.
    * @return this builder.
-   * @since 3.0.0
+   * @since 3.0.0-rc1
    */
   public YamlContainerBuilder header(final @Nullable String header) {
     this.header = header;

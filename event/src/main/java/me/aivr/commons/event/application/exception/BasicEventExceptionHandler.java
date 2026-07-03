@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Default built-in implementation for {@link EventBus.EventExceptionHandler}.
  *
- * @since 3.0.0
+ * @since 3.0.0-rc1
  */
 public enum BasicEventExceptionHandler implements EventBus.EventExceptionHandler {
   INSTANCE;

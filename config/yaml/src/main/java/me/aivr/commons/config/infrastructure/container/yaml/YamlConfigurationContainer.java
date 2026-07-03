@@ -27,7 +27,7 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
  * A mutable-container for single YAML-related configuration-data storage.
  *
  * @param <Config> an object that extends from the {@link Configuration} interface.
- * @since 3.0.0
+ * @since 3.0.0-rc1
  */
 public final class YamlConfigurationContainer<Config extends Configuration> implements Container<Config> {
   private final @Nullable String header;
@@ -42,7 +42,7 @@ public final class YamlConfigurationContainer<Config extends Configuration> impl
    * @param clazzType the class-type of the config-model.
    * @param loader the configuration loader.
    * @param model the actual configuration-model already loaded.
-   * @since 3.0.0
+   * @since 3.0.0-rc1
    */
   public YamlConfigurationContainer(
       final @Nullable String header,

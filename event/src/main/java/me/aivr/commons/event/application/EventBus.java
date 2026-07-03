@@ -39,7 +39,7 @@ public interface EventBus<E> {
    *
    * @param events the events to post.
    * @see #postBunch(Iterator) Event-iterator posting operator
-   * @since 3.0.0
+   * @since 3.0.0-rc1
    */
   default void postBunch(final List<? extends E> events) {
     this.postBunch(events.iterator());
@@ -85,7 +85,7 @@ public interface EventBus<E> {
      * Returns the singleton-instance for the default {@link EventExceptionHandler} implementation.
      *
      * @return the default event-exception handler.
-     * @since 3.0.0
+     * @since 3.0.0-rc1
      */
     static EventExceptionHandler basic() {
       return BasicEventExceptionHandler.INSTANCE;

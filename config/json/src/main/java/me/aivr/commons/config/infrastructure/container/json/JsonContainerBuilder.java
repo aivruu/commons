@@ -33,14 +33,14 @@ import java.util.function.UnaryOperator;
 /**
  * Represents a {@link ContainerBuilder} type for {@link JsonConfigurationContainer}s.
  *
- * @since 3.0.0
+ * @since 3.0.0-rc1
  */
 public final class JsonContainerBuilder extends ContainerBuilder {
   /**
    * Creates a new {@link JsonContainerBuilder} from the provided parameter.
    *
    * @param directory the directory to use to resolve the JSON-file.
-   * @since 3.0.0
+   * @since 3.0.0-rc1
    */
   public JsonContainerBuilder(final Path directory) {
     super(directory);
@@ -51,7 +51,7 @@ public final class JsonContainerBuilder extends ContainerBuilder {
    *
    * @param directory the directory where store the configuration-file.
    * @return a new {@link JsonContainerBuilder}.
-   * @since 3.0.0
+   * @since 3.0.0-rc1
    */
   public static JsonContainerBuilder create(final Path directory) {
     return new JsonContainerBuilder(directory);
