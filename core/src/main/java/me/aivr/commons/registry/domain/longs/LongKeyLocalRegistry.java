@@ -95,7 +95,7 @@ public interface LongKeyLocalRegistry<V> extends LocalRegistry<Long, V> {
   }
 
   /**
-   * Stores the given value with the specified {@code long} ID longo this registry, and returns whether the given value or the
+   * Stores the given value with the specified {@code long} identifier this registry, and returns whether the given value or the
    * old-mapping already existed for that identifier.
    *
    * @param id the id to assign.
