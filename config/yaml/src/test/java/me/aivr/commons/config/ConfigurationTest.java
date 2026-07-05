@@ -69,12 +69,19 @@ class ConfigurationTest {
   void builderMissingParameters() {
     final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
     this.deletePreviousIfExists(provider);
-    final ContainerBuilder containerBuilder = YamlContainerBuilder.create(DIRECTORY)
-        .fileName("")
+    // try with no file-name specified.
+    ContainerBuilder containerBuilder;
+    containerBuilder = YamlContainerBuilder.create(DIRECTORY)
+        .clazz(provider.modelClassType())
         .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
-    Assertions.assertThrows(NullPointerException.class, () -> provider.load(containerBuilder));
-    // or
-    Assertions.assertThrows(IllegalArgumentException.class, () -> provider.load(containerBuilder));
+    Assertions.assertThrows(IllegalArgumentException.class, containerBuilder::build);
+
+    this.deletePreviousIfExists(provider);
+    // try with no class specification.
+    containerBuilder = YamlContainerBuilder.create(DIRECTORY)
+        .fileName(provider.configName())
+        .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
+    Assertions.assertThrows(NullPointerException.class, containerBuilder::build);
   }
 
   @Test
