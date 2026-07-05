@@ -22,6 +22,7 @@ import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * A type of {@link LocalRegistry} that uses {@code byte} primitives as keys for the registry's entries.
@@ -30,13 +31,6 @@ import java.util.Set;
  * @since 2.3.0
  */
 public interface ByteKeyLocalRegistry<V> extends LocalRegistry<Byte, V> {
-  /**
-   * Reusable {@link Set} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
-   *
-   * @since 2.3.0
-   */
-  Set<Byte> CACHED_SET_FOR_DEPRECATED_FUNCTIONS = Set.of();
-
   /**
    * {@inheritDoc}
    *
@@ -109,13 +103,26 @@ public interface ByteKeyLocalRegistry<V> extends LocalRegistry<Byte, V> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllByteKeys()} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Set<Byte>> C findAllKeys() {
-    return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllByteKeys();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllByteKeys(ByteConsumer)} instead.
+   * @since 3.0.0-rc2
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Set<Byte>> C findAllKeys(final Consumer<Byte> postFetchAction) {
+    return (C) this.findAllByteKeys((ByteConsumer) postFetchAction);
   }
 
   /**

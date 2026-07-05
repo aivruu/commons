@@ -23,9 +23,9 @@ import it.unimi.dsi.fastutil.bytes.ByteConsumer;
 import it.unimi.dsi.fastutil.bytes.ByteOpenHashSet;
 import it.unimi.dsi.fastutil.bytes.ByteSet;
 import me.aivr.commons.registry.domain.bytes.ByteKeyLocalRegistry;
-import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Map;
 import java.util.function.Predicate;
 
 /**
@@ -33,18 +33,19 @@ import java.util.function.Predicate;
  * operations.
  *
  * @param <V> the type of value this registry handles.
- * @since 2.3.0
+ * @since 3.0.0-rc2
  */
 @SuppressWarnings("DataFlowIssue")
-public final class ByteKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocalRegistry<Byte, V, Byte2ObjectMap<V>>
-    implements ByteKeyLocalRegistry<V> {
+public final class ByteKeyInMemoryLocalRegistry<V> implements ByteKeyLocalRegistry<V> {
+  private final Byte2ObjectMap<V> cache;
+
   /**
    * Creates a new {@link ByteKeyInMemoryLocalRegistry} with the provided information.
    * <p>
    * This registry will have a pre-defined expected initial-size established by {@link Byte2ObjectOpenHashMap#DEFAULT_INITIAL_SIZE}.
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public ByteKeyInMemoryLocalRegistry(final boolean threadSafe) {
     this(threadSafe, Byte2ObjectOpenHashMap.DEFAULT_INITIAL_SIZE);
@@ -55,7 +56,7 @@ public final class ByteKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocal
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
    * @param expectedSize the initial-size that the registry is expected to have.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public ByteKeyInMemoryLocalRegistry(final boolean threadSafe, final int expectedSize) {
     this(threadSafe ? new Byte2ObjectOpenHashMap<>(expectedSize) : Byte2ObjectMaps.synchronize(new Byte2ObjectOpenHashMap<>(expectedSize)));
@@ -65,45 +66,54 @@ public final class ByteKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocal
    * Creates a new {@link ByteKeyInMemoryLocalRegistry} with the provided parameter.
    *
    * @param cache the {@link Byte2ObjectMap} instance to use for cache-handling.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public ByteKeyInMemoryLocalRegistry(final Byte2ObjectMap<V> cache) {
-    super(cache);
+    this.cache = cache;
   }
 
   @Override
   public @Nullable V getByByteId(final byte id) {
-    return super.cache.get(id);
+    return this.cache.get(id);
   }
 
   @Override
   public V registerByte(final byte id, final V value) {
-    final V stored = super.cache.put(id, value);
-    return stored == super.cache.defaultReturnValue() ? value : stored;
+    final V stored = this.cache.put(id, value);
+    return stored == this.cache.defaultReturnValue() ? value : stored;
   }
 
   @Override
   public ByteSet findAllByteKeys(final ByteConsumer postFetchAction) {
-    final ByteSet registryKeys = super.cache.keySet();
+    final ByteSet registryKeys = this.cache.keySet();
     final ByteSet keys = new ByteOpenHashSet(registryKeys.size());
-    keys.addAll(registryKeys);
+    for (final byte key : registryKeys) {
+      keys.add(key);
+      postFetchAction.accept(key);
+    }
     return keys;
   }
 
   @Override
   public @Nullable V unregisterByte(final byte id) {
-    return super.cache.remove(id);
+    return this.cache.remove(id);
   }
 
   @Override
   public int unregisterIf(final Predicate<V> filter) {
     int count = 0;
-    for (final Byte2ObjectMap.Entry<V> entry : super.cache.byte2ObjectEntrySet()) {
+    for (final Byte2ObjectMap.Entry<V> entry : this.cache.byte2ObjectEntrySet()) {
       if (filter.test(entry.getValue())) {
-        super.cache.remove(entry.getByteKey());
+        this.cache.remove(entry.getByteKey());
         ++count;
       }
     }
     return count;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <M extends Map<Byte, V>> M raw() {
+    return (M) this.cache;
   }
 }

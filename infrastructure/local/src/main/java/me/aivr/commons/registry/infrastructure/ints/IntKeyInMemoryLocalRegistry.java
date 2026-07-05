@@ -22,9 +22,9 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import me.aivr.commons.registry.domain.ints.IntKeyLocalRegistry;
-import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Map;
 import java.util.function.IntConsumer;
 import java.util.function.Predicate;
 
@@ -33,18 +33,19 @@ import java.util.function.Predicate;
  * operations.
  *
  * @param <V> the type of value this registry handles.
- * @since 2.3.0
+ * @since 3.0.0-rc2
  */
 @SuppressWarnings("DataFlowIssue")
-public final class IntKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocalRegistry<Integer, V, Int2ObjectMap<V>>
-    implements IntKeyLocalRegistry<V> {
+public final class IntKeyInMemoryLocalRegistry<V> implements IntKeyLocalRegistry<V> {
+  private final Int2ObjectMap<V> cache;
+
   /**
    * Creates a new {@link IntKeyInMemoryLocalRegistry} with the provided information.
    * <p>
    * This registry will have a pre-defined expected initial-size established by {@link Int2ObjectOpenHashMap#DEFAULT_INITIAL_SIZE}.
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public IntKeyInMemoryLocalRegistry(final boolean threadSafe) {
     this(threadSafe, Int2ObjectOpenHashMap.DEFAULT_INITIAL_SIZE);
@@ -55,7 +56,7 @@ public final class IntKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocalR
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
    * @param expectedSize the initial-size that the registry is expected to have.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public IntKeyInMemoryLocalRegistry(final boolean threadSafe, final int expectedSize) {
     this(threadSafe ? new Int2ObjectOpenHashMap<>(expectedSize) : Int2ObjectMaps.synchronize(new Int2ObjectOpenHashMap<>(expectedSize)));
@@ -65,45 +66,54 @@ public final class IntKeyInMemoryLocalRegistry<V> extends AbstractInMemoryLocalR
    * Creates a new {@link IntKeyInMemoryLocalRegistry} with the provided parameter.
    *
    * @param cache the {@link Int2ObjectMap} instance to use for cache-handling.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public IntKeyInMemoryLocalRegistry(final Int2ObjectMap<V> cache) {
-    super(cache);
+    this.cache = cache;
   }
 
   @Override
   public @Nullable V getByIntId(final int id) {
-    return super.cache.get(id);
+    return this.cache.get(id);
   }
 
   @Override
   public V registerInt(final int id, final V value) {
-    final V stored = super.cache.put(id, value);
-    return stored == super.cache.defaultReturnValue() ? value : stored;
+    final V stored = this.cache.put(id, value);
+    return stored == this.cache.defaultReturnValue() ? value : stored;
   }
 
   @Override
   public IntSet findAllIntKeys(final IntConsumer postFetchAction) {
-    final IntSet registryKeys = super.cache.keySet();
+    final IntSet registryKeys = this.cache.keySet();
     final IntSet keys = new IntOpenHashSet(registryKeys.size());
-    keys.addAll(registryKeys);
+    for (final int key : registryKeys) {
+      keys.add(key);
+      postFetchAction.accept(key);
+    }
     return keys;
   }
 
   @Override
   public @Nullable V unregisterInt(final int id) {
-    return super.cache.remove(id);
+    return this.cache.remove(id);
   }
 
   @Override
   public int unregisterIf(final Predicate<V> filter) {
     int count = 0;
-    for (final Int2ObjectMap.Entry<V> entry : super.cache.int2ObjectEntrySet()) {
+    for (final Int2ObjectMap.Entry<V> entry : this.cache.int2ObjectEntrySet()) {
       if (filter.test(entry.getValue())) {
-        super.cache.remove(entry.getIntKey());
+        this.cache.remove(entry.getIntKey());
         ++count;
       }
     }
     return count;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <M extends Map<Integer, V>> M raw() {
+    return (M) this.cache;
   }
 }

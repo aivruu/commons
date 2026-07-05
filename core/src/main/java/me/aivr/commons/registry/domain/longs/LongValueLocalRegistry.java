@@ -20,7 +20,6 @@ import it.unimi.dsi.fastutil.longs.LongCollection;
 import me.aivr.commons.registry.domain.LocalRegistry;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.LongConsumer;
 import java.util.function.LongPredicate;
@@ -33,13 +32,6 @@ import java.util.function.Predicate;
  * @since 2.3.0
  */
 public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long> {
-  /**
-   * Reusable {@link List} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
-   *
-   * @since 2.3.0
-   */
-  List<Long> CACHED_LIST_FOR_DEPRECATED_FUNCTIONS = List.of(1L);
-
   /**
    * {@inheritDoc}
    *
@@ -112,26 +104,26 @@ public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllLongs()} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Long>> C findAllValues() {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllLongs();
   }
 
   /**
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllLongs(LongConsumer)} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Long>> C findAllValues(final Consumer<Long> postFetchAction) {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllLongs((LongConsumer) postFetchAction);
   }
 
   /**
@@ -158,13 +150,13 @@ public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #filterLongs(LongPredicate)} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Long>> C filter(final Predicate<Long> condition) {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.filterLongs((LongPredicate) condition);
   }
 
   /**

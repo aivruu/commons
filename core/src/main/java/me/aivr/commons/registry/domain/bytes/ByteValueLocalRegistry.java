@@ -22,7 +22,6 @@ import it.unimi.dsi.fastutil.bytes.BytePredicate;
 import me.aivr.commons.registry.domain.LocalRegistry;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -33,13 +32,6 @@ import java.util.function.Predicate;
  * @since 2.3.0
  */
 public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte> {
-  /**
-   * Reusable {@link List} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
-   *
-   * @since 2.3.0
-   */
-  List<Byte> CACHED_LIST_FOR_DEPRECATED_FUNCTIONS = List.of();
-
   /**
    * {@inheritDoc}
    *
@@ -112,26 +104,26 @@ public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllBytes()} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Byte>> C findAllValues() {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllBytes();
   }
 
   /**
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllBytes(ByteConsumer)} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Byte>> C findAllValues(final Consumer<Byte> postFetchAction) {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllBytes((ByteConsumer) postFetchAction);
   }
 
   /**
@@ -158,13 +150,13 @@ public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #filterBytes(BytePredicate)} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Byte>> C filter(final Predicate<Byte> condition) {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.filterBytes((BytePredicate) condition);
   }
 
   /**

@@ -21,6 +21,7 @@ import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
 /**
@@ -109,13 +110,26 @@ public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllIntKeys()} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Set<Integer>> C findAllKeys() {
-    return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllIntKeys();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllIntKeys(IntConsumer)} instead.
+   * @since 3.0.0-rc2
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Set<Integer>> C findAllKeys(final Consumer<Integer> postFetchAction) {
+    return (C) this.findAllIntKeys((IntConsumer) postFetchAction);
   }
 
   /**

@@ -112,26 +112,26 @@ public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllInts()} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Integer>> C findAllValues() {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllInts();
   }
 
   /**
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllInts(IntConsumer)} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Integer>> C findAllValues(final Consumer<Integer> postFetchAction) {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllInts((IntConsumer) postFetchAction);
   }
 
   /**
@@ -158,13 +158,13 @@ public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #filterInts(IntPredicate)} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Collection<Integer>> C filter(final Predicate<Integer> condition) {
-    return (C) CACHED_LIST_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.filterInts((IntPredicate) condition);
   }
 
   /**

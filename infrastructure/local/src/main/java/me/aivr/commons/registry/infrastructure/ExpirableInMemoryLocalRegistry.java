@@ -21,7 +21,6 @@ import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 import java.util.function.Predicate;
 
 /**
@@ -29,24 +28,18 @@ import java.util.function.Predicate;
  *
  * @param <K> the type of id this registry uses.
  * @param <V> the type of value this registry handles.
- * @since 2.3.0
+ * @since 3.0.0-rc2
  */
-public final class ExpirableInMemoryLocalRegistry<K, V> extends AbstractInMemoryLocalRegistry<K, V, ConcurrentMap<K, V>> {
-  /**
-   * The object to use for cache-handling within this specific registry-type.
-   *
-   * @since 2.3.0
-   */
+public final class ExpirableInMemoryLocalRegistry<K, V> implements LocalRegistry<K, V> {
   private final Cache<K, V> temporalCache;
 
   /**
    * Creates a new {@link ExpirableInMemoryLocalRegistry} object from the given {@code cache} parameter.
    *
    * @param cache the {@link Cache} to use with this registry.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public ExpirableInMemoryLocalRegistry(final Cache<K, V> cache) {
-    super(cache.asMap());
     this.temporalCache = cache;
   }
 
@@ -89,5 +82,11 @@ public final class ExpirableInMemoryLocalRegistry<K, V> extends AbstractInMemory
   @Override
   public void unregisterAll() {
     this.temporalCache.invalidateAll();
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <M extends Map<K, V>> M raw() {
+    return (M) this.temporalCache.asMap();
   }
 }

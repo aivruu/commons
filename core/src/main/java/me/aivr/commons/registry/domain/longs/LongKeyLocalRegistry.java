@@ -21,6 +21,7 @@ import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.LongConsumer;
 
 /**
@@ -30,13 +31,6 @@ import java.util.function.LongConsumer;
  * @since 2.3.0
  */
 public interface LongKeyLocalRegistry<V> extends LocalRegistry<Long, V> {
-  /**
-   * Reusable {@link Set} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
-   *
-   * @since 2.3.0
-   */
-  Set<Long> CACHED_SET_FOR_DEPRECATED_FUNCTIONS = Set.of();
-
   /**
    * {@inheritDoc}
    *
@@ -109,13 +103,26 @@ public interface LongKeyLocalRegistry<V> extends LocalRegistry<Long, V> {
    * {@inheritDoc}
    *
    * @deprecated use {@link #findAllLongKeys()} instead.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   @Override
   @Deprecated
   @SuppressWarnings("unchecked")
   default <C extends Set<Long>> C findAllKeys() {
-    return (C) CACHED_SET_FOR_DEPRECATED_FUNCTIONS;
+    return (C) this.findAllLongKeys();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #findAllLongKeys(LongConsumer)} instead.
+   * @since 3.0.0-rc2
+   */
+  @Override
+  @Deprecated
+  @SuppressWarnings("unchecked")
+  default <C extends Set<Long>> C findAllKeys(final Consumer<Long> postFetchAction) {
+    return (C) this.findAllLongKeys((LongConsumer) postFetchAction);
   }
 
   /**
