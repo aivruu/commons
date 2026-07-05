@@ -30,7 +30,7 @@ import java.util.function.Predicate;
  * <p>
  * Some of this class's functions uses FastUtil's implementations when returning new collections.
  *
- * @since 3.0.0-rc2-rc2
+ * @since 3.0.0-rc2
  */
 public final class GenericRegistryVisitor {
   private GenericRegistryVisitor() {
