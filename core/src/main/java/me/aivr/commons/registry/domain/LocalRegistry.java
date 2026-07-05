@@ -16,9 +16,12 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain;
 
+import me.aivr.commons.registry.domain.util.GenericRegistryVisitor;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -69,9 +72,12 @@ public interface LocalRegistry<K, V> {
    * @param postFetchAction the action to execute for each key.
    * @param <C> represents a collection, or similar, of {@link K} objects.
    * @return the collection of keys.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
-  <C extends Set<K>> C findAllKeys(final Consumer<K> postFetchAction);
+  @SuppressWarnings("unchecked")
+  default <C extends Set<K>> C findAllKeys(final Consumer<K> postFetchAction) {
+    return (C) GenericRegistryVisitor.visitKeys(this.raw().keySet(), postFetchAction);
+  }
 
   /**
    * Returns a collection with this registry's all values, this function will not perform an action when a value is retrieved.
@@ -91,9 +97,12 @@ public interface LocalRegistry<K, V> {
    * @param postFetchAction the action to execute for each value.
    * @param <C> represents a collection, or similar, of {@link V} objects.
    * @return the collection of values.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
-  <C extends Collection<V>> C findAllValues(final Consumer<V> postFetchAction);
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<V>> C findAllValues(final Consumer<V> postFetchAction) {
+    return (C) GenericRegistryVisitor.visitValues(this.raw().values(), postFetchAction);
+  }
 
   /**
    * Returns a collection with values from this registry that meets the condition given.
@@ -101,9 +110,12 @@ public interface LocalRegistry<K, V> {
    * @param condition the condition used to filter by the registry's values.
    * @param <C> represents a collection, or similar, of {@link V} objects.
    * @return the collection of values.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
-  <C extends Collection<V>> C filter(final Predicate<V> condition);
+  @SuppressWarnings("unchecked")
+  default <C extends Collection<V>> C filter(final Predicate<V> condition) {
+    return (C) GenericRegistryVisitor.filter(this.raw().values(), condition);
+  }
 
   /**
    * Stores the given value with the specified ID into this registry, and returns whether the given value or the
@@ -138,7 +150,23 @@ public interface LocalRegistry<K, V> {
   /**
    * Removes all the values stored by this registry.
    *
-   * @since 2.3.0
+   * @see Map#clear()
+   * @since 3.0.0-rc2
    */
-  void unregisterAll();
+  default void unregisterAll() {
+    this.raw().clear();
+  }
+
+  /**
+   * Returns the internal-container for this registry's information.
+   *
+   * @implNote This function's return depends on the implementation-type used to call this function, most of the
+   * implementations may opt by return a generic-type implementation, or, if the registry handles a type-specific
+   * value (e.g. a primitive, like {@link me.aivr.commons.registry.domain.ints.IntKeyLocalRegistry}), it may return
+   * a fast-util implementation instead.
+   * @return the {@link Map} implementation used for this registry.
+   * @since 3.0.0
+   */
+  @ApiStatus.Experimental
+  <M extends Map<K, V>> M raw();
 }
