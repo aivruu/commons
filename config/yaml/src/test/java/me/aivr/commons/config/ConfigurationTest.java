@@ -21,8 +21,6 @@ import me.aivr.commons.config.infrastructure.ConfigType;
 import me.aivr.commons.config.infrastructure.ConfigurationProviderImpl;
 import me.aivr.commons.config.infrastructure.container.ContainerBuilder;
 import me.aivr.commons.config.infrastructure.container.yaml.YamlContainerBuilder;
-import me.aivr.commons.config.infrastructure.serializer.ComponentTypeSerializer;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
@@ -51,8 +49,7 @@ class ConfigurationTest {
   private ContainerBuilder createContainer(final ConfigurationProvider<TestYamlConfig> provider, final @Nullable String header) {
     final ContainerBuilder containerBuilder = YamlContainerBuilder.create(DIRECTORY)
         .fileName(provider.configName())
-        .clazz(provider.modelClassType())
-        .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
+        .clazz(provider.modelClassType());
     if (header != null) {
       ((YamlContainerBuilder) containerBuilder).header(header);
     }
@@ -71,16 +68,12 @@ class ConfigurationTest {
     this.deletePreviousIfExists(provider);
     // try with no file-name specified.
     ContainerBuilder containerBuilder;
-    containerBuilder = YamlContainerBuilder.create(DIRECTORY)
-        .clazz(provider.modelClassType())
-        .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
+    containerBuilder = YamlContainerBuilder.create(DIRECTORY).clazz(provider.modelClassType());
     Assertions.assertThrows(IllegalArgumentException.class, containerBuilder::build);
 
     this.deletePreviousIfExists(provider);
     // try with no class specification.
-    containerBuilder = YamlContainerBuilder.create(DIRECTORY)
-        .fileName(provider.configName())
-        .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
+    containerBuilder = YamlContainerBuilder.create(DIRECTORY).fileName(provider.configName());
     Assertions.assertThrows(NullPointerException.class, containerBuilder::build);
   }
 

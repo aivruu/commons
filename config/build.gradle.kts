@@ -1,3 +1,4 @@
 plugins {
-  id("commons.config-conventions")
+  id("commons.shadow-conventions")
+  id("commons.test-conventions")
 }
