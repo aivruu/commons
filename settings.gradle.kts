@@ -13,7 +13,7 @@ rootProject.name = "commons"
 listOf("core", "event", "parser").forEach { importProject(it) }
 
 importProject("config")
-listOf("yaml", "json", "toml").forEach { importProject(it, "config") }
+listOf("yaml", "json").forEach { importProject(it, "config") }
 
 listOf("json", "mongo", "local").forEach { importProject(it, "infrastructure") }
 
