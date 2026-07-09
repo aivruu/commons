@@ -106,9 +106,9 @@ public record ValueObjectMutation<T>(byte status, @Nullable T result) {
    * Checks whether the status-code for the operation was {@link #CHANGED_STATUS}.
    *
    * @return {@code true} if the operation terminated correctly, {@code false} otherwise.
-   * @since 1.0.0
+   * @since 3.0.0-rc3
    */
-  public boolean success() {
+  public boolean successful() {
     return this.status == CHANGED_STATUS;
   }
 
