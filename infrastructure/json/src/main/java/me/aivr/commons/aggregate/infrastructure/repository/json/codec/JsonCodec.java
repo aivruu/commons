@@ -235,9 +235,9 @@ public interface JsonCodec<T> extends JsonSerializer<T>, JsonDeserializer<T> {
    * @param source the array to write.
    * @param path the path to where write the array.
    * @see #writeObjectArray(JsonObject, Object[], Class, JsonSerializationContext, String) Custom-type array writing
-   * @since 1.0.0
+   * @since 3.0.0-rc1
    */
-  default void writeStringArray(final JsonObject jsonData, final String @Nullable [] source, final String path) {
+  default void writeStringArray(final JsonObject jsonData, final String path, final String @Nullable ... source) {
     this.writeObjectArray(jsonData, source, String.class, null, path);
   }
 
@@ -248,9 +248,9 @@ public interface JsonCodec<T> extends JsonSerializer<T>, JsonDeserializer<T> {
    * @param source the array to write.
    * @param path the path to where write the array.
    * @see #writeObjectArray(JsonObject, Object[], Class, JsonSerializationContext, String) Custom-type array writing
-   * @since 1.0.0
+   * @since 3.0.0-rc1
    */
-  default void writeIntegerArray(final JsonObject jsonData, final Integer @Nullable [] source, final String path) {
+  default void writeIntegerArray(final JsonObject jsonData, final String path, final Integer @Nullable ... source) {
     this.writeObjectArray(jsonData, source, Integer.class, null, path);
   }
 
@@ -283,7 +283,7 @@ public interface JsonCodec<T> extends JsonSerializer<T>, JsonDeserializer<T> {
   /**
    * Writes the given array of objects to a {@link JsonObject} object.
    * <p>
-   * If the {@code source} is not provided then the function will write a {@code null} value on the given path for
+   * If the {@code source} is not provided or is empty, then the function will write a {@code null} value on the given path for
    * the JSON, as well, if the array is of a custom-type and no {@code context} is provided, the function will write
    * {@code null} on the given path too.
    *
@@ -301,7 +301,7 @@ public interface JsonCodec<T> extends JsonSerializer<T>, JsonDeserializer<T> {
       final Class<R> type,
       final @Nullable JsonSerializationContext context,
       final String path) {
-    if (source == null) {
+    if (source == null || source.length == 0) {
       jsonData.add(path, null);
       return;
     }

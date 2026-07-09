@@ -24,24 +24,26 @@ import it.unimi.dsi.fastutil.objects.Object2ByteMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteMaps;
 import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
 import me.aivr.commons.registry.domain.bytes.ByteValueLocalRegistry;
-import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
+
+import java.util.Map;
 
 /**
  * A registry-type that allows to use {@code byte} primitives as values for registry's entries to avoid unboxing/autoboxing
  * operations.
  *
  * @param <K> the type of id this registry uses.
- * @since 2.3.0
+ * @since 3.0.0-rc2
  */
-public final class ByteValueInMemoryLocalRegistry<K> extends AbstractInMemoryLocalRegistry<K, Byte, Object2ByteMap<K>>
-    implements ByteValueLocalRegistry<K> {
+public final class ByteValueInMemoryLocalRegistry<K> implements ByteValueLocalRegistry<K> {
+  private final Object2ByteMap<K> cache;
+
   /**
    * Creates a new {@link ByteValueInMemoryLocalRegistry} with the provided information.
    * <p>
    * This registry will have a pre-defined expected initial-size established by {@link Object2ByteOpenHashMap#DEFAULT_INITIAL_SIZE}.
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public ByteValueInMemoryLocalRegistry(final boolean threadSafe) {
     this(threadSafe, Object2ByteOpenHashMap.DEFAULT_INITIAL_SIZE);
@@ -52,7 +54,7 @@ public final class ByteValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
    * @param expectedSize the initial-size that the registry is expected to have.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public ByteValueInMemoryLocalRegistry(final boolean threadSafe, final int expectedSize) {
     this(threadSafe ? new Object2ByteOpenHashMap<>(expectedSize) : Object2ByteMaps.synchronize(new Object2ByteOpenHashMap<>(expectedSize)));
@@ -62,34 +64,37 @@ public final class ByteValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
    * Creates a new {@link ByteValueInMemoryLocalRegistry} with the provided parameter.
    *
    * @param cache the {@link Object2ByteMap} instance to use for cache-handling.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public ByteValueInMemoryLocalRegistry(final Object2ByteMap<K> cache) {
-    super(cache);
+    this.cache = cache;
   }
 
   @Override
   public byte getByteById(final K id) {
-    return super.cache.getByte(id);
+    return this.cache.getByte(id);
   }
 
   @Override
   public byte registerByte(final K id, final byte value) {
-    final byte stored = super.cache.put(id, value);
-    return stored == super.cache.defaultReturnValue() ? value : stored;
+    final byte stored = this.cache.put(id, value);
+    return stored == this.cache.defaultReturnValue() ? value : stored;
   }
 
   @Override
   public ByteCollection findAllBytes(final ByteConsumer postFetchAction) {
-    final ByteCollection registryValues = super.cache.values();
+    final ByteCollection registryValues = this.cache.values();
     final ByteCollection values = new ByteArrayList(registryValues.size());
-    values.addAll(registryValues);
+    for (final byte value : registryValues) {
+      values.add(value);
+      postFetchAction.accept(value);
+    }
     return values;
   }
 
   @Override
   public ByteCollection filterBytes(final BytePredicate condition) {
-    final ByteCollection registryValues = super.cache.values();
+    final ByteCollection registryValues = this.cache.values();
     final ByteCollection values = new ByteArrayList(registryValues.size());
     for (final byte value : registryValues) {
       if (condition.test(value)) {
@@ -101,18 +106,24 @@ public final class ByteValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
 
   @Override
   public byte unregisterByte(final K id) {
-    return super.cache.removeByte(id);
+    return this.cache.removeByte(id);
   }
 
   @Override
   public int unregisterByteIf(final BytePredicate filter) {
     int count = 0;
-    for (final Object2ByteMap.Entry<K> entry : super.cache.object2ByteEntrySet()) {
+    for (final Object2ByteMap.Entry<K> entry : this.cache.object2ByteEntrySet()) {
       if (filter.test(entry.getByteValue())) {
-        super.cache.removeByte(entry.getKey());
+        this.cache.removeByte(entry.getKey());
         ++count;
       }
     }
     return count;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <M extends Map<K, Byte>> M raw() {
+    return (M) this.cache;
   }
 }

@@ -22,8 +22,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import me.aivr.commons.registry.domain.ints.IntValueLocalRegistry;
-import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 
+import java.util.Map;
 import java.util.function.IntConsumer;
 import java.util.function.IntPredicate;
 
@@ -32,17 +32,18 @@ import java.util.function.IntPredicate;
  * operations.
  *
  * @param <K> the type of id this registry uses.
- * @since 2.3.0
+ * @since 3.0.0-rc2
  */
-public final class IntValueInMemoryLocalRegistry<K> extends AbstractInMemoryLocalRegistry<K, Integer, Object2IntMap<K>>
-    implements IntValueLocalRegistry<K> {
+public final class IntValueInMemoryLocalRegistry<K> implements IntValueLocalRegistry<K> {
+  private final Object2IntMap<K> cache;
+
   /**
    * Creates a new {@link IntValueInMemoryLocalRegistry} with the provided information.
    * <p>
    * This registry will have a pre-defined expected initial-size established by {@link Object2IntOpenHashMap#DEFAULT_INITIAL_SIZE}.
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public IntValueInMemoryLocalRegistry(final boolean threadSafe) {
     this(threadSafe, Object2IntOpenHashMap.DEFAULT_INITIAL_SIZE);
@@ -53,7 +54,7 @@ public final class IntValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoca
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
    * @param expectedSize the initial-size that the registry is expected to have.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public IntValueInMemoryLocalRegistry(final boolean threadSafe, final int expectedSize) {
     this(threadSafe ? new Object2IntOpenHashMap<>(expectedSize) : Object2IntMaps.synchronize(new Object2IntOpenHashMap<>(expectedSize)));
@@ -63,34 +64,37 @@ public final class IntValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoca
    * Creates a new {@link IntValueInMemoryLocalRegistry} with the provided parameter.
    *
    * @param cache the {@link Object2IntMap} instance to use for cache-handling.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public IntValueInMemoryLocalRegistry(final Object2IntMap<K> cache) {
-    super(cache);
+    this.cache = cache;
   }
 
   @Override
   public int getIntById(final K id) {
-    return super.cache.getInt(id);
+    return this.cache.getInt(id);
   }
 
   @Override
   public int registerInt(final K id, final int value) {
-    final int stored = super.cache.put(id, value);
-    return stored == super.cache.defaultReturnValue() ? value : stored;
+    final int stored = this.cache.put(id, value);
+    return stored == this.cache.defaultReturnValue() ? value : stored;
   }
 
   @Override
   public IntCollection findAllInts(final IntConsumer postFetchAction) {
-    final IntCollection registryValues = super.cache.values();
+    final IntCollection registryValues = this.cache.values();
     final IntCollection values = new IntArrayList(registryValues.size());
-    values.addAll(registryValues);
+    for (final int value : registryValues) {
+      values.add(value);
+      postFetchAction.accept(value);
+    }
     return values;
   }
 
   @Override
   public IntCollection filterInts(final java.util.function.IntPredicate condition) {
-    final IntCollection registryValues = super.cache.values();
+    final IntCollection registryValues = this.cache.values();
     final IntCollection values = new IntArrayList(registryValues.size());
     for (final int value : registryValues) {
       if (condition.test(value)) {
@@ -102,18 +106,24 @@ public final class IntValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoca
 
   @Override
   public int unregisterInt(final K id) {
-    return super.cache.removeInt(id);
+    return this.cache.removeInt(id);
   }
 
   @Override
   public int unregisterIntIf(final IntPredicate filter) {
     int count = 0;
-    for (final Object2IntMap.Entry<K> entry : super.cache.object2IntEntrySet()) {
+    for (final Object2IntMap.Entry<K> entry : this.cache.object2IntEntrySet()) {
       if (filter.test(entry.getIntValue())) {
-        super.cache.removeInt(entry.getKey());
+        this.cache.removeInt(entry.getKey());
         ++count;
       }
     }
     return count;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <M extends Map<K, Integer>> M raw() {
+    return (M) this.cache;
   }
 }

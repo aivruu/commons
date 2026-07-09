@@ -19,8 +19,10 @@ package me.aivr.commons.registry.infrastructure;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Map;
 import java.util.function.Predicate;
 
 /**
@@ -28,17 +30,19 @@ import java.util.function.Predicate;
  *
  * @param <K> the type of id this registry uses.
  * @param <V> the type of value this registry handles.
- * @since 2.3.0
+ * @since 3.0.0-rc2
  */
 @SuppressWarnings("DataFlowIssue")
-public final class InMemoryLocalRegistry<K, V> extends AbstractInMemoryLocalRegistry<K, V, Object2ObjectMap<K, V>> {
+public final class InMemoryLocalRegistry<K, V> implements LocalRegistry<K, V> {
+  private final Object2ObjectMap<K, V> cache;
+
   /**
    * Creates a new {@link InMemoryLocalRegistry} with the provided information.
    * <p>
    * This registry will have a pre-defined expected initial-size established by {@link Object2ObjectOpenHashMap#DEFAULT_INITIAL_SIZE}.
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public InMemoryLocalRegistry(final boolean threadSafe) {
     this(threadSafe, Object2ObjectOpenHashMap.DEFAULT_INITIAL_SIZE);
@@ -49,7 +53,7 @@ public final class InMemoryLocalRegistry<K, V> extends AbstractInMemoryLocalRegi
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
    * @param expectedSize the initial-size that the registry is expected to have.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public InMemoryLocalRegistry(final boolean threadSafe, final int expectedSize) {
     this(threadSafe
@@ -60,37 +64,43 @@ public final class InMemoryLocalRegistry<K, V> extends AbstractInMemoryLocalRegi
    * Creates a new {@link InMemoryLocalRegistry} with the provided parameter.
    *
    * @param cache the {@link Object2ObjectMap} instance to use for cache-handling.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public InMemoryLocalRegistry(final Object2ObjectMap<K, V> cache) {
-    super(cache);
+    this.cache = cache;
   }
 
   @Override
   public @Nullable V findById(final K id) {
-    return super.cache.get(id);
+    return this.cache.get(id);
   }
 
   @Override
   public V register(final K id, final V value) {
-    final V stored = super.cache.put(id, value);
+    final V stored = this.cache.put(id, value);
     return stored == null ? value : stored;
   }
 
   @Override
   public @Nullable V unregister(final K id) {
-    return super.cache.remove(id);
+    return this.cache.remove(id);
   }
 
   @Override
   public int unregisterIf(final Predicate<V> filter) {
     int count = 0;
-    for (final Object2ObjectMap.Entry<K, V> entry : super.cache.object2ObjectEntrySet()) {
+    for (final Object2ObjectMap.Entry<K, V> entry : this.cache.object2ObjectEntrySet()) {
       if (filter.test(entry.getValue())) {
-        super.cache.remove(entry.getKey());
+        this.cache.remove(entry.getKey());
         ++count;
       }
     }
     return count;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <M extends Map<K, V>> M raw() {
+    return (M) this.cache;
   }
 }

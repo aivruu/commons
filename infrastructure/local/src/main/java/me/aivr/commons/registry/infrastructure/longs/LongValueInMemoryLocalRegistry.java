@@ -22,8 +22,8 @@ import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import me.aivr.commons.registry.domain.longs.LongValueLocalRegistry;
-import me.aivr.commons.registry.infrastructure.AbstractInMemoryLocalRegistry;
 
+import java.util.Map;
 import java.util.function.LongConsumer;
 import java.util.function.LongPredicate;
 
@@ -32,17 +32,18 @@ import java.util.function.LongPredicate;
  * operations.
  *
  * @param <K> the type of id this registry uses.
- * @since 2.3.0
+ * @since 3.0.0-rc2
  */
-public final class LongValueInMemoryLocalRegistry<K> extends AbstractInMemoryLocalRegistry<K, Long, Object2LongMap<K>>
-    implements LongValueLocalRegistry<K> {
+public final class LongValueInMemoryLocalRegistry<K> implements LongValueLocalRegistry<K> {
+  private final Object2LongMap<K> cache;
+
   /**
    * Creates a new {@link LongValueInMemoryLocalRegistry} with the provided information.
    * <p>
    * This registry will have a pre-defined expected initial-size established by {@link Object2LongOpenHashMap#DEFAULT_INITIAL_SIZE}.
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public LongValueInMemoryLocalRegistry(final boolean threadSafe) {
     this(threadSafe, Object2LongOpenHashMap.DEFAULT_INITIAL_SIZE);
@@ -53,7 +54,7 @@ public final class LongValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
    *
    * @param threadSafe whether the registry must be safe for use between multiple threads.
    * @param expectedSize the initial-size that the registry is expected to have.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public LongValueInMemoryLocalRegistry(final boolean threadSafe, final int expectedSize) {
     this(threadSafe ? new Object2LongOpenHashMap<>(expectedSize) : Object2LongMaps.synchronize(new Object2LongOpenHashMap<>(expectedSize)));
@@ -63,34 +64,37 @@ public final class LongValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
    * Creates a new {@link LongValueInMemoryLocalRegistry} with the provided parameter.
    *
    * @param cache the {@link Object2LongMap} instance to use for cache-handling.
-   * @since 2.3.0
+   * @since 3.0.0-rc2
    */
   public LongValueInMemoryLocalRegistry(final Object2LongMap<K> cache) {
-    super(cache);
+    this.cache = cache;
   }
 
   @Override
   public long getLongById(final K id) {
-    return super.cache.getLong(id);
+    return this.cache.getLong(id);
   }
 
   @Override
   public long registerLong(final K id, final long value) {
-    final long stored = super.cache.put(id, value);
-    return stored == super.cache.defaultReturnValue() ? value : stored;
+    final long stored = this.cache.put(id, value);
+    return stored == this.cache.defaultReturnValue() ? value : stored;
   }
 
   @Override
   public LongCollection findAllLongs(final LongConsumer postFetchAction) {
-    final LongCollection registryValues = super.cache.values();
+    final LongCollection registryValues = this.cache.values();
     final LongCollection values = new LongArrayList(registryValues.size());
-    values.addAll(registryValues);
+    for (final long value : registryValues) {
+      values.add(value);
+      postFetchAction.accept(value);
+    }
     return values;
   }
 
   @Override
   public LongCollection filterLongs(final LongPredicate condition) {
-    final LongCollection registryValues = super.cache.values();
+    final LongCollection registryValues = this.cache.values();
     final LongCollection values = new LongArrayList(registryValues.size());
     for (final long value : registryValues) {
       if (condition.test(value)) {
@@ -102,18 +106,24 @@ public final class LongValueInMemoryLocalRegistry<K> extends AbstractInMemoryLoc
 
   @Override
   public long unregisterLong(final K id) {
-    return super.cache.removeLong(id);
+    return this.cache.removeLong(id);
   }
 
   @Override
   public int unregisterLongIf(final LongPredicate filter) {
     int count = 0;
-    for (final Object2LongMap.Entry<K> entry : super.cache.object2LongEntrySet()) {
+    for (final Object2LongMap.Entry<K> entry : this.cache.object2LongEntrySet()) {
       if (filter.test(entry.getLongValue())) {
-        super.cache.removeLong(entry.getKey());
+        this.cache.removeLong(entry.getKey());
         ++count;
       }
     }
     return count;
+  }
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public <M extends Map<K, Long>> M raw() {
+    return (M) this.cache;
   }
 }

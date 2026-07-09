@@ -28,10 +28,10 @@ import org.jspecify.annotations.Nullable;
  */
 @SuppressWarnings("UnstableApiUsage")
 public final class CommandRegistry {
-  private @Nullable Commands registrar;
+  private @Nullable Commands provider;
 
   /**
-   * Creates a new {@link me.aivr.commons.event.domain.registry.EventRegistry} with the provided parameters.
+   * Creates a new {@link CommandRegistry} with the provided parameters.
    *
    * @param lifecycleEventManager the server's lifecycle event-manager to access {@link Commands} instance.
    * @since 1.0.0
@@ -41,13 +41,13 @@ public final class CommandRegistry {
   }
 
   /**
-   * Initializes the {@link #registrar} field with the given {@link Commands} instance.
+   * Initializes the {@link #provider} field with the given {@link Commands} instance.
    *
    * @param registrar the instance of {@link Commands} that'll be used for commands-registration.
    * @since 1.0.0
    */
   public void setup(final Commands registrar) {
-    if (this.registrar == null) this.registrar = registrar;
+    if (this.provider == null) this.provider = registrar;
   }
 
   /**
@@ -57,7 +57,7 @@ public final class CommandRegistry {
    * @since 1.0.0
    */
   public void register(final RegistrableCommand command) {
-    if (this.registrar != null) this.registrar.register(command.build(), command.aliases());
+    if (this.provider != null) this.provider.register(command.build(), command.aliases());
   }
 
   /**

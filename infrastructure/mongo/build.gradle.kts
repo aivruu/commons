@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-  api(project(":${rootProject.name}-api"))
+  api(project(":${rootProject.name}-core"))
 
   compileOnlyApi(libs.mongodb.driver)
 }
