@@ -42,7 +42,7 @@ class ConfigurationTest {
 
   @Test
   void loadConfigWithHeader() {
-    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    final ConfigurationProvider<TestYamlConfig> provider = this.buildConfigurationProvider();
     this.deletePreviousIfExists(provider);
     final ContainerBuilder builder = this.createContainer(provider, HEADER);
     Assertions.assertTrue(provider.load(builder));
@@ -67,7 +67,7 @@ class ConfigurationTest {
 
   @Test
   void builderMissingParameters() {
-    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    final ConfigurationProvider<TestYamlConfig> provider = this.buildConfigurationProvider();
     this.deletePreviousIfExists(provider);
     // try with no file-name specified.
     ContainerBuilder containerBuilder;
@@ -86,7 +86,7 @@ class ConfigurationTest {
 
   @Test
   void loadConfigWithoutHeader() {
-    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    final ConfigurationProvider<TestYamlConfig> provider = this.buildConfigurationProvider();
     this.deletePreviousIfExists(provider);
     final ContainerBuilder builder = this.createContainer(provider, null);
     Assertions.assertTrue(provider.load(builder));
@@ -94,11 +94,11 @@ class ConfigurationTest {
 
   @Test
   void configAccessException() {
-    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    final ConfigurationProvider<TestYamlConfig> provider = this.buildConfigurationProvider();
     Assertions.assertThrows(IllegalStateException.class, provider::get);
   }
 
-  static ConfigurationProviderImpl<TestYamlConfig> buildConfigurationProvider() {
+  ConfigurationProviderImpl<TestYamlConfig> buildConfigurationProvider() {
     return new ConfigurationProviderImpl<>(DIRECTORY, "test", TestYamlConfig.class, ComponentLogger.logger("ConfigurationTest"));
   }
 }
