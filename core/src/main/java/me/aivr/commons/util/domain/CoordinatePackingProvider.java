@@ -16,6 +16,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.util.domain;
 
+import me.aivr.commons.util.domain.exception.ExceptionConstants;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jspecify.annotations.Nullable;
@@ -108,6 +109,10 @@ public final class CoordinatePackingProvider {
    * @since 2.1.0
    */
   private static final int Z_MAX = (Z_MIN * -1) - 1;
+
+  private CoordinatePackingProvider() {
+    throw ExceptionConstants.NOT_INSTANTIABLE_EXCEPTION;
+  }
 
   /**
    * Calls to the {@link #pack(int, int, int)} function providing the given location's values.

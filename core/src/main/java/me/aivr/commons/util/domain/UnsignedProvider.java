@@ -16,6 +16,8 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.util.domain;
 
+import me.aivr.commons.util.domain.exception.ExceptionConstants;
+
 /**
  * Utility-class that provides functionality to "represent" and use "unsigned" {@code byte} values.
  * <p>
@@ -41,7 +43,7 @@ public final class UnsignedProvider {
       = new IllegalArgumentException("Provided value for unsigned conversion is out of bounds (0 to 255).");
 
   private UnsignedProvider() {
-    throw new UnsupportedOperationException("This class is for utility and cannot be instantiated.");
+    throw ExceptionConstants.NOT_INSTANTIABLE_EXCEPTION;
   }
 
   /**

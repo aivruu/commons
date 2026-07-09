@@ -16,6 +16,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.util.application;
 
+import me.aivr.commons.util.domain.exception.ExceptionConstants;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +40,15 @@ public final class Debugger {
    */
   private static boolean enabled;
   /**
-   * Indicates whether the debugger should use {@link Logger#debug(String, Object...)} rather that {@link Logger#info(String, Object...)}.
+   * Indicates whether the debugger should use {@link Logger#debug(String, Object...)} rather that
+   * {@link Logger#info(String, Object...)}.
    *
    * @since 3.0.0
    */
   private static boolean useDebugFunction;
 
   private Debugger() {
-    throw new UnsupportedOperationException("This class is for utility and cannot be instantiated.");
+    throw ExceptionConstants.NOT_INSTANTIABLE_EXCEPTION;
   }
 
   /**
@@ -123,7 +125,7 @@ public final class Debugger {
       initLogger(Debugger.class.getSimpleName());
     }
     // if logger is configured...
-    if (usingDebugFunction()) {
+    if (useDebugFunction) {
       internalLogger.debug(message, args);
       return;
     }
