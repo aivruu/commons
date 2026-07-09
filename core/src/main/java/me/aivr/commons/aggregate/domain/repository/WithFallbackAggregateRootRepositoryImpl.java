@@ -31,12 +31,12 @@ import java.util.function.IntFunction;
  * return-value results for main-repository operations, skipping ones for fallback-repository operations.
  *
  * @param <AggregateType> an object that extends from AggregateRoot, which basically represents itself as an aggregate-root.
- * @since 1.0.0.
+ * @since 1.0.0
  */
 public abstract class WithFallbackAggregateRootRepositoryImpl<AggregateType extends AggregateRoot>
     implements WithFallbackAggregateRootRepository<AggregateType> {
-  private final AsyncAggregateRootRepository<AggregateType> mainRepository;
-  private final AggregateRootRepository<AggregateType> fallbackRepository;
+  protected final AsyncAggregateRootRepository<AggregateType> mainRepository;
+  protected final AggregateRootRepository<AggregateType> fallbackRepository;
 
   protected WithFallbackAggregateRootRepositoryImpl(
       final AsyncAggregateRootRepository<AggregateType> mainRepository,
