@@ -39,8 +39,18 @@ public final class ExceptionConstants {
    */
   public static final IllegalArgumentException WRONG_VALUE_EXCEPTION
       = new IllegalArgumentException("The provided value is not valid.");
+  /**
+   * Cached {@link UnsupportedOperationException} for when a not-implemented function is called.
+   *
+   * @since 3.0.0-rc1
+   */
   public static final UnsupportedOperationException UNSUPPORTED_OPERATION_EXCEPTION
       = new UnsupportedOperationException("This operation is not supported by this class.");
+  /**
+   * Cached {@link UnsupportedOperationException} for when a utility-class (mostly-static) is tried to be instantiated.
+   *
+   * @since 3.0.0-rc1
+   */
   public static final UnsupportedOperationException NOT_INSTANTIABLE_EXCEPTION
       = new UnsupportedOperationException("This class is for utility and cannot be instantiated.");
 
