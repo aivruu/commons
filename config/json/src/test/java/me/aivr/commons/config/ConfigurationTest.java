@@ -24,6 +24,7 @@ import me.aivr.commons.config.infrastructure.container.json.JsonContainerBuilder
 import me.aivr.commons.config.infrastructure.serializer.ComponentTypeSerializer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -37,40 +38,51 @@ class ConfigurationTest {
 
   @Test
   void loadConfig() {
-    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    final ConfigurationProvider<TestYamlConfig> provider = this.buildConfigurationProvider();
     this.deletePreviousIfExists(provider);
-    final ContainerBuilder containerBuilder = JsonContainerBuilder.create(DIRECTORY)
+    final ContainerBuilder containerBuilder = this.createContainer(provider);
+    Assertions.assertTrue(provider.load(containerBuilder));
+  }
+
+  private ContainerBuilder createContainer(final ConfigurationProvider<TestYamlConfig> provider) {
+    return JsonContainerBuilder.create(DIRECTORY)
         .fileName(provider.configName())
         .clazz(provider.modelClassType())
         .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
-    Assertions.assertTrue(provider.load(containerBuilder));
   }
 
   private void deletePreviousIfExists(final ConfigurationProvider<TestYamlConfig> provider) {
     try {
-      Files.deleteIfExists(provider.configDirectory().resolve(provider.configName() + ConfigType.YAML.fileExtension()));
+      Files.deleteIfExists(provider.configDirectory().resolve(provider.configName() + ConfigType.JSON.fileExtension()));
     } catch (final IOException ignored) {}
   }
 
   @Test
   void builderMissingParameters() {
-    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    final ConfigurationProvider<TestYamlConfig> provider = this.buildConfigurationProvider();
     this.deletePreviousIfExists(provider);
-    final ContainerBuilder containerBuilder = JsonContainerBuilder.create(DIRECTORY)
-        .fileName("")
+    // try with no file-name specified.
+    ContainerBuilder containerBuilder;
+    containerBuilder = JsonContainerBuilder.create(DIRECTORY)
+        .clazz(provider.modelClassType())
         .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
-    Assertions.assertThrows(NullPointerException.class, () -> provider.load(containerBuilder));
-    // or
-    Assertions.assertThrows(IllegalArgumentException.class, () -> provider.load(containerBuilder));
+    Assertions.assertThrows(IllegalArgumentException.class, containerBuilder::build);
+
+    this.deletePreviousIfExists(provider);
+    // try with no class specification.
+    containerBuilder = JsonContainerBuilder.create(DIRECTORY)
+        .fileName(provider.configName())
+        .options(opts -> opts.serializers(builder -> builder.register(Component.class, ComponentTypeSerializer.INSTANCE)));
+    Assertions.assertThrows(NullPointerException.class, containerBuilder::build);
   }
 
   @Test
   void configAccessException() {
-    final ConfigurationProvider<TestYamlConfig> provider = buildConfigurationProvider();
+    final ConfigurationProvider<TestYamlConfig> provider = this.buildConfigurationProvider();
     Assertions.assertThrows(IllegalStateException.class, provider::get);
   }
 
-  static ConfigurationProviderImpl<TestYamlConfig> buildConfigurationProvider() {
+  ConfigurationProviderImpl<TestYamlConfig> buildConfigurationProvider() {
     return new ConfigurationProviderImpl<>(DIRECTORY, "test", TestYamlConfig.class, ComponentLogger.logger("ConfigurationTest"));
   }
 }
