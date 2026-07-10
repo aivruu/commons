@@ -9,11 +9,16 @@ plugins {
 
 val libs = extensions.getByType(LibrariesForLibs::class)
 
+tasks.withType(GenerateModuleMetadata::class.java).configureEach {
+  suppressedValidationErrors.add("dependencies-without-versions")
+}
+
 dependencies {
   val forkVersion: String = libs.versions.configurate.fork.get()
+  val dependencyMap = mapOf("name" to "configurate-core-$forkVersion", "ext" to "jar")
   // Assuming is available in the 'libs' dir of each subproject of 'config'.
-  implementation(":configurate-core-$forkVersion")
-  testImplementation(":configurate-core-$forkVersion")
+  implementation(dependencyMap)
+  testImplementation(dependencyMap)
 
   // Required by configurate-core
   compileOnly(libs.geantyref)
