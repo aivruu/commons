@@ -12,6 +12,7 @@ dependencies {
   api(project(":${rootProject.name}-config"))
 
   val forkVersion: String = libs.versions.configurate.fork.get()
-  implementation(":configurate-gson-$forkVersion")
-  testRuntimeOnly(":configurate-gson-$forkVersion")
+  val dependencyMap = mapOf("name" to "configurate-gson-$forkVersion", "ext" to "jar")
+  implementation(dependencyMap)
+  testRuntimeOnly(dependencyMap)
 }
