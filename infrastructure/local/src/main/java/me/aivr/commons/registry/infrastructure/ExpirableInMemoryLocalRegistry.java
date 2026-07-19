@@ -17,10 +17,13 @@
 package me.aivr.commons.registry.infrastructure;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import it.unimi.dsi.fastutil.objects.Object2ObjectFunction;
+import me.aivr.commons.registry.domain.GenericTypeRegistry;
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 /**
@@ -30,7 +33,7 @@ import java.util.function.Predicate;
  * @param <V> the type of value this registry handles.
  * @since 3.0.0-rc2
  */
-public final class ExpirableInMemoryLocalRegistry<K, V> implements LocalRegistry<K, V> {
+public final class ExpirableInMemoryLocalRegistry<K, V> implements GenericTypeRegistry<K, V> {
   private final Cache<K, V> temporalCache;
 
   /**
@@ -56,6 +59,17 @@ public final class ExpirableInMemoryLocalRegistry<K, V> implements LocalRegistry
     }
     this.temporalCache.put(id, value);
     return value;
+  }
+
+
+  @Override
+  public V registerIfAbsent(final K id, final Object2ObjectFunction<K, V> mappingValueFunc) {
+    return this.temporalCache.asMap().computeIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  public @Nullable V registerIfPresent(final K id, final BiFunction<? super K, ? super V, ? extends V> mappingValueFunc) {
+    return this.temporalCache.asMap().computeIfPresent(id, mappingValueFunc);
   }
 
   @Override

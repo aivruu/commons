@@ -23,7 +23,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -31,9 +33,10 @@ import java.util.function.Predicate;
  *
  * @param <K> the type of id this registry handles.
  * @param <V> the type of value this registry handles.
+ * @param <F> the type of function this registry uses for {@link #registerIfAbsent(Object, Function)}.
  * @since 2.3.0
  */
-public interface LocalRegistry<K, V> {
+public interface LocalRegistry<K, V, F extends Function<? super K, ? extends V>> {
   /**
    * Checks whether there's an entry with the given identifier for this registry.
    *
@@ -127,6 +130,28 @@ public interface LocalRegistry<K, V> {
    * @since 2.3.0
    */
   V register(final K id, final V value);
+
+  /**
+   * Computes the value from the mapping-function parameter for a not-mapped key with the specified id, and
+   * stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the current value if the key is mapped to one, otherwise returns the new one.
+   * @since 3.1.0
+   */
+  V registerIfAbsent(final K id, final F mappingValueFunc);
+
+  /**
+   * Computes the value from the mapping-function parameter for an already-mapped key with the specified id, and
+   * stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the new mapping for the key, otherwise returns {@code null} if the key had no mapping.
+   * @since 3.1.0
+   */
+  @Nullable V registerIfPresent(final K id, final BiFunction<? super K, ? super V, ? extends V> mappingValueFunc);
 
   /**
    * Removes the value for the specified identifier from this registry, and returns the value if existed.

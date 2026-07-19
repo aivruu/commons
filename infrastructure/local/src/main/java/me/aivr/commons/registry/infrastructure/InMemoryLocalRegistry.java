@@ -16,13 +16,15 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectFunction;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import me.aivr.commons.registry.domain.LocalRegistry;
+import me.aivr.commons.registry.domain.GenericTypeRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 /**
@@ -33,7 +35,7 @@ import java.util.function.Predicate;
  * @since 3.0.0-rc2
  */
 @SuppressWarnings("DataFlowIssue")
-public final class InMemoryLocalRegistry<K, V> implements LocalRegistry<K, V> {
+public final class InMemoryLocalRegistry<K, V> implements GenericTypeRegistry<K, V> {
   private final Object2ObjectMap<K, V> cache;
 
   /**
@@ -79,6 +81,16 @@ public final class InMemoryLocalRegistry<K, V> implements LocalRegistry<K, V> {
   public V register(final K id, final V value) {
     final V stored = this.cache.put(id, value);
     return stored == null ? value : stored;
+  }
+
+  @Override
+  public V registerIfAbsent(final K id, final Object2ObjectFunction<K, V> mappingValueFunc) {
+    return this.cache.computeIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  public @Nullable V registerIfPresent(final K id, final BiFunction<? super K, ? super V, ? extends V> mappingValueFunc) {
+    return this.cache.computeIfPresent(id, mappingValueFunc);
   }
 
   @Override
