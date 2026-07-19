@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import it.unimi.dsi.fastutil.ints.IntCollection;
 import it.unimi.dsi.fastutil.longs.LongCollection;
-import me.aivr.commons.registry.domain.LocalRegistry;
+import me.aivr.commons.registry.domain.GenericTypeRegistry;
 import me.aivr.commons.registry.domain.ints.IntValueLocalRegistry;
 import me.aivr.commons.registry.domain.longs.LongValueLocalRegistry;
 import me.aivr.commons.registry.infrastructure.InMemoryLocalRegistry;
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 class RegistriesOperationTest {
   @Test
   void basic() {
-    final LocalRegistry<String, String> reg = new InMemoryLocalRegistry<>(false);
+    final GenericTypeRegistry<String, String> reg = new InMemoryLocalRegistry<>(false);
     assertFalse(reg.existsById("a"));
 
     final String value = "one";
@@ -48,7 +48,7 @@ class RegistriesOperationTest {
 
   @Test
   void overwriteReturnsPrevious() {
-    final LocalRegistry<String, String> reg = new InMemoryLocalRegistry<>(false);
+    final GenericTypeRegistry<String, String> reg = new InMemoryLocalRegistry<>(false);
     reg.register("k", "v1");
     final String prev = reg.register("k", "v2");
     assertEquals("v1", prev);
@@ -61,6 +61,7 @@ class RegistriesOperationTest {
     reg.registerInt("a", 1);
     reg.registerInt("b", 2);
     reg.registerInt("c", 3);
+    reg.registerIntIfAbsent("d", l -> 4);
 
     assertTrue(reg.findAllInts().size() >= 3);
     assertTrue(reg.findAllKeys().size() >= 3);
@@ -76,9 +77,10 @@ class RegistriesOperationTest {
     reg.registerLong("a", 1);
     reg.registerLong("b", 2);
     reg.registerLong("c", 3);
+    reg.registerLongIfAbsent("d", l -> 4);
 
-    assertTrue(reg.findAllLongs().size() >= 3);
-    assertTrue(reg.findAllKeys().size() >= 3);
+    assertTrue(reg.findAllLongs().size() >= 4);
+    assertTrue(reg.findAllKeys().size() >= 4);
 
     final LongCollection evens = reg.filterLongs(v -> (v & 1) == 0);
     assertTrue(evens.contains(2));
