@@ -16,11 +16,13 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.domain.ints;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import me.aivr.commons.registry.domain.LocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
@@ -30,7 +32,7 @@ import java.util.function.IntConsumer;
  * @param <V> the type of value this registry handles.
  * @since 2.3.0
  */
-public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V> {
+public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V, Int2ObjectFunction<V>> {
   /**
    * Reusable {@link Set} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
    *
@@ -95,6 +97,18 @@ public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V> {
     return this.registerInt(id, value);
   }
 
+  @Override
+  @Deprecated
+  default V registerIfAbsent(final Integer id, final Int2ObjectFunction<V> mappingValueFunc) {
+    return this.registerIntIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  @Deprecated
+  default @Nullable V registerIfPresent(final Integer id, final BiFunction<? super Integer, ? super V, ? extends V> mappingValueFunc) {
+    return this.registerIntIfPresent(id, mappingValueFunc);
+  }
+
   /**
    * Stores the given value with the specified {@code int} identifier into this registry, and returns whether the given value or the
    * old-mapping already existed for that identifier.
@@ -105,6 +119,28 @@ public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V> {
    * @since 2.3.0
    */
   V registerInt(final int id, final V value);
+
+  /**
+   * Computes the value from the mapping-function parameter for a not-mapped key with the
+   * specified id, and stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the current value if the key is mapped to one, otherwise returns the new one.
+   * @since 3.1.0
+   */
+  V registerIntIfAbsent(final int id, final Int2ObjectFunction<V> mappingValueFunc);
+
+  /**
+   * Computes the value from the mapping-function parameter for an already-mapped key with the
+   * specified id, and stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the new mapping for the key, otherwise returns {@code null} if the key had no mapping.
+   * @since 3.1.0
+   */
+  @Nullable V registerIntIfPresent(final int id, final BiFunction<? super Integer, ? super V, ? extends V> mappingValueFunc);
 
   /**
    * {@inheritDoc}

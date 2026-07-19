@@ -18,12 +18,14 @@ package me.aivr.commons.registry.infrastructure.longs;
 
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongCollection;
+import it.unimi.dsi.fastutil.objects.Object2LongFunction;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import me.aivr.commons.registry.domain.longs.LongValueLocalRegistry;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.LongConsumer;
 import java.util.function.LongPredicate;
 
@@ -79,6 +81,16 @@ public final class LongValueInMemoryLocalRegistry<K> implements LongValueLocalRe
   public long registerLong(final K id, final long value) {
     final long stored = this.cache.put(id, value);
     return stored == this.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public long registerLongIfAbsent(final K id, final Object2LongFunction<K> mappingValueFunc) {
+    return this.cache.computeIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  public long registerLongIfPresent(final K id, final BiFunction<? super K, ? super Long, ? extends Long> mappingValueFunc) {
+    return this.cache.computeLongIfPresent(id, mappingValueFunc);
   }
 
   @Override

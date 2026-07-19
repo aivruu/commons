@@ -16,6 +16,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure.bytes;
 
+import it.unimi.dsi.fastutil.bytes.Byte2ObjectFunction;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectMap;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectMaps;
 import it.unimi.dsi.fastutil.bytes.Byte2ObjectOpenHashMap;
@@ -26,6 +27,7 @@ import me.aivr.commons.registry.domain.bytes.ByteKeyLocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
 /**
@@ -81,6 +83,16 @@ public final class ByteKeyInMemoryLocalRegistry<V> implements ByteKeyLocalRegist
   public V registerByte(final byte id, final V value) {
     final V stored = this.cache.put(id, value);
     return stored == this.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public V registerByteIfAbsent(final byte id, final Byte2ObjectFunction<V> mappingValueFunc) {
+    return this.cache.computeIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  public @Nullable V registerByteIfPresent(final byte id, final BiFunction<? super Byte, ? super V, ? extends V> mappingValueFunc) {
+    return this.cache.computeIfPresent(id, mappingValueFunc);
   }
 
   @Override

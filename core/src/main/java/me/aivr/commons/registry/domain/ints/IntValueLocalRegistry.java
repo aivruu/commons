@@ -17,10 +17,12 @@
 package me.aivr.commons.registry.domain.ints;
 
 import it.unimi.dsi.fastutil.ints.IntCollection;
+import it.unimi.dsi.fastutil.objects.Object2IntFunction;
 import me.aivr.commons.registry.domain.LocalRegistry;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import java.util.function.IntPredicate;
@@ -32,12 +34,13 @@ import java.util.function.Predicate;
  * @param <K> the type of key this registry uses.
  * @since 2.3.0
  */
-public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer> {
+public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer, Object2IntFunction<K>> {
   /**
    * Reusable {@link List} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
    *
    * @since 2.3.0
    */
+  @Deprecated(forRemoval = true)
   List<Integer> CACHED_LIST_FOR_DEPRECATED_FUNCTIONS = List.of(1);
 
   /**
@@ -98,6 +101,30 @@ public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer> {
   }
 
   /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #registerIntIfAbsent(Object, Object2IntFunction)} instead.
+   * @since 3.1.0
+   */
+  @Override
+  @Deprecated
+  default Integer registerIfAbsent(final K id, final Object2IntFunction<K> mappingValueFunc) {
+    return this.registerIntIfAbsent(id, mappingValueFunc);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #registerIntIfPresent(Object, BiFunction)} instead.
+   * @since 3.1.0
+   */
+  @Override
+  @Deprecated
+  default Integer registerIfPresent(final K id, final BiFunction<? super K, ? super Integer, ? extends Integer> mappingValueFunc) {
+    return this.registerIntIfPresent(id, mappingValueFunc);
+  }
+
+  /**
    * Stores the given {@code int} with the specified ID into this registry, and returns whether the given value or the
    * old-mapping already existed for that identifier.
    *
@@ -107,6 +134,28 @@ public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer> {
    * @since 2.3.0
    */
   int registerInt(final K id, final int value);
+
+  /**
+   * Computes the {@code int} value from the mapping-function parameter for a not-mapped key with the specified id,
+   * and stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the current value if the key is mapped to one, otherwise returns the new one.
+   * @since 3.1.0
+   */
+  int registerIntIfAbsent(final K id, final Object2IntFunction<K> mappingValueFunc);
+
+  /**
+   * Computes the {@code int} value from the mapping-function parameter for an already-mapped key with the specified
+   * id, and stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the new mapping for the key, otherwise returns {@code 0} if the key had no mapping.
+   * @since 3.1.0
+   */
+  int registerIntIfPresent(final K id, final BiFunction<? super K, ? super Integer, ? extends Integer> mappingValueFunc);
 
   /**
    * {@inheritDoc}

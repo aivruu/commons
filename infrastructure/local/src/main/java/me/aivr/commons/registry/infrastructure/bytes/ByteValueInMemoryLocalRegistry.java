@@ -20,12 +20,14 @@ import it.unimi.dsi.fastutil.bytes.ByteArrayList;
 import it.unimi.dsi.fastutil.bytes.ByteCollection;
 import it.unimi.dsi.fastutil.bytes.ByteConsumer;
 import it.unimi.dsi.fastutil.bytes.BytePredicate;
+import it.unimi.dsi.fastutil.objects.Object2ByteFunction;
 import it.unimi.dsi.fastutil.objects.Object2ByteMap;
 import it.unimi.dsi.fastutil.objects.Object2ByteMaps;
 import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
 import me.aivr.commons.registry.domain.bytes.ByteValueLocalRegistry;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * A registry-type that allows to use {@code byte} primitives as values for registry's entries to avoid unboxing/autoboxing
@@ -79,6 +81,16 @@ public final class ByteValueInMemoryLocalRegistry<K> implements ByteValueLocalRe
   public byte registerByte(final K id, final byte value) {
     final byte stored = this.cache.put(id, value);
     return stored == this.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public byte registerByteIfAbsent(final K id, final Object2ByteFunction<K> mappingValueFunc) {
+    return this.cache.computeIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  public byte registerByteIfPresent(final K id, final BiFunction<? super K, ? super Byte, ? extends Byte> mappingValueFunc) {
+    return this.cache.computeByteIfPresent(id, mappingValueFunc);
   }
 
   @Override

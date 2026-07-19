@@ -19,9 +19,11 @@ package me.aivr.commons.registry.domain.bytes;
 import it.unimi.dsi.fastutil.bytes.ByteCollection;
 import it.unimi.dsi.fastutil.bytes.ByteConsumer;
 import it.unimi.dsi.fastutil.bytes.BytePredicate;
+import it.unimi.dsi.fastutil.objects.Object2ByteFunction;
 import me.aivr.commons.registry.domain.LocalRegistry;
 
 import java.util.Collection;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -31,7 +33,7 @@ import java.util.function.Predicate;
  * @param <K> the type of key this registry uses.
  * @since 2.3.0
  */
-public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte> {
+public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte, Object2ByteFunction<K>> {
   /**
    * {@inheritDoc}
    *
@@ -90,8 +92,32 @@ public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte> {
   }
 
   /**
-   * Stores the given {@code byte} with the specified ID into this registry, and returns whether the given value or the
-   * old-mapping already existed for that identifier.
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #registerByteIfAbsent(Object, Object2ByteFunction)} instead.
+   * @since 3.1.0
+   */
+  @Override
+  @Deprecated
+  default Byte registerIfAbsent(final K id, final Object2ByteFunction<K> mappingValueFunc) {
+    return this.registerByteIfAbsent(id, mappingValueFunc);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #registerByteIfPresent(Object, BiFunction)} instead.
+   * @since 3.1.0
+   */
+  @Override
+  @Deprecated
+  default Byte registerIfPresent(final K id, final BiFunction<? super K, ? super Byte, ? extends Byte> mappingValueFunc) {
+    return this.registerByteIfPresent(id, mappingValueFunc);
+  }
+
+  /**
+   * Stores the given {@code byte} with the specified ID into this registry, and returns whether the given value or
+   * the old-mapping already existed for that identifier.
    *
    * @param id the id to assign.
    * @param value the value to store.
@@ -99,6 +125,28 @@ public interface ByteValueLocalRegistry<K> extends LocalRegistry<K, Byte> {
    * @since 2.3.0
    */
   byte registerByte(final K id, final byte value);
+
+  /**
+   * Computes the {@code byte} value from the mapping-function parameter for a not-mapped key with the specified
+   * id, and stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the current value if the key is mapped to one, otherwise returns the new one.
+   * @since 3.1.0
+   */
+  byte registerByteIfAbsent(final K id, final Object2ByteFunction<K> mappingValueFunc);
+
+  /**
+   * Computes the {@code byte} value from the mapping-function parameter for an already-mapped key with the specified
+   * id, and stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the new mapping for the key, otherwise returns {@code 0} if the key had no mapping.
+   * @since 3.1.0
+   */
+  byte registerByteIfPresent(final K id, final BiFunction<? super K, ? super Byte, ? extends Byte> mappingValueFunc);
 
   /**
    * {@inheritDoc}

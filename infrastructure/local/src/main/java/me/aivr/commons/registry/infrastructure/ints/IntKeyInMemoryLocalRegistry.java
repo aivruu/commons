@@ -16,6 +16,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure.ints;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -25,6 +26,7 @@ import me.aivr.commons.registry.domain.ints.IntKeyLocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.IntConsumer;
 import java.util.function.Predicate;
 
@@ -81,6 +83,16 @@ public final class IntKeyInMemoryLocalRegistry<V> implements IntKeyLocalRegistry
   public V registerInt(final int id, final V value) {
     final V stored = this.cache.put(id, value);
     return stored == this.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public V registerIntIfAbsent(final int id, final Int2ObjectFunction<V> mappingValueFunc) {
+    return this.cache.computeIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  public @Nullable V registerIntIfPresent(final int id, final BiFunction<? super Integer, ? super V, ? extends V> mappingValueFunc) {
+    return this.cache.computeIfPresent(id, mappingValueFunc);
   }
 
   @Override

@@ -18,12 +18,14 @@ package me.aivr.commons.registry.infrastructure.ints;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntCollection;
+import it.unimi.dsi.fastutil.objects.Object2IntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import me.aivr.commons.registry.domain.ints.IntValueLocalRegistry;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.IntConsumer;
 import java.util.function.IntPredicate;
 
@@ -79,6 +81,16 @@ public final class IntValueInMemoryLocalRegistry<K> implements IntValueLocalRegi
   public int registerInt(final K id, final int value) {
     final int stored = this.cache.put(id, value);
     return stored == this.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public int registerIntIfAbsent(final K id, final Object2IntFunction<K> mappingValueFunc) {
+    return this.cache.computeIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  public int registerIntIfPresent(final K id, final BiFunction<? super K, ? super Integer, ? extends Integer> mappingValueFunc) {
+   return this.cache.computeIntIfPresent(id, mappingValueFunc);
   }
 
   @Override

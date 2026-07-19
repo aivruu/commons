@@ -17,9 +17,11 @@
 package me.aivr.commons.registry.domain.longs;
 
 import it.unimi.dsi.fastutil.longs.LongCollection;
+import it.unimi.dsi.fastutil.objects.Object2LongFunction;
 import me.aivr.commons.registry.domain.LocalRegistry;
 
 import java.util.Collection;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.LongConsumer;
 import java.util.function.LongPredicate;
@@ -31,7 +33,7 @@ import java.util.function.Predicate;
  * @param <K> the type of key this registry uses.
  * @since 2.3.0
  */
-public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long> {
+public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long, Object2LongFunction<K>> {
   /**
    * {@inheritDoc}
    *
@@ -90,8 +92,32 @@ public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long> {
   }
 
   /**
-   * Stores the given {@code long} with the specified ID into this registry, and returns whether the given value or the
-   * old-mapping already existed for that identifier.
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #registerLongIfAbsent(Object, Object2LongFunction)} instead.
+   * @since 3.1.0
+   */
+  @Override
+  @Deprecated
+  default Long registerIfAbsent(final K id, final Object2LongFunction<K> mappingValueFunc) {
+    return this.registerLongIfAbsent(id, mappingValueFunc);
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @deprecated use {@link #registerLongIfPresent(Object, BiFunction)} instead.
+   * @since 3.1.0
+   */
+  @Override
+  @Deprecated
+  default Long registerIfPresent(final K id, final BiFunction<? super K, ? super Long, ? extends Long> mappingValueFunc) {
+    return this.registerLongIfPresent(id, mappingValueFunc);
+  }
+
+  /**
+   * Stores the given {@code long} with the specified ID into this registry, and returns whether the given
+   * value or the old-mapping already existed for that identifier.
    *
    * @param id the id to assign.
    * @param value the value to store.
@@ -99,6 +125,28 @@ public interface LongValueLocalRegistry<K> extends LocalRegistry<K, Long> {
    * @since 2.3.0
    */
   long registerLong(final K id, final long value);
+
+  /**
+   * Computes the {@code long} value from the mapping-function parameter for a not-mapped key with the specified
+   * id, and stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the current value if the key is mapped to one, otherwise returns the new one.
+   * @since 3.1.0
+   */
+  long registerLongIfAbsent(final K id, final Object2LongFunction<K> mappingValueFunc);
+
+  /**
+   * Computes the {@code long} value from the mapping-function parameter for an already-mapped key with the
+   * specified id, and stores it into this registry, returning the result for such computation.
+   *
+   * @param id the unique-identifier to assign.
+   * @param mappingValueFunc the function for the value-mapping.
+   * @return the new mapping for the key, otherwise returns {@code 0} if the key had no mapping.
+   * @since 3.1.0
+   */
+  long registerLongIfPresent(final K id, final BiFunction<? super K, ? super Long, ? extends Long> mappingValueFunc);
 
   /**
    * {@inheritDoc}

@@ -16,6 +16,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.registry.infrastructure.longs;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectFunction;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -25,6 +26,7 @@ import me.aivr.commons.registry.domain.longs.LongKeyLocalRegistry;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.LongConsumer;
 import java.util.function.Predicate;
 
@@ -81,6 +83,16 @@ public final class LongKeyInMemoryLocalRegistry<V> implements LongKeyLocalRegist
   public V registerLong(final long id, final V value) {
     final V stored = this.cache.put(id, value);
     return stored == this.cache.defaultReturnValue() ? value : stored;
+  }
+
+  @Override
+  public V registerLongIfAbsent(final long id, final Long2ObjectFunction<V> mappingValueFunc) {
+    return this.cache.computeIfAbsent(id, mappingValueFunc);
+  }
+
+  @Override
+  public @Nullable V registerLongIfPresent(final long id, final BiFunction<? super Long, ? super V, ? extends V> mappingValueFunc) {
+    return this.cache.computeIfPresent(id, mappingValueFunc);
   }
 
   @Override
