@@ -164,6 +164,14 @@ public final class CoordinatePackingProvider {
     return value < min || value > max;
   }
 
+  /**
+   * Restores the bit (MSB) used for the number-sign.
+   *
+   * @param value the value to restore.
+   * @param bits the bits to count for the sign-extension.
+   * @return the restored value.
+   * @since 2.1.0
+   */
   private static int restoreSignExtension(final int value, final long bits) {
     // https://stackoverflow.com/questions/54675321/what-is-the-most-efficient-way-in-java-to-sign-extend-an-arbitrary-length-patter
     return ((value << (Integer.SIZE - bits)) >> (Integer.SIZE - bits));
