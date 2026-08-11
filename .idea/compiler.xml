@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="21" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="commons.commons-config" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-config-json" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-config-json.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-config-json.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-config-yaml" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-config-yaml.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-config-yaml.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-config.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-config.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-core" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-core.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-core.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-event" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-event.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-event.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-json" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-json.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-json.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-local" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-local.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-local.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-mongo" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-mongo.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-infrastructure-mongo.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-parser" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-parser.main" options="-parameters -Xlint:all -parameters -Xdoclint -Xdoclint:-missing" />
+      <module name="commons.commons-parser.test" options="-parameters -Xlint:all -Xdoclint -Xdoclint:-missing" />
+    </option>
+  </component>
+</project>
