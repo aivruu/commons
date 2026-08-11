@@ -22,6 +22,7 @@ import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import me.aivr.commons.aggregate.infrastructure.repository.mongo.codec.MongoCodec;
+import me.aivr.commons.util.domain.exception.ExceptionConstants;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.jspecify.annotations.Nullable;
 
@@ -33,8 +34,9 @@ import org.jspecify.annotations.Nullable;
 public class MongoProvider {
   private static @Nullable MongoClient client;
 
+  @SuppressWarnings("UnstableApiUsage")
   private MongoProvider() {
-    throw new UnsupportedOperationException("This class is for utility and cannot be instantiated.");
+    throw ExceptionConstants.NOT_INSTANTIABLE_EXCEPTION;
   }
 
   /**

@@ -19,6 +19,7 @@ package me.aivr.commons.aggregate.infrastructure.repository.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.aivr.commons.aggregate.infrastructure.repository.json.codec.JsonCodec;
+import me.aivr.commons.util.domain.exception.ExceptionConstants;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -30,7 +31,7 @@ public final class GsonProvider {
   private static @Nullable Gson gson;
 
   private GsonProvider() {
-    throw new UnsupportedOperationException("This class is for utility.");
+    throw ExceptionConstants.NOT_INSTANTIABLE_EXCEPTION;
   }
 
   /**
