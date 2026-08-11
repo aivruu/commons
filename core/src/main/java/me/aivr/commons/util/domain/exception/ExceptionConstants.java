@@ -37,8 +37,7 @@ public final class ExceptionConstants {
    *
    * @since 3.0.0-rc1
    */
-  public static final IllegalArgumentException WRONG_VALUE_EXCEPTION
-      = new IllegalArgumentException("The provided value is not valid.");
+  public static final IllegalArgumentException WRONG_VALUE_EXCEPTION = new IllegalArgumentException("The provided value is not valid.");
   /**
    * Cached {@link UnsupportedOperationException} for when a not-implemented function is called.
    *
