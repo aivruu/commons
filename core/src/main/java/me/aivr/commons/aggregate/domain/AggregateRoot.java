@@ -81,13 +81,28 @@ public abstract class AggregateRoot {
    * If the {@code shouldSave} parameter was {@code true}, the {@link AggregateWritingRequiredStateChangeEvent} will be recorded
    * for this aggregate-root, listeners to this event can perform actions over the aggregate-root involved.
    *
+   * @deprecated use {@link #setShouldSave(boolean)} instead.
    * @param shouldSave whether the aggregate-root should be saved now.
-   * @since 1.0.0.
+   * @since 1.0.0
    */
+  @Deprecated(since = "3.2.0")
   protected final void shouldSave(final boolean shouldSave) {
-    if (shouldSave) this.recordEvent(new AggregateWritingRequiredStateChangeEvent(this.id));
+    if (shouldSave) this.recordEvent(new AggregateWritingRequiredStateChangeEvent(this.id, false, false));
 
     this.shouldSave = shouldSave;
+  }
+
+  /**
+   * Sets that this aggregate-root's data must be written to infrastructure.
+   * <p>
+   * This method will also record the {@link AggregateWritingRequiredStateChangeEvent} for this aggregate.
+   *
+   * @param should whether the aggregate-root should be saved or not.
+   * @since 3.2.0
+   */
+  protected final void setShouldSave(final boolean should) {
+    this.recordEvent(new AggregateWritingRequiredStateChangeEvent(this.id, this.shouldSave, should));
+    this.shouldSave = should;
   }
 
   /**

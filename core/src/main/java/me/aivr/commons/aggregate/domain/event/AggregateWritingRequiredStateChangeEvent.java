@@ -16,11 +16,16 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 package me.aivr.commons.aggregate.domain.event;
 
+import me.aivr.commons.aggregate.domain.AggregateRoot;
+
 /**
  * An event that's recorded each time an {@link me.aivr.commons.aggregate.domain.AggregateRoot} is marked as required
  * to be saved.
  *
  * @param aggregateRootId the id of the aggregate-root involved.
+ * @param previousState the previous-state returned by {@link AggregateRoot#shouldSave()}.
+ * @param newState the new-state to return for {@link AggregateRoot#shouldSave()}.
  * @since 1.0.0
  */
-public record AggregateWritingRequiredStateChangeEvent(String aggregateRootId) implements AggregateRootEvent {}
+public record AggregateWritingRequiredStateChangeEvent(String aggregateRootId, boolean previousState, boolean newState)
+    implements AggregateRootEvent {}
