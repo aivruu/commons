@@ -19,6 +19,7 @@ package me.aivr.commons.registry.domain.ints;
 import it.unimi.dsi.fastutil.ints.IntCollection;
 import it.unimi.dsi.fastutil.objects.Object2IntFunction;
 import me.aivr.commons.registry.domain.LocalRegistry;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,9 +39,11 @@ public interface IntValueLocalRegistry<K> extends LocalRegistry<K, Integer, Obje
   /**
    * Reusable {@link List} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
    *
+   * @deprecated
    * @since 2.3.0
    */
   @Deprecated(forRemoval = true)
+  @ApiStatus.ScheduledForRemoval(inVersion = "4.0.0")
   List<Integer> CACHED_LIST_FOR_DEPRECATED_FUNCTIONS = List.of(1);
 
   /**

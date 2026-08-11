@@ -19,6 +19,7 @@ package me.aivr.commons.registry.domain.ints;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import me.aivr.commons.registry.domain.LocalRegistry;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Set;
@@ -36,8 +37,11 @@ public interface IntKeyLocalRegistry<V> extends LocalRegistry<Integer, V, Int2Ob
   /**
    * Reusable {@link Set} instance used by original deprecated-functions that handles wrapper-types instead of primitives.
    *
+   * @deprecated
    * @since 2.3.0
    */
+  @Deprecated(forRemoval = true)
+  @ApiStatus.ScheduledForRemoval(inVersion = "4.0.0")
   Set<Integer> CACHED_SET_FOR_DEPRECATED_FUNCTIONS = Set.of();
 
   /**
