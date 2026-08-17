@@ -23,19 +23,19 @@ package me.aivr.commons.util.application.version;
  * @param minor the minor-digit for the version.
  * @param patch the patch (or hotfix) digit for the version.
  * @param minecraftVersion the specific {@link MinecraftVersion} for the on-running version.
- * @since 0.1.0
+ * @since 3.2.0
  */
 public record ServerVersion(byte major, byte minor, byte patch, MinecraftVersion minecraftVersion) {
   /**
    * A {@link ServerVersion} object that contains the information for the current server-version.
    *
-   * @since 0.1.0
+   * @since 3.2.0
    */
   public static final ServerVersion CURRENT;
   /**
    * The stored result of the {@link #formatted()} method based on the {@link #CURRENT} version-reference.
    *
-   * @since 0.1.0
+   * @since 3.2.0
    */
   public static final String CURRENT_FORMATED;
 
@@ -62,7 +62,7 @@ public record ServerVersion(byte major, byte minor, byte patch, MinecraftVersion
    * @param patch the patch (or hotfix) digit for the version.
    * @param minecraftVersion the {@link MinecraftVersion} constant for the on-running version.
    * @throws IllegalArgumentException if some, or all the version-digits are negative.
-   * @since 0.1.0
+   * @since 3.2.0
    */
   public ServerVersion {
     if (major < 0 || minor < 0 || patch < 0) throw new IllegalArgumentException("Version-values cannot be negative.");
@@ -73,7 +73,7 @@ public record ServerVersion(byte major, byte minor, byte patch, MinecraftVersion
    * (e.g. {@code 26.1 -> 261}).
    *
    * @return an int that contains both major and minor-digits of the version.
-   * @since 0.1.0
+   * @since 3.2.0
    */
   public int majorAndMinor() {
     return Integer.parseInt("" + this.major + this.minor);
@@ -87,7 +87,7 @@ public record ServerVersion(byte major, byte minor, byte patch, MinecraftVersion
    * {@code v{MAJOR}_{MINOR}}.
    *
    * @return the formatted-version.
-   * @since 0.1.0
+   * @since 3.2.0
    */
   public String formatted() {
     final StringBuilder builder = new StringBuilder();
